@@ -126,11 +126,10 @@
 								<td>
 									<button type="button" class="btn btn-info btn-xs openEditModal" data-toggle="modal" data-target="#editCategory" data-id="{{$list->id}}" data-category="{{$list->name}}"><i class="fa fa-edit"></i></button>
 
-									<button type="button" data-confirm-url="{{Route('Delete.Category', $list->id)}}"  class="btn btn-danger btn-xs confirm_box"><i class="fa fa-trash"></i></button>
+									<button type="button" data-confirm-url="{{url('/category/delete',$list->id)}}"  class="btn btn-danger btn-xs confirm_box"><i class="fa fa-trash"></i></button>
 								</td>
 							</tr>
 							@endforeach
-							@else
 							@endif
 						</tbody>
 					</table>
@@ -196,7 +195,8 @@
 	*/ 
 	jQuery(function(){
 		jQuery('.confirm_box').click(function(){
-			var confirm_url=jQuery(this).data('confirm-url');
+			var confirm_url = jQuery(this).data('confirm-url');
+			console.log(confirm_url);
 			if (confirm("Do You Want To Delete ?") == true) {
 				window.location.href=confirm_url;
 			}

@@ -101,7 +101,7 @@ class DashboardController extends Controller
     public function profile()
     {
         $data['user_info'] = \DB::table('users')->where('email', \Auth::user()->email)->first();
-        return \View::make('dashboard.profile', $data);
+        return \View::make('admin.dashboard.profile', $data);
     }
 
 

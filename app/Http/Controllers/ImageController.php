@@ -40,7 +40,6 @@ class ImageController extends Controller
     }
 
 
-
     /**
      * Show the application cropImage.
      *
@@ -82,7 +81,10 @@ class ImageController extends Controller
 
                 $src = $main_page;
                 $img_r = imagecreatefromjpeg($src);
-                $dst_r = ImageCreateTrueColor( $width, $height );
+                
+                if($width > 0 && $height > 0){
+                    $dst_r = ImageCreateTrueColor($width, $height);
+                }
 
                 imagecopyresampled($dst_r,$img_r,0,0,$x1,$y1,
                     $width,$height,$width,$height);
@@ -185,7 +187,7 @@ class ImageController extends Controller
             $data['related_images']=Null;
         }
 
-        return \View::make('manage-images.ajax-image-relation',$data);
+        return \View::make('admin.manage-images.ajax-image-relation',$data);
 
     }
 
@@ -230,7 +232,7 @@ class ImageController extends Controller
             $data['related_image_id']=$related_image;
         }
 
-        return \View::make('manage-images.ajax-image-relation-update',$data);
+        return \View::make('admin.manage-images.ajax-image-relation-update',$data);
 
     }
 

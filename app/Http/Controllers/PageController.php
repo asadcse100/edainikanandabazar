@@ -188,6 +188,7 @@ class PageController extends Controller
      */
     public function ajaxEditPage($publish_date, $page_id)
     {
+		
     	$data['category_list']=\DB::table('categories')->where('status',1)->get();
     	$data['edition_list']=\DB::table('editions')->where('status',1)->get();
 
@@ -203,7 +204,6 @@ class PageController extends Controller
     	->first();
 
     	$data['page_info']=$page_info;
-
     	return \View::make('admin.manage-pages.ajax-page-update',$data);
     }
 

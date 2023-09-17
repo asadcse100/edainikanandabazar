@@ -22,7 +22,7 @@
 				<select id="editonSelectionEdit" multiple="multiple" class="edition_get_edit">
 					@if(!empty($edition_list) && (count($edition_list)>0))
 					@foreach($edition_list as $key => $editions)
-					@php $editions_get=\App\Page::PageEdition($page_info->publish_date, $page_info->page_id); @endphp
+					@php $editions_get=\App\Models\Page::PageEdition($page_info->publish_date, $page_info->page_id); @endphp
 					@if(!empty($editions_get) && (count($editions_get)>0))
 					@php $check_edition=0;@endphp
 					@foreach($editions_get as $key => $page_edition)

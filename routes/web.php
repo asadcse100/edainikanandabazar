@@ -100,7 +100,7 @@ Route::group(['middleware' => 'auth'], function() {
 	##UploadPage
 	Route::post('/page/create', 'PageController@create')->name('Upload Page');
 	##ajaxEditPage
-	Route::get('/ajax-edit-page/{publish_date}/{page_id}', 'PageController@ajaxEditPage')->name('Edit Page Modal');
+	Route::get('/ajax-edit-page/{publish_date}/new/{page_id}', 'PageController@ajaxEditPage')->name('Edit.Page.Modal');
 	##updatePage
 	Route::post('/page/update/{page_id}', 'PageController@updatePage')->name('Update Page');
 	##DeletePage
