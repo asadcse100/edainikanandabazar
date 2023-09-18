@@ -3,11 +3,12 @@
 @section('page-css')
 <link rel="stylesheet" type="text/css" href="{{asset('admin/assets/image-mapping/css/jquery.Jcrop.min.css')}}">
 <style type="text/css">
-	.table-text-center th{
+	.table-text-center th {
 		text-align: center;
 		vertical-align: middle;
 	}
-	.table-text-center td{
+
+	.table-text-center td {
 		text-align: center;
 	}
 
@@ -57,17 +58,17 @@
 		transform-origin: 50% 50%;
 	}
 
-	:checked + label {
+	:checked+label {
 		border-color: #ddd;
 	}
 
-	:checked + label:before {
+	:checked+label:before {
 		content: "✓";
 		background-color: grey;
 		transform: scale(1);
 	}
 
-	:checked + label img {
+	:checked+label img {
 		transform: scale(0.9);
 		box-shadow: 0 0 5px #333;
 		z-index: -1;
@@ -75,18 +76,18 @@
 
 
 	/*scrollbar*/
-	#doublescroll
-	{
-		overflow: auto; overflow-y: hidden; 
-	}
-	#doublescroll p
-	{
-		margin: 0; 
-		padding: 1em; 
-		white-space: nowrap; 
+	#doublescroll {
+		overflow: auto;
+		overflow-y: hidden;
 	}
 
-	.img:hover{
+	#doublescroll p {
+		margin: 0;
+		padding: 1em;
+		white-space: nowrap;
+	}
+
+	.img:hover {
 		opacity: 0.3;
 	}
 </style>
@@ -150,7 +151,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="box box-success" style="border-top: none;">
-				
+
 				<div class="box-body" style="padding-top: 0px">
 					@if(!empty($page_info))
 					<form action="{{url('/image-mapping/crop-image',$page_info->page_id)}}" method="post" enctype="multipart/form-data">
@@ -174,9 +175,8 @@
 											<td style="border-top: none;">
 												<select class="form-control get_relation page_no" name="related_page_no">
 													<option value="">--Related Page Number--</option>
-													@for ($i = 01; $i <= 200; $i++) 
-													<option value="{{$i}}">Page {{$i}}</option>
-													@endfor
+													@for ($i = 01; $i <= 200; $i++) <option value="{{$i}}">Page {{$i}}</option>
+														@endfor
 												</select>
 											</td>
 											<td class="" style="border-top: none;">
@@ -197,126 +197,124 @@
 							$map_image_directory='uploads/temp/'.date('Y',strtotime($page_info->publish_date)).'/'.date('m',strtotime($page_info->publish_date)).'/'.date('d',strtotime($page_info->publish_date)).'/original-pages/'.$page_info->image;
 							if(file_exists($map_image_directory)){
 							list($main_img_width, $main_img_height, $type, $attr) = getimagesize($map_image_directory);
-							
-						}else{
-						$file_location=1;
 
-						$map_image_directory='uploads/epaper/'.date('Y',strtotime($page_info->publish_date)).'/'.date('m',strtotime($page_info->publish_date)).'/'.date('d',strtotime($page_info->publish_date)).'/pages/'.$page_info->image;
-					}
-					
-					@endphp
+							}else{
+							$file_location=1;
 
-					<center>
-						<div style="position: relative;">
-							<img src="{{asset($map_image_directory)}}" class="img image-responsive image-mapper-img" style="padding:0;margin: 0;" id="jcrop_target">
-
-
-							@if(!empty($image_list) && (count($image_list)>0) && ($file_location==0))
-							@foreach($image_list as $key => $images)
-
-							@php
-							$coords_array = explode(',', $images->coords);
-							$overlay_height=$coords_array[0];
-
-							$x1=($coords_array[0]*$main_img_width)/700;
-							$y1=($coords_array[1]*$main_img_height)/910;
-							$x2=($coords_array[2]*$main_img_width)/700;
-							$y2=($coords_array[3]*$main_img_height)/910;
-
-							$overlay_width=$x2-$x1;
-							$overlay_height=$y2-$y1;
+							$map_image_directory='uploads/epaper/'.date('Y',strtotime($page_info->publish_date)).'/'.date('m',strtotime($page_info->publish_date)).'/'.date('d',strtotime($page_info->publish_date)).'/pages/'.$page_info->image;
+							}
 
 							@endphp
 
-							<div style="width: {{$overlay_width}}px;height: {{$overlay_height}}px;position: absolute;left: {{$x1}}px;top: {{$y1}}px;background-color: black;opacity: .3">
-							</div>
+							<center>
+								<div style="position: relative;">
+									<img src="{{asset($map_image_directory)}}" class="img image-responsive image-mapper-img" style="padding:0;margin: 0;" id="jcrop_target">
 
-							@endforeach
-							@endif
+
+									@if(!empty($image_list) && (count($image_list)>0) && ($file_location==0))
+									@foreach($image_list as $key => $images)
+
+									@php
+									$coords_array = explode(',', $images->coords);
+									$overlay_height=$coords_array[0];
+
+									$x1=($coords_array[0]*$main_img_width)/700;
+									$y1=($coords_array[1]*$main_img_height)/910;
+									$x2=($coords_array[2]*$main_img_width)/700;
+									$y2=($coords_array[3]*$main_img_height)/910;
+
+									$overlay_width=$x2-$x1;
+									$overlay_height=$y2-$y1;
+
+									@endphp
+
+									<div style="width: {{$overlay_width}}px;height: {{$overlay_height}}px;position: absolute;left: {{$x1}}px;top: {{$y1}}px;background-color: black;opacity: .3">
+									</div>
+
+									@endforeach
+									@endif
+
+								</div>
+							</center>
 
 						</div>
-					</center>
+						<input type="hidden" name="page_publish_date" value="{{$page_info->publish_date}}">
+						<input type="hidden" name="page_image" value="{{$page_info->image}}">
+						@endif
 
-				</div>
-				<input type="hidden" name="page_publish_date" value="{{$page_info->publish_date}}">
-				<input type="hidden" name="page_image" value="{{$page_info->image}}">
-				@endif
-
-				<!-- Select Relation Modal -->
-				<div class="modal fade" id="SelectLinkedImage" role="dialog">
-					<div class="modal-dialog modal-lg">
-						<!-- Modal content-->
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h4 class="modal-title">Link Related Images</h4>
+						<!-- Select Relation Modal -->
+						<div class="modal fade" id="SelectLinkedImage" role="dialog">
+							<div class="modal-dialog modal-lg">
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">Link Related Images</h4>
+									</div>
+									<div class="ajax_image_relation_modal_view"></div>
+								</div>
 							</div>
-							<div class="ajax_image_relation_modal_view"></div>
 						</div>
-					</div>
-				</div>
-				<!-- End Select Relation Modal -->
+						<!-- End Select Relation Modal -->
 
-			</form>
+					</form>
 
-			@else
-			<div class="alert alert-success text-center">No Page Found !</div>
-			@endif
-			<hr>
-
-			<table class="table table-bordered table-hover table-text-center">
-				<thead>
-					<tr>
-						<th>SL</th>
-						<th>Cropped Image</th>
-						<th>Image ID</th>
-						<th>Relation</th>
-						<th>Select Linked Image</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					@if(!empty($image_list) && (count($image_list)>0))
-					@foreach($image_list as $key => $images)
-					<tr>
-						<td style="vertical-align: middle;">{{$key+1}}</td>
-						<td style="vertical-align: middle;">
-							<img src="{{$up_dir.$uploads_path.date('Y',strtotime($page_info->publish_date)).'/'.date('m',strtotime($page_info->publish_date)).'/'.date('d',strtotime($page_info->publish_date)).'/images/'.$images->image}}" class=" image-responsive" style="height: 150px;width: 150px">
-							
-						</td>
-						<td style="vertical-align: middle;">{{$images->id}}</td>
-						<td style="vertical-align: middle;">{{ucfirst($images->relation)}}</td>
-						<td style="vertical-align: middle;">
-							<button type="button" class="btn btn-info btn-sm ajax_image_relation_update" data-toggle="modal" data-target="#LinkedImageUpdate" data-image-date="{{$page_info->publish_date}}" data-related-page="{{$images->related_page_no}}" data-image-id="{{$images->id}}" data-related-image="{{$images->id}}" data-relation-type="{{$images->relation}}" {{isset($images) && ($images->relation=='no') ? 'disabled' : ''}}>Select Linked Image</button>
-
-							@if($images->image_status==1)
-							<button data-toggletip="tooltip" data-placement="top" title="Already Linked" type="button" class="btn btn-sm btn-success"><i class="fa fa-check"></i></button>
-							@endif
-						</td>
-						<td style="vertical-align: middle;">
-							<button data-toggletip="tooltip" data-placement="top" title="Delete" data-confirm-url="{{url('/image-mapping/delete/'.$images->id.'/'.$images->image.'/'.$page_info->publish_date)}}" type="button" class="btn btn-danger btn-sm confirm_box"><i class="fa fa-trash"></i></button>
-						</td>
-					</tr>
-					@endforeach
 					@else
-					<tr>
-						<td colspan="6"><div class="alert alert-info text-center" style="margin: 0">No Data Available !</div></td>
-					</tr>
+					<div class="alert alert-success text-center">No Page Found !</div>
 					@endif
-				</tbody>
-			</table>
+					<hr>
 
+					<table class="table table-bordered table-hover table-text-center">
+						<thead>
+							<tr>
+								<th>SL</th>
+								<th>Cropped Image</th>
+								<th>Image ID</th>
+								<th>Relation</th>
+								<th>Select Linked Image</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							@if(!empty($image_list) && (count($image_list)>0))
+							@foreach($image_list as $key => $images)
+							<tr>
+								<td style="vertical-align: middle;">{{$key+1}}</td>
+								<td style="vertical-align: middle;">
+									<img src="{{$up_dir.$uploads_path.date('Y',strtotime($page_info->publish_date)).'/'.date('m',strtotime($page_info->publish_date)).'/'.date('d',strtotime($page_info->publish_date)).'/images/'.$images->image}}" class=" image-responsive" style="height: 150px;width: 150px">
+
+								</td>
+								<td style="vertical-align: middle;">{{$images->id}}</td>
+								<td style="vertical-align: middle;">{{ucfirst($images->relation)}}</td>
+								<td style="vertical-align: middle;">
+									<button type="button" class="btn btn-info btn-sm ajax_image_relation_update" data-toggle="modal" data-target="#LinkedImageUpdate" data-image-date="{{$page_info->publish_date}}" data-related-page="{{$images->related_page_no}}" data-image-id="{{$images->id}}" data-related-image="{{$images->id}}" data-relation-type="{{$images->relation}}" {{isset($images) && ($images->relation=='no') ? 'disabled' : ''}}>Select Linked Image</button>
+
+									@if($images->image_status==1)
+									<button data-toggletip="tooltip" data-placement="top" title="Already Linked" type="button" class="btn btn-sm btn-success"><i class="fa fa-check"></i></button>
+									@endif
+								</td>
+								<td style="vertical-align: middle;">
+									<button data-toggletip="tooltip" data-placement="top" title="Delete" data-confirm-url="{{url('/image-mapping/delete/'.$images->id.'/'.$images->image.'/'.$page_info->publish_date)}}" type="button" class="btn btn-danger btn-sm confirm_box"><i class="fa fa-trash"></i></button>
+								</td>
+							</tr>
+							@endforeach
+							@else
+							<tr>
+								<td colspan="6">
+									<div class="alert alert-info text-center" style="margin: 0">No Data Available !</div>
+								</td>
+							</tr>
+							@endif
+						</tbody>
+					</table>
+
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
-</div>
 
 </section>
 <!-- /.content -->
-
-
-
-
 
 
 
@@ -343,7 +341,6 @@
 
 @section('page-scripts')
 <script type="text/javascript">
-
 	// button trigger
 	$("document").ready(function() {
 		$(".sidebar-toggle").trigger('click');
@@ -353,19 +350,19 @@
 	/*################################
 	## ajax_select_image_relation
 	################################*/
-	jQuery(function(){
-		jQuery('.ajax_select_image_relation').click(function(){
+	jQuery(function() {
+		jQuery('.ajax_select_image_relation').click(function() {
 
 			var image_date = jQuery(this).data('image-date');
 			var related_page = $('.page_no').val();
 			var site_url = jQuery('.site_url').val();
 			var edition_id = jQuery('.edition_id').val();
-			var request_url = site_url+'/ajax-image-relation/edition/'+edition_id+'/'+image_date+'/'+related_page;
+			var request_url = site_url + '/ajax-image-relation/edition/' + edition_id + '/' + image_date + '/' + related_page;
 
 			jQuery.ajax({
 				url: request_url,
 				type: 'get',
-				success:function(data){
+				success: function(data) {
 
 					jQuery('.ajax_image_relation_modal_view').html(data);
 				}
@@ -378,14 +375,14 @@
 	/*###########################
 	# get_relation
 	#############################
-	*/ 
-	jQuery(function(){
-		jQuery('.get_relation').change(function(){
+	*/
+	jQuery(function() {
+		jQuery('.get_relation').change(function() {
 			var relation = $('.relation').val();
 			var page_no = $('.page_no').val();
 
 			$('.select_related_item').hide();
-			if((relation == 'previous') && (page_no != '')){
+			if ((relation == 'previous') && (page_no != '')) {
 				$('.select_related_item').show();
 			}
 
@@ -397,8 +394,8 @@
 	## ajax_image_relation_update
 	################################*/
 
-	jQuery(function(){
-		jQuery('.ajax_image_relation_update').click(function(){
+	jQuery(function() {
+		jQuery('.ajax_image_relation_update').click(function() {
 
 			var image_date = jQuery(this).data('image-date');
 			var related_page = jQuery(this).data('related-page');
@@ -408,12 +405,12 @@
 			var site_url = jQuery('.site_url').val();
 			var edition_id = jQuery('.edition_id').val();
 
-			var request_url = site_url+'/ajax-image-relation-update/edition/'+edition_id+'/'+image_id+'/'+related_image+'/'+image_date+'/'+related_page+'/'+relation_type;
+			var request_url = site_url + '/ajax-image-relation-update/edition/' + edition_id + '/' + image_id + '/' + related_image + '/' + image_date + '/' + related_page + '/' + relation_type;
 
 			jQuery.ajax({
 				url: request_url,
 				type: 'get',
-				success:function(data){
+				success: function(data) {
 
 					jQuery('.ajax_image_relation_update_modal').html(data);
 				}
@@ -426,36 +423,36 @@
 	/*###########################
 	# Confirm Box
 	#############################
-	*/ 
-	jQuery(function(){
-		jQuery('.confirm_box').click(function(){
-			var confirm_url=jQuery(this).data('confirm-url');
+	*/
+	jQuery(function() {
+		jQuery('.confirm_box').click(function() {
+			var confirm_url = jQuery(this).data('confirm-url');
 			if (confirm("Delete This Image Permanently !\nDo You Want To Proceed ?") == true) {
-				window.location.href=confirm_url;
+				window.location.href = confirm_url;
 			}
 		});
 	});
 
 	// tooltip
-	$(function () {
+	$(function() {
 		$('[data-toggletip="tooltip"]').tooltip();
 	});
 
 
 	// scrollbar
 	function DoubleScroll(element) {
-		var scrollbar= document.createElement('div');
+		var scrollbar = document.createElement('div');
 		scrollbar.appendChild(document.createElement('div'));
-		scrollbar.style.overflow= 'auto';
-		scrollbar.style.overflowY= 'hidden';
-		scrollbar.firstChild.style.width= element.scrollWidth+'px';
-		scrollbar.firstChild.style.paddingTop= '1px';
+		scrollbar.style.overflow = 'auto';
+		scrollbar.style.overflowY = 'hidden';
+		scrollbar.firstChild.style.width = element.scrollWidth + 'px';
+		scrollbar.firstChild.style.paddingTop = '1px';
 		scrollbar.firstChild.appendChild(document.createTextNode('\xA0'));
-		scrollbar.onscroll= function() {
-			element.scrollLeft= scrollbar.scrollLeft;
+		scrollbar.onscroll = function() {
+			element.scrollLeft = scrollbar.scrollLeft;
 		};
-		element.onscroll= function() {
-			scrollbar.scrollLeft= element.scrollLeft;
+		element.onscroll = function() {
+			scrollbar.scrollLeft = element.scrollLeft;
 		};
 		element.parentNode.insertBefore(scrollbar, element);
 	}

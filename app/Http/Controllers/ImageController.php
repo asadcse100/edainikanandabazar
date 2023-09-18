@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use DB;
+use Illuminate\Support\Facades\Auth;
 
 class ImageController extends Controller
 {
@@ -15,7 +17,6 @@ class ImageController extends Controller
      */
     public function index($date, $page_id)
     {   
-
         ## get db table ##
         $pages_table='pages_'.date('Y_m', strtotime($date));
         $edition_pages_table='edition_pages_'.date('Y_m', strtotime($date));
@@ -31,7 +32,6 @@ class ImageController extends Controller
 
             $image_list = \DB::table($images_table)->where($images_table.'.page_id',$page_id)->get();
             $data['image_list']=$image_list;
-
         }
 
         $data['image_date']=$date;
@@ -48,7 +48,6 @@ class ImageController extends Controller
 
     public function cropImage($page_id)
     {   
-
         $now = date('Y-m-d H:i:s');
 
         try{
@@ -70,41 +69,41 @@ class ImageController extends Controller
                 (int)$height=$y2-$y1;
 
                 $main_page='uploads/temp/'.date('Y',strtotime($page_publish_date)).'/'.date('m',strtotime($page_publish_date)).'/'.date('d',strtotime($page_publish_date)).'/original-pages/'.$page_image;
+                
 
-
-                if (!file_exists($main_page)) {
-
-                    $main_page='uploads/epaper/'.date('Y',strtotime($page_publish_date)).'/'.date('m',strtotime($page_publish_date)).'/'.date('d',strtotime($page_publish_date)).'/pages/'.$page_image;
-
+                if (!file_exists($main_page)) {                    
+                    $main_page='uploads/epaper/'.date('Y',strtotime($page_publish_date)).'/'.date('m',strtotime($page_publish_date)).'/'.date('d',strtotime($page_publish_date)).'/pages/'.$page_image;                    
                 }
 
 
                 $src = $main_page;
                 $img_r = imagecreatefromjpeg($src);
-                
+    
                 if($width > 0 && $height > 0){
                     $dst_r = ImageCreateTrueColor($width, $height);
                 }
 
-                imagecopyresampled($dst_r,$img_r,0,0,$x1,$y1,
-                    $width,$height,$width,$height);
-                header('Content-type: image/jpeg');
+                imagecopyresampled($dst_r,$img_r,0,0,$x1,$y1,$width,$height,$width,$height);
+                // header('Content-type: image/jpeg');
 
                 $explode=explode('.jpg', $page_image);
+                
                 $name=implode('', $explode);
                 $image_name=$name.'-'.uniqid().'.jpg';
-
+                
                 $dest_directiory='uploads/epaper/'.date('Y',strtotime($page_publish_date)).'/'.date('m',strtotime($page_publish_date)).'/'.date('d',strtotime($page_publish_date)).'/images/';
-
+                
                 if (!file_exists($dest_directiory)) {
                     mkdir($dest_directiory, 0777, true);
                 }
                 $cropped_image=$dest_directiory.$image_name;
+
                 imagejpeg($dst_r, $cropped_image);
 
                 list($org_width, $org_height, $type, $attr) = getimagesize($main_page);
                 (int)$final_coords=(($x1*700)/$org_width).','.(($y1*910)/$org_height).','.(($x2*700)/$org_width).','.(($y2*910)/$org_height);
 
+                $related_image_id =\Request('related_image_id');
                 $image_data=array(
                     'page_id' => $page_id,
                     'image' => $image_name,
@@ -112,15 +111,16 @@ class ImageController extends Controller
                     'relation' => \Request::input('relation'),
                     'related_page_no' => \Request::input('related_page_no'),
                     'created_by' => \Auth::user()->id,
-                    'created_at' => $now,
+                    'related_image_id' => $related_image_id,
+                    'image_status' => 1,
+                    'created_at' => $now
                     );
 
+                  
                 $images_table='images_'.date('Y_m', strtotime($page_publish_date));
-                
-                $image_save_id=\DB::table($images_table)->insertGetId($image_data);
 
+                $image_save_id = DB::table($images_table)->insertGetId($image_data);
 
-                $related_image_id =\Request('related_image_id');
                 if(!empty($related_image_id)){
                     $image_relation_previous_data=array(
                     'related_image_id' => $related_image_id,
@@ -135,8 +135,7 @@ class ImageController extends Controller
                 $image_relation_previous_save=\DB::table($images_table)->where('id',$image_save_id)->update($image_relation_previous_data);
 
                 $image_relation_next_save=\DB::table($images_table)->where('id',$related_image_id)->update($image_relation_next_data);
-                }
-                
+                }              
 
 
             }else return \Redirect::back()->with('errormessage', "Please select coordinates to crop image !");
@@ -160,7 +159,6 @@ class ImageController extends Controller
 
     public function AjaxSelectImageRelationModal($edition_id, $image_date, $related_page)
     {   
-
         ## Find Table ##
         $pages_table='pages_'.date('Y_m', strtotime($image_date));
         $edition_pages_table='edition_pages_'.date('Y_m', strtotime($image_date));
@@ -179,10 +177,9 @@ class ImageController extends Controller
             ->where($images_table.'.page_id',$related_page_id->p_id)
             ->where($images_table.'.relation','next')
             ->get();
-            
+        
             $data['related_images']=$related_images;
             $data['image_date']=$image_date;
-
         }else{
             $data['related_images']=Null;
         }

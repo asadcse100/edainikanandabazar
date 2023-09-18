@@ -71,7 +71,7 @@ Route::group(['middleware' => 'auth'], function() {
 	##DeleteCategory
 	Route::get('/category/delete/{id}', 'CategoryController@delete')->name('Delete.Category');
 	##ChangeStatus
-	Route::get('/ajax/category/change-status/{id}/{status}', 'CategoryController@changeStatus')->name('Change Status');
+	Route::get('/ajax/category/change-status/{id}/new/{status}', 'CategoryController@changeStatus')->name('Change Status');
 
 	##########################
 	## Edition Module
@@ -85,7 +85,7 @@ Route::group(['middleware' => 'auth'], function() {
 	##DeleteEdition
 	Route::get('/edition/delete/{id}', 'EditionController@delete')->name('Delete Edition');
 	##ChangeStatus
-	Route::get('/ajax/edition/change-status/{id}/{status}', 'EditionController@changeStatus')->name('Change Status');
+	Route::get('/ajax/edition/change-status/{id}/new/{status}', 'EditionController@changeStatus')->name('Change Status');
 
 
 	##########################
@@ -104,7 +104,7 @@ Route::group(['middleware' => 'auth'], function() {
 	##updatePage
 	Route::post('/page/update/{page_id}', 'PageController@updatePage')->name('Update Page');
 	##DeletePage
-	Route::get('/page/delete/{page_id}/{page_name}/{publish_date}', 'PageController@deletePage')->name('Delete Page');
+	Route::get('/page/delete/{page_id}/new/{page_name}/new/{publish_date}', 'PageController@deletePage')->name('Delete Page');
 
 
 	##########################
@@ -122,9 +122,9 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('/ajax-image-relation-update/edition/{edition_id}/{image_id}/{related_image}/{image_date}/{related_page}/{relation_type}', 'ImageController@AjaxImageRelationUpdateModal');
 
 	##imageRelationsSave
-	Route::post('/manage-relations-save/{image_date}/{image_id}', 'ImageController@imageRelationsSave')->name('Image Relations Save');
+	Route::post('/manage-relations-save/{image_date}/new/{image_id}', 'ImageController@imageRelationsSave')->name('Image Relations Save');
 	##DeleteImage
-	Route::get('/image-mapping/delete/{image_id}/{image_name}/{publish_date}', 'ImageController@deleteImage')->name('Delete Image');
+	Route::get('/image-mapping/delete/{image_id}/new/{image_name}/new/{publish_date}', 'ImageController@deleteImage')->name('Delete Image');
 
 
 

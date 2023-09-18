@@ -48,7 +48,6 @@ class PageController extends Controller
      */
     public function create()
     {
-
     	$now = date('Y-m-d H:i:s');
 
     	$rules=array(
@@ -135,7 +134,6 @@ class PageController extends Controller
     			if(!Schema::hasTable($images_table)){
     				\DB::statement('CREATE TABLE '.$images_table.' LIKE '.$last_images_table);
     			}
-
 
 
     			$page_save_id = \DB::table($pages_table)->insertGetId($page_data);

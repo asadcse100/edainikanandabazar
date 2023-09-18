@@ -64,7 +64,7 @@
 </style>
 
 
-<form action="{{url('/manage-relations-save/'.$image_date.'/'.$image_id)}}" method="post" enctype="multipart/form-data">
+<form action="{{url('/manage-relations-save/'.$image_date.'/new/'.$image_id)}}" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="_token" value="{{csrf_token()}}">
 
 	<div class="modal-body text-center">

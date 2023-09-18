@@ -287,7 +287,6 @@ jQuery(function() {
         
         // Construct the request URL
         var request_url = site_url + '/ajax-edit-page/' + publish_date + '/new/' + page_id;
-        console.log(request_url);
         // Make an AJAX GET request
         jQuery.ajax({
             url: request_url,

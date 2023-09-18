@@ -57,10 +57,10 @@ class LoginController extends Controller
      * show admin login page
      * @since 1.0.0
      * */
-    public function showAdminLoginForm()
-    {
-        return view('auth.admin.login');
-    }
+    // public function showAdminLoginForm()
+    // {
+    //     return view('auth.admin.login');
+    // }
 
     /**
      * admin login system
