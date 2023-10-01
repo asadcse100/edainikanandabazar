@@ -76,9 +76,7 @@ class EpaperController extends Controller
      */
     public function allPages($edition, $date)
     {
-
         try {
-
             ## get required tables ##
             if (date('Y-m-d', strtotime($date)) != $date) {
                 return view('errors.404');
@@ -109,8 +107,6 @@ class EpaperController extends Controller
         }
     }
 
-
-
     /**
      * Show the application byEdition.
      *
@@ -120,7 +116,6 @@ class EpaperController extends Controller
     {
 
         try {
-
             ## get required tables ##
             if (date('Y-m-d', strtotime($date)) != $date) {
                 return view('errors.404');
@@ -177,7 +172,6 @@ class EpaperController extends Controller
             return view('errors.404');
         }
     }
-
 
 
     /**

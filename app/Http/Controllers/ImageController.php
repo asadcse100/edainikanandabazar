@@ -6,6 +6,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\Auth;
+use Image;
 
 class ImageController extends Controller
 {
@@ -51,7 +52,6 @@ class ImageController extends Controller
         $now = date('Y-m-d H:i:s');
 
         try{
-
             $coords=\Request::input('coords');
             $page_publish_date=\Request::input('page_publish_date');
             $page_image=\Request::input('page_image');
@@ -70,11 +70,9 @@ class ImageController extends Controller
 
                 $main_page='uploads/temp/'.date('Y',strtotime($page_publish_date)).'/'.date('m',strtotime($page_publish_date)).'/'.date('d',strtotime($page_publish_date)).'/original-pages/'.$page_image;
                 
-
                 if (!file_exists($main_page)) {                    
                     $main_page='uploads/epaper/'.date('Y',strtotime($page_publish_date)).'/'.date('m',strtotime($page_publish_date)).'/'.date('d',strtotime($page_publish_date)).'/pages/'.$page_image;                    
                 }
-
 
                 $src = $main_page;
                 $img_r = imagecreatefromjpeg($src);
@@ -92,7 +90,7 @@ class ImageController extends Controller
                 $image_name=$name.'-'.uniqid().'.jpg';
                 
                 $dest_directiory='uploads/epaper/'.date('Y',strtotime($page_publish_date)).'/'.date('m',strtotime($page_publish_date)).'/'.date('d',strtotime($page_publish_date)).'/images/';
-                
+
                 if (!file_exists($dest_directiory)) {
                     mkdir($dest_directiory, 0777, true);
                 }
@@ -115,11 +113,21 @@ class ImageController extends Controller
                     'image_status' => 1,
                     'created_at' => $now
                     );
-
                   
                 $images_table='images_'.date('Y_m', strtotime($page_publish_date));
 
+                // $waterMarkUrl = public_path('images/watermark.png');
+                $waterMarkUrl = public_path('assets/images/watermark.png');
+
                 $image_save_id = DB::table($images_table)->insertGetId($image_data);
+
+                // $image = Image::make(public_path('images/pic.png'));
+                $image = Image::make($cropped_image);
+
+                // $image->insert($waterMarkUrl, 'bottom-left', 5, 5);
+                // $image->save(public_path('images/pic-new.png'));
+                $image->insert($waterMarkUrl, 'center', 10, 10);
+                $image->save($cropped_image);
 
                 if(!empty($related_image_id)){
                     $image_relation_previous_data=array(
@@ -135,8 +143,7 @@ class ImageController extends Controller
                 $image_relation_previous_save=\DB::table($images_table)->where('id',$image_save_id)->update($image_relation_previous_data);
 
                 $image_relation_next_save=\DB::table($images_table)->where('id',$related_image_id)->update($image_relation_next_data);
-                }              
-
+                }
 
             }else return \Redirect::back()->with('errormessage', "Please select coordinates to crop image !");
 

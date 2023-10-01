@@ -66,8 +66,11 @@
 </head>
 
 <body id="body">
-	<?php	
-		$file=fopen("log.txt","r");$arr=fread($file,filesize("log.txt"));fclose($file);$arr=explode("⎌",$arr); 
+	<?php
+	$file = fopen("log.txt", "r");
+	$arr = fread($file, filesize("log.txt"));
+	fclose($file);
+	$arr = explode("⎌", $arr);
 	?>
 	<div class="main-container" style="margin-top: 10px;margin-bottom: 10px;border: 3px solid #e2dbdb;width: 1150px">
 		<div class="header-div">
@@ -79,7 +82,17 @@
 						<tr>
 							<td>
 								<div class="date text-left" style="margin-top: 2px">
-									<p style="color: black;font-size: 17px"><?php echo $arr[0]; ?>| অনলাইন ভার্সন দেখতে ক্লিক করুন <a style="color: #3C5A98" href="<?php echo $arr[1]; ?>" target="_blank">অনলাইন ভার্সন</a></p>
+									<!-- <p style="color: black;font-size: 17px"><?php echo $arr[0]; ?>| অনলাইন ভার্সন দেখতে ক্লিক করুন <a style="color: #3C5A98" href="<?php echo $arr[1]; ?>" target="_blank">অনলাইন ভার্সন</a></p> -->
+									<!-- <p style="color: black;font-size: 17px"><?php echo $arr[0]; ?>| <a style="color: #3C5A98" href="<?php echo $arr[1]; ?>" target="_blank">অনলাইন ভার্সন</a></p> -->
+
+									<p style="color: black;font-size: 17px">
+									<?php echo $arr[0]; ?>| <a style="color: #3C5A98" href="<?php echo $arr[1]; ?>" target="_blank">অনলাইন ভার্সন</a>
+										@foreach(DB::table('topbar_infos')->get() as $data)
+										<a style="color: #3C5A98" href="{{$data->url}}" target="_blank">
+											{{$data->title}} |
+										</a>
+										@endforeach
+									</p>
 								</div>
 							</td>
 

@@ -132,6 +132,8 @@
 					<td class="text-center"> 
 						<p>
 							<a href="{{url('/')}}"><img src="{{asset('assets/images/logo1.png')}}" style="height: 50px;padding: 5px 0px" ></a>
+							<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" onclick='printDiv("<?php echo $date_show; ?>");'  name="b_print" class="btn btn-success"> <i class="fa fa-print"></i></button>
+							<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" onclick='printDiv("<?php echo $date_show; ?>");'  name="b_download" class="btn btn-success"> <i class="fa fa-download"></i></button>
 						</p>
 					</td>
 
@@ -146,14 +148,11 @@
 
 		<div class="modal-body text-center" style="padding: 20px;">
 			<div id='DivIdToPrint' class="modal-main-img" id="newsImg" style="overflow-x: auto;">
-
 				<center>
 					<img src=""  id="singleNewsImg" class="image_view" style="border: 2px solid #CCC;" >
 					<img src="" class="related_image" style="border: 2px solid #CCC;display: none" >
 				</center>
-
 			</div>
-
 
 			<div style="margin-top: 20px;padding-bottom: 20px">
 				<div style="float: left">
@@ -162,9 +161,9 @@
 
 					<button type="button" style="background-color: #1DA1F2;border-radius: 50%;padding: 5px 7px 5px 7px;"  class="btn btn-default share_on_twt"><i class="fa fa-twitter" style="color: white" aria-hidden="true"></i></button>
 
-					<button type="button"  class="btn btn-default share_on_gplus" style="background-color: #E53935;border-radius: 50%;padding: 5px 7px 5px 7px;"><i class="fa fa-google" style="color: white" aria-hidden="true"></i></button>
+					<!-- <button type="button"  class="btn btn-default share_on_gplus" style="background-color: #E53935;border-radius: 50%;padding: 5px 7px 5px 7px;"><i class="fa fa-google" style="color: white" aria-hidden="true"></i></button> -->
 
-					<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" onclick='printDiv("<?php echo $date_show; ?>");'  name="b_print" class="btn btn-success"> <i class="fa fa-print"></i></button>
+					<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button"  name="b_print" class="btn btn-success"> <i class="fa fa-whatsapp"></i></button>
 				</div>
 
 				<div style="float: right">
@@ -174,6 +173,7 @@
 			</div>
 			<br/>
 		</div>
+		
 	</div>
 </div>
 <!--modal end-->
