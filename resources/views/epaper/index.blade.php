@@ -145,7 +145,7 @@
 					</td>
 					<td class="text-center"> 
 						<p>
-							<a href="{{url('/')}}"><img src="{{asset('assets/images/logo1.png')}}" style="height: 50px;padding: 5px 0px" ></a>
+							<a href="{{url('/')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="height: 50px;padding: 5px 0px" ></a>
 						</p>
 					</td>
 

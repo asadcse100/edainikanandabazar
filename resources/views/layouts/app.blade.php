@@ -28,6 +28,7 @@
 
 	<!-- icon -->
 	<link rel="icon" type="image/png" href="{{asset('assets/images/32x32.png')}}" />
+
 	<!-- font awesome css -->
 	<link rel="stylesheet" type="text/css" href="{{asset('assets/font-awesome/css/font-awesome.min.css')}}" />
 	<!-- main css -->
@@ -86,7 +87,7 @@
 									<!-- <p style="color: black;font-size: 17px"><?php echo $arr[0]; ?>| <a style="color: #3C5A98" href="<?php echo $arr[1]; ?>" target="_blank">অনলাইন ভার্সন</a></p> -->
 
 									<p style="color: black;font-size: 17px">
-									<?php echo $arr[0]; ?>| <a style="color: #3C5A98" href="<?php echo $arr[1]; ?>" target="_blank">অনলাইন ভার্সন</a>
+										<?php echo $arr[0]; ?>| <a style="color: #3C5A98" href="<?php echo $arr[1]; ?>" target="_blank">অনলাইন ভার্সন</a>
 										@foreach(DB::table('topbar_infos')->get() as $data)
 										<a style="color: #3C5A98" href="{{$data->url}}" target="_blank">
 											{{$data->title}} |
@@ -99,11 +100,13 @@
 							<td>
 								<div class="social-icon" style="text-align: right;margin-top: 3px">
 									<ul class="list-unstyled" style="height: 32px;margin-left: 0;padding-left: 0">
-										<li class="fb btn"><a href="<?php echo $arr[5]; ?>" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+										<li class="fb btn"><a href="<?php echo $arr[5]; ?>" target="_blank"><abbr title="Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></abbr></a>
 										</li>
-										<li class="twit btn"><a href="<?php echo $arr[6]; ?>" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+										<li class="twit btn"><a href="<?php echo $arr[6]; ?>" target="_blank"><abbr title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+													<path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
+												</svg></abbr></a>
 										</li>
-										<li class="gplus btn"><a href="<?php echo $arr[7]; ?>" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+										<li class="gplus btn"><a href="<?php echo $arr[7]; ?>" target="_blank"><i class="fa fa-youtube" aria-hidden="true"></i></a>
 										</li>
 									</ul>
 								</div>
@@ -118,7 +121,7 @@
 
 
 				<div class="add text-center" style="background-color: #ffffff;margin: 10px;padding: 15px 10px 15px 10px">
-					<a href="{{url('/')}}"><img src="{{asset('assets/images/logo1.png')}}" style="width: 300px"></a>
+					<a href="{{url('/')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="width: 300px"></a>
 
 					<!-- epaper_header_top_ad -->
 					@php $epaper_header_top_ad = \App\Models\Epaper::GetAdvertisement('epaper_header_top'); @endphp
@@ -262,7 +265,7 @@
 						<table style="width: 100%">
 							<tr>
 								<td style="width: 250px">
-									<p class="footerLogo"><img src="{{asset('assets/images/logo1.png')}}" style="width: 250px"></p>
+									<p class="footerLogo"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="width: 250px"></p>
 								</td>
 								<td>
 									<div style="text-align: left !important;padding-left: 10px">

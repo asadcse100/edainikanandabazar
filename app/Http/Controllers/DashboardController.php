@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use App\Models\Setting;
 
 class DashboardController extends Controller
 {
@@ -15,7 +16,6 @@ class DashboardController extends Controller
      */
     public function index()
     {
-
         ## get pages table ##
         $pages_tables = \App\Models\Epaper::GetTables('pages');
         $count_pages_table = count($pages_tables);
@@ -57,9 +57,6 @@ class DashboardController extends Controller
 
         return \View::make('admin.dashboard.index', $data);
     }
-
-
-
 
     /**
      * Show the application removeTempFolder.
@@ -156,7 +153,40 @@ class DashboardController extends Controller
         } else return \Redirect::to('/profile')->withInput()->withErrors($v->messages());
     }
 
+    public function settings(Request $request)
+    {
+        $data = [];
+        $data['setting'] = Setting::first();
+        return view('admin.settings.index', $data);
+    }
 
+    public function store(Request $request)
+    {
+        $request->validate([
+            'logo' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'favicon' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+    
+        $logoName = 'logo'.time().'.'.$request->logo->extension();
+        $faviconName = 'favicon'.time().'.'.$request->favicon->extension();
+    
+        $request->logo->move(public_path('logo'), $logoName);
+        $request->favicon->move(public_path('favicon'), $faviconName);
+    
+        Setting::updateOrInsert(
+            [
+                'id' => $request->id
+            ],
+            [
+                'site_name' => $request->site_name,
+                'logo' => $logoName,
+                'favicon' => $faviconName,
+            ]
+        );
+    
+        return back();
+    }
+    
 
     #-------------------END-----------------#
 }

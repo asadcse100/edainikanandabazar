@@ -114,7 +114,7 @@
 								</td>
 								<td class="text-center"> 
 									<p>
-										<a href="{{url('/')}}"><img src="{{asset('assets/images/logo1.png')}}" style="height: 50px;padding: 5px 0px" ></a>
+										<a href="{{url('/')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="height: 50px;padding: 5px 0px" ></a>
 									</p>
 								</td>
 
@@ -221,9 +221,9 @@
 			newWin.document.open();
 
 			if(related_image_link != ''){
-				newWin.document.write('<html><body onload="window.print()">'+'<center><img src="{{asset("assets/images/logo1.png")}}" style="height:40px;width:200px;" />'+'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">'+bangla_date+'</p>'+'<img src='+main_image+' />'+'</center></body>'+'<body><center>'+'<img src='+related_image+' />'+'</center></body>'+'</html>');
+				newWin.document.write('<html><body onload="window.print()">'+'<center><img src="@if(!empty(setting()->logo)) {{asset("logo")}}/{{setting()->logo}}@endif" style="height:40px;width:200px;" />'+'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">'+bangla_date+'</p>'+'<img src='+main_image+' />'+'</center></body>'+'<body><center>'+'<img src='+related_image+' />'+'</center></body>'+'</html>');
 			}else{
-				newWin.document.write('<html><body onload="window.print()">'+'<center><img src="{{asset("assets/images/logo1.png")}}" style="height:40px;width:200px;" />'+'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">'+bangla_date+'</p>'+'<img src='+main_image+' />'+'</center></body></html>');
+				newWin.document.write('<html><body onload="window.print()">'+'<center><img src="@if(!empty(setting()->logo)) {{asset("logo")}}/{{setting()->logo}}@endif" style="height:40px;width:200px;" />'+'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">'+bangla_date+'</p>'+'<img src='+main_image+' />'+'</center></body></html>');
 			}
 
 			newWin.document.close();

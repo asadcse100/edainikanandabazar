@@ -27,13 +27,17 @@
 	}
 	.pagination a:hover:not(.active) {background-color: #ddd;}
 
+	.img-responsive-height
+	{
+	display: block;
+	width: auto;
+	max-height: 100%
+	}
+
 </style>
 
 <style type="text/css">
 	.modal{
-		display: block;
-		width: auto;
-		max-height: 100%;
 		background-image: url({{asset('assets/images/overlay.png')}});
 		
 }
@@ -128,8 +132,8 @@
 
 
 <!-- The Modal -->
-<div id="newsPopup" class="modal img-responsive-height" >
-	<div class="modal-content customized_content loading_img" id="modal-content" >
+<div id="newsPopup" class="modal">
+	<div class="modal-content customized_content loading_img" id="modal-content">
 		<div class="modal-head" >
 			<table width="100%" class="modal_table">
 				<tr>
@@ -434,9 +438,9 @@
  		newWin.document.open();
 
  		if(related_image_link != ''){
- 			newWin.document.write('<html><body onload="window.print()">'+'<center><img src="{{asset("assets/images/logo1.png")}}" style="height:50px;" />'+'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">'+bangla_date+'</p>'+'<img src='+main_image_link+' />'+'</center></body>'+'<body><center>'+'<img src='+related_image_link+' />'+'</center></body>'+'</html>');
+ 			newWin.document.write('<html><body onload="window.print()">'+'<center><img src="@if(!empty(setting()->logo)) {{asset("logo")}}/{{setting()->logo}}@endif" style="height:50px;" />'+'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">'+bangla_date+'</p>'+'<img src='+main_image_link+' />'+'</center></body>'+'<body><center>'+'<img src='+related_image_link+' />'+'</center></body>'+'</html>');
  		}else{
- 			newWin.document.write('<html><body onload="window.print()">'+'<center><img src="{{asset("assets/images/logo1.png")}}" style="height:50px;" />'+'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">'+bangla_date+'</p>'+'<img src='+main_image_link+' />'+'</center></body></html>');
+ 			newWin.document.write('<html><body onload="window.print()">'+'<center><img src="@if(!empty(setting()->logo)) {{asset("logo")}}/{{setting()->logo}}@endif" style="height:50px;" />'+'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">'+bangla_date+'</p>'+'<img src='+main_image_link+' />'+'</center></body></html>');
  		}
 
  		newWin.document.close();

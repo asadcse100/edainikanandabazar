@@ -57,7 +57,8 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('/profile', 'DashboardController@profile')->name('Profile');
 	##ProfileUpdate
 	Route::post('/profile/update', 'DashboardController@profileUpdate')->name('Profile Update');
-
+	Route::get('/settings', 'DashboardController@settings')->name('settings');
+	Route::post('/settings', 'DashboardController@store')->name('settings.store');
 
 	##########################
 	## Category Module
