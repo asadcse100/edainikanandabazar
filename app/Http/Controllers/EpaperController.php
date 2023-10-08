@@ -114,7 +114,6 @@ class EpaperController extends Controller
      */
     public function byEdition($edition, $date, $page_no)
     {
-
         try {
             ## get required tables ##
             if (date('Y-m-d', strtotime($date)) != $date) {

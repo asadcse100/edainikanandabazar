@@ -26,12 +26,18 @@
 		border: 1px solid #CC0000;
 	}
 	.pagination a:hover:not(.active) {background-color: #ddd;}
+
 </style>
 
 <style type="text/css">
 	.modal{
+		display: block;
+		width: auto;
+		max-height: 100%;
 		background-image: url({{asset('assets/images/overlay.png')}});
+		
 }
+
 </style>
 
 @section('content')
@@ -122,7 +128,7 @@
 
 
 <!-- The Modal -->
-<div id="newsPopup" class="modal" >
+<div id="newsPopup" class="modal img-responsive-height" >
 	<div class="modal-content customized_content loading_img" id="modal-content" >
 		<div class="modal-head" >
 			<table width="100%" class="modal_table">
@@ -147,10 +153,10 @@
 		</div>
 
 		<div class="modal-body text-center" style="padding: 20px;">
-			<div id='DivIdToPrint' class="modal-main-img" id="newsImg" style="overflow-x: auto;">
+			<div id='DivIdToPrint' class="modal-main-img img-responsive" id="newsImg">
 				<center>
-					<img src=""  id="singleNewsImg" class="image_view" style="border: 2px solid #CCC;" >
-					<img src="" class="related_image" style="border: 2px solid #CCC;display: none" >
+					<img src=""  id="singleNewsImg" class="image_view">
+					<img src="" class="related_image">
 				</center>
 			</div>
 
