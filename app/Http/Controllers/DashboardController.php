@@ -160,19 +160,40 @@ class DashboardController extends Controller
         return view('admin.settings.index', $data);
     }
 
+    public function topbar_info(Request $request)
+    {
+        $data = [];
+        $data['topbar_infos'] = \DB::table('topbar_infos')->get();
+        return view('admin.settings.topbar_infos', $data);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
-            'logo' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'favicon' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'logo' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'favicon' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'water_mark' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-    
-        $logoName = 'logo'.time().'.'.$request->logo->extension();
-        $faviconName = 'favicon'.time().'.'.$request->favicon->extension();
-    
-        $request->logo->move(public_path('logo'), $logoName);
-        $request->favicon->move(public_path('favicon'), $faviconName);
-    
+
+        $settings = Setting::first();
+
+        $logoName = $settings->logo;
+        $faviconName = $settings->favicon;
+        $water_markName = $settings->water_mark;
+
+        if(!empty($request->logo)){
+            $logoName = 'logo'.time().'.'.$request->logo->extension();
+            $request->logo->move(public_path('logo'), $logoName);
+        }
+        if(!empty($request->favicon)){
+            $faviconName = 'favicon'.time().'.'.$request->favicon->extension();
+            $request->favicon->move(public_path('favicon'), $faviconName);
+        }
+        if(!empty($request->water_mark)){
+            $water_markName = 'water_mark'.time().'.'.$request->water_mark->extension();
+            $request->water_mark->move(public_path('water_mark'), $water_markName);
+        }
+       
         Setting::updateOrInsert(
             [
                 'id' => $request->id
@@ -181,12 +202,104 @@ class DashboardController extends Controller
                 'site_name' => $request->site_name,
                 'logo' => $logoName,
                 'favicon' => $faviconName,
+                'water_mark' => $water_markName,
             ]
         );
     
         return back();
     }
     
+
+    
+    /**
+     * Show the application user create.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function topbarinfo_store()
+    {
+        date_default_timezone_set("Asia/Dhaka");
+        $now=date('Y-m-d H:i:s');
+
+        $rules=array(
+          'title' => 'required',
+          'url' => 'required',
+          );
+        $v=\Validator::make(\Request::all(), $rules);
+
+        if($v->passes()){
+
+            try{
+
+                $topbar_data=array(
+                 'title' => \Request::input('title'),
+                 'url' => \Request::input('url'),
+                 'user_status' => 1,
+                 'created_at' => $now,
+                 );
+
+                $user_save=\DB::table('topbar_infos')->insert($topbar_data);
+
+            }catch(\Exception $e){
+                return \Redirect::to('/topbar_information')->with('message',"Problem insert topbar .please try again..!");
+            }
+
+            return \Redirect::to('/topbar_information')->with('message',"Topbar data has been created successfully !");
+
+        }else 
+        return \Redirect::to('/topbar_information')->withInput()->withErrors($v->messages());
+    }
+
+
+    /**
+     * Show the application user update.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function topbarinfo_update()
+    {
+        date_default_timezone_set("Asia/Dhaka");
+        $now=date('Y-m-d H:i:s');
+        $rules=array(
+          'title' => 'required',
+          'url' => 'required',
+          'is_active' => 'required',
+          );
+        $v=\Validator::make(\Request::all(), $rules);
+
+        if($v->passes()){
+
+            try{
+                $topbar_id=\Request::input('topbar_id');
+
+                if(!empty($topbar_id)){
+
+                        $topbar_data=array(
+                         'title' => \Request::input('title'),
+                         'url' => \Request::input('url'),
+                         'is_active' => \Request::input('is_active'),
+                         'updated_at' => $now,
+                         );
+
+                    $user_update=\DB::table('topbar_infos')->where('id', $topbar_id)->update($topbar_data);
+
+                }else{
+                    return \Redirect::to('/topbar_information')->with('message',"Topbar Id could not found.please try again..!");
+                }
+                
+            }catch(\Exception $e){
+
+                return \Redirect::to('/topbar_information')->with('message',"Problem updating Topbar info.please try again..!");
+            }
+
+            return \Redirect::to('/topbar_information')->with('message',"Topbar info has been updated successfully !");
+
+        }else 
+        return \Redirect::to('/topbar_information')->withErrors($v->messages());
+
+    }
+
+
 
     #-------------------END-----------------#
 }

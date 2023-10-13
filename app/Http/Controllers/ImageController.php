@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Image;
+use App\Models\Setting;
 
 class ImageController extends Controller
 {
@@ -116,8 +117,14 @@ class ImageController extends Controller
                   
                 $images_table='images_'.date('Y_m', strtotime($page_publish_date));
 
-                // $waterMarkUrl = public_path('images/watermark.png');
-                $waterMarkUrl = public_path('assets/images/watermark.png');
+                $settings = Setting::first();
+
+                // $waterMarkUrl = public_path('water_mark/water_mark1697118029.png');
+                if(!empty($settings->water_mark)){
+                    $waterMarkUrl = public_path('water_mark/'.$settings->water_mark);
+                }else{
+                    $waterMarkUrl = null;
+                }
 
                 $image_save_id = DB::table($images_table)->insertGetId($image_data);
 

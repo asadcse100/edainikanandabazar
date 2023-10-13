@@ -97,6 +97,13 @@
 								<img src="{{asset('favicon')}}/{{setting()->favicon}}" alt="favicon" height="50px">
 							</div>
 						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Water Mark Image</label>
+							<div class="col-sm-9">
+								<input type="file" name="water_mark" class="form-control">
+								<img src="{{asset('water_mark')}}/{{setting()->water_mark}}" alt="water_mark" height="50px">
+							</div>
+						</div>
 
 						<div class="box-footer">
 							<button type="submit" class="btn btn-primary pull-right">Save</button>

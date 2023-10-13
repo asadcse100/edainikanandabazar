@@ -77,6 +77,12 @@
 					<i class="fa fa-cog"></i> <span>Settings</span>
 				</a>
 			</li>
+
+			<li class="{{ Request::is('topbar_info') ? 'active' : '' }}">
+				<a href="{{Route('topbar_info')}}">
+					<i class="fa fa-cog"></i> <span>Topbar Info</span>
+				</a>
+			</li>
 		</ul>
 	</section>
 	<!-- /.sidebar -->
