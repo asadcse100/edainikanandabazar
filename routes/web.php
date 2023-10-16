@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Route;
 
 ##Home
 Route::get('/', 'EpaperController@index')->name('home');
+Route::get('/download', 'EpaperController@download')->name('download');
 ##SharedItem
 Route::get('/uploads/epaper/{year_month}/{month}/{day}/images/shared/{mainImg}/{reatedImg?}', 'EpaperController@SharedItem')->name('Shared');
 ##ByEdition

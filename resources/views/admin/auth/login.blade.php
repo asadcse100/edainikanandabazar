@@ -31,7 +31,7 @@
   <div class="login-box">
 
     <div class="login-box-body">
-     <center><a href="{{url('/')}}"><img src="{{ asset('assets/images/logo1.png') }}" class="img-responsive" width="200px" /></a></center>
+     <center><a href="{{Route('home')}}"><img src="{{ asset('assets/images/logo1.png') }}" class="img-responsive" width="200px" /></a></center>
      <hr style="margin-top: 10px">
 
      <form class="form-login" role="form" method="POST" action="{{ url('/login') }}" autocomplete="off">

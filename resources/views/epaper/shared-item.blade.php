@@ -114,7 +114,7 @@
 								</td>
 								<td class="text-center"> 
 									<p>
-										<a href="{{url('/')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="height: 50px;padding: 5px 0px" ></a>
+										<a href="{{Route('home')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="height: 50px;padding: 5px 0px" ></a>
 									</p>
 								</td>
 
@@ -154,7 +154,7 @@
 								</div>
 
 								<div style="float: right">
-									<a href="{{url('/')}}" class="btn btn-primary"> <i class="fa fa-home"></i> GO HOME</a>
+									<a href="{{Route('home')}}" class="btn btn-primary"> <i class="fa fa-home"></i> GO HOME</a>
 
 									@if(!empty($related_image))
 									&nbsp;&nbsp;&nbsp;&nbsp;
@@ -173,7 +173,7 @@
 
 	</div>
 
-	<input type="hidden" name="site_url" class="site_url" value="{{url('/')}}">
+	<input type="hidden" name="site_url" class="site_url" value="{{Route('home')}}">
 	<input type="hidden" class="main_image_location" value="{{$main_image_location}}">
 	<input type="hidden" class="related_image_name" value="{{isset($related_image_name) ? $related_image_name : ''}}">
 
@@ -266,21 +266,25 @@
 			}
 		});
 
+		$('.b_download').click(function(){
+ 		var gp_link = '/'+$(".main_image").attr( "src" );
+ 		var gp_splited = gp_link.split("images/");
+ 		var gp_length = gp_splited.length;
+ 		var gp_link = gp_splited[gp_length-2];
+ 		var gp_mainImage = gp_splited[gp_length-1];
 
-		$('.share_on_gplus').click(function(){
-			var gp_main_image_location = '{{$main_image_location}}';
-			var site_url = $(".site_url").val();
-			var current_date = $(".current_date").val();
-
-			var gp_related_image_name = $(".related_image_name").val();
-			if(gp_related_image_name != ''){
-				var gp_requested_url = site_url+'/uploads/epaper/'+gp_main_image_location+'shared/'+'{{$main_image_name}}/'+gp_related_image_name;
-				window.open('https://plus.google.com/share?url='+gp_requested_url, '', 'window settings');
-			}else{
-				var gp_requested_url = site_url+'/uploads/epaper/'+gp_main_image_location+'shared/'+'{{$main_image_name}}';
-				window.open('https://plus.google.com/share?url='+gp_requested_url, '', 'window settings');
+ 		var site_url = $(".site_url").val();
+		 console.log(gp_link,site_url);
+		$.ajax({
+			method: "GET",
+			url: "{{ Route('download') }}",
+			data: {
+				image_gp_link: gp_link,
+				image: gp_mainImage
 			}
-		});
+		});		
+
+ 	});
 
 	</script>
 	<!-- end share apis -->

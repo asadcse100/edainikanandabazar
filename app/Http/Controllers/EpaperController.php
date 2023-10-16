@@ -4,20 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\File;
 use Schema;
+use Illuminate\Support\Facades\Response;
 
 class EpaperController extends Controller
 {
-
     /**
      * Show the application home.
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function download(Request $request)
+     {
+         // Normalize the file path to use only forward slashes
+         $filePath = public_path($request->image_gp_link . 'images/' . $request->image);
+
+         if (File::exists($filePath)) {
+            return Response::download($filePath, $request->image)->setStatusCode(200);
+         } else {
+             // Handle the case where the file does not exist
+             abort(404, 'File not found');
+         }
+     }
+
     public function index()
     {
-
         $page_info = \App\Models\Epaper::GetPageInfo();
 
         if (!empty($page_info->publish_date)) {

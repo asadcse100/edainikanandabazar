@@ -121,7 +121,7 @@
 
 
 				<div class="add text-center" style="background-color: #ffffff;margin: 10px;padding: 15px 10px 15px 10px">
-					<a href="{{url('/')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="width: 300px"></a>
+					<a href="{{Route('home')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="width: 300px"></a>
 
 					<!-- epaper_header_top_ad -->
 					@php $epaper_header_top_ad = \App\Models\Epaper::GetAdvertisement('epaper_header_top'); @endphp
@@ -336,7 +336,7 @@
 			});
 		</script>
 
-		<input type="hidden" class="site_url" value="{{url('/')}}">
+		<input type="hidden" class="site_url" value="{{Route('home')}}">
 		{{-- <input type="hidden" class="site_url_name" value="@if(!empty(Request::route()->getName()))){{\Request::route()->getName()}}@endif"> --}}
 		{{-- <input type="hidden" class="current_url" value="{{Route::getCurrentRoute()->getPath()}}"> --}}
 

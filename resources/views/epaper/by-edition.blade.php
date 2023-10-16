@@ -7,31 +7,74 @@
 
 <!-- pagination -->
 <style type="text/css">
-	.pagination {
-		display: inline-block;
-		margin-top: 15px;
-	}
-	.pagination a {
-		color: white;
-		float: left;
-		padding: 2px 7px;
-		text-decoration: none;
-		background-color: #846d6d;
-		border: 1px solid #ddd;
-		margin: 0 4px;
-	}
-	.pagination a.active {
-		background-color: #CC0000;
-		color: white;
-		border: 1px solid #CC0000;
-	}
-	.pagination a:hover:not(.active) {background-color: #ddd;}
 
-	.img-responsive-height
-	{
+	/* Modal Content (image) */
+	.modal-content {
+	margin: auto;
 	display: block;
-	width: auto;
-	max-height: 100%
+	width: 100%;
+	max-width: 1200px !important;
+	}
+
+	.modal {
+		display: none; /* Hidden by default */
+		position: fixed; /* Stay in place */
+		z-index: 1; /* Sit on top */
+		padding-top: 100px; /* Location of the box */
+		left: 0;
+		top: 0;
+		width: 100%; /* Full width */
+		height: 100%; /* Full height */
+		overflow: auto; /* Enable scroll if needed */
+		background-color: rgb(0,0,0); /* Fallback color */
+		background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+		}
+
+/* Caption of Modal Image */
+#caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 1200px !important;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* Add Animation */
+.modal-content, #caption {  
+  -webkit-animation-name: zoom;
+  -webkit-animation-duration: 0.6s;
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+  from {-webkit-transform:scale(0)} 
+  to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+  from {transform:scale(0)} 
+  to {transform:scale(1)}
+}
+
+
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+	/* 100% Image Width on Smaller Screens */
+	@media only screen and (max-width: 1200px){
+	.modal-content {
+		width: 100% !important;
+	}
 	}
 
 </style>
@@ -92,6 +135,7 @@
 				$related_item = \App\Models\Epaper::GetRelatedItem($date, $article->related_image_id);
 
 				$get_image_width = \App\Models\Epaper::GetImageSize($image_width_location.$article->image);
+
 				@endphp
 
 				<area shape="rect" coords="{{$article->coords}}" data-image="{{$article->image}}"  class="main-img"  onclick="modalOpen('<?php echo $article->image; ?>','<?php echo $image_location; ?>','<?php echo $related_item; ?>','<?php echo $article->relation; ?>', '<?php echo $get_image_width; ?>')"/>
@@ -133,7 +177,7 @@
 
 <!-- The Modal -->
 <div id="newsPopup" class="modal">
-	<div class="modal-content customized_content loading_img" id="modal-content">
+	<div class="modal-content customized_content loading_img" id="modal-content" style="width: 1000px;">
 		<div class="modal-head" >
 			<table width="100%" class="modal_table">
 				<tr>
@@ -141,9 +185,9 @@
 					</td>
 					<td class="text-center"> 
 						<p>
-							<a href="{{url('/')}}"><img src="{{asset('assets/images/logo1.png')}}" style="height: 50px;padding: 5px 0px" ></a>
+							<a href="{{Route('home')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="height: 50px;padding: 5px 0px" ></a>
 							<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" onclick='printDiv("<?php echo $date_show; ?>");'  name="b_print" class="btn btn-success"> <i class="fa fa-print"></i></button>
-							<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" onclick='printDiv("<?php echo $date_show; ?>");'  name="b_download" class="btn btn-success"> <i class="fa fa-download"></i></button>
+							<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" name="b_download" class="btn btn-success b_download"> <i class="fa fa-download"></i></button>
 						</p>
 					</td>
 
@@ -173,7 +217,7 @@
 
 					<!-- <button type="button"  class="btn btn-default share_on_gplus" style="background-color: #E53935;border-radius: 50%;padding: 5px 7px 5px 7px;"><i class="fa fa-google" style="color: white" aria-hidden="true"></i></button> -->
 
-					<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button"  name="b_print" class="btn btn-success"> <i class="fa fa-whatsapp"></i></button>
+					<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button"  name="wahtsapp" class="btn btn-success"> <i class="fa fa-whatsapp"></i></button>
 				</div>
 
 				<div style="float: right">
@@ -186,6 +230,7 @@
 		
 	</div>
 </div>
+
 <!--modal end-->
 
 
@@ -259,13 +304,26 @@
 
   	/*==modal width set==*/
   	var modal_width = image_width;
-  	if(modal_width>1050){
-  		modal_width=1050;
-  	}
 
-  	if(modal_width<750){
-  		modal_width=750;
-  	}
+	if(modal_width<300 && modal_width<400){
+		modal_width=350;
+	}else if(modal_width<400 && modal_width<500){
+		modal_width=450;
+	}else if(modal_width<500 && modal_width<600){
+		modal_width=550;
+	}else if(modal_width<600 && modal_width<700){
+		modal_width=650;
+	}else if(modal_width<700 && modal_width<800){
+		modal_width=750;
+	}else if(modal_width<800 && modal_width<900){
+		modal_width=850;
+	}else if(modal_width<900 && modal_width<1000){
+		modal_width=950;
+	}else if(modal_width<1000 && modal_width<1100){
+		modal_width=1050;
+	}else{
+		modal_width=1200;
+	}
 
   	document.getElementById("modal-content").style.width = modal_width+'px';
   	$('.related_image').hide();
@@ -296,12 +354,25 @@
   	$('.related_image').show();
 
   	var modal_width = $('.related_image').width();
-  	if(modal_width>1050){
-  		modal_width=1050;
-  	}
-  	if(modal_width<750){
-  		modal_width=750;
-  	}
+	  if(modal_width<300 && modal_width<400){
+		modal_width=350;
+	}else if(modal_width<400 && modal_width<500){
+		modal_width=450;
+	}else if(modal_width<500 && modal_width<600){
+		modal_width=550;
+	}else if(modal_width<600 && modal_width<700){
+		modal_width=650;
+	}else if(modal_width<700 && modal_width<800){
+		modal_width=750;
+	}else if(modal_width<800 && modal_width<900){
+		modal_width=850;
+	}else if(modal_width<900 && modal_width<1000){
+		modal_width=950;
+	}else if(modal_width<1000 && modal_width<1100){
+		modal_width=1050;
+	}else{
+		modal_width=1200;
+	}
   	document.getElementById("modal-content").style.width = modal_width+'px';
   });
 
@@ -316,12 +387,25 @@
   	$('.related_image').hide();
 
   	var modal_width = $('.image_view').width();
-  	if(modal_width>1050){
-  		modal_width=1050;
-  	}
-  	if(modal_width<750){
-  		modal_width=750;
-  	}
+	  if(modal_width<300 && modal_width<400){
+		modal_width=350;
+	}else if(modal_width<400 && modal_width<500){
+		modal_width=450;
+	}else if(modal_width<500 && modal_width<600){
+		modal_width=550;
+	}else if(modal_width<600 && modal_width<700){
+		modal_width=650;
+	}else if(modal_width<700 && modal_width<800){
+		modal_width=750;
+	}else if(modal_width<800 && modal_width<900){
+		modal_width=850;
+	}else if(modal_width<900 && modal_width<1000){
+		modal_width=950;
+	}else if(modal_width<1000 && modal_width<1100){
+		modal_width=1050;
+	}else{
+		modal_width=1200;
+	}
   	document.getElementById("modal-content").style.width = modal_width+'px';
   });
  }
@@ -335,12 +419,25 @@
  		$('.related_image').show();
 
  		var modal_width = $('.related_image').width();
- 		if(modal_width>1050){
- 			modal_width=1050;
- 		}
- 		if(modal_width<750){
- 			modal_width=750;
- 		}
+		 if(modal_width<300 && modal_width<400){
+			modal_width=350;
+		}else if(modal_width<400 && modal_width<500){
+			modal_width=450;
+		}else if(modal_width<500 && modal_width<600){
+			modal_width=550;
+		}else if(modal_width<600 && modal_width<700){
+			modal_width=650;
+		}else if(modal_width<700 && modal_width<800){
+			modal_width=750;
+		}else if(modal_width<800 && modal_width<900){
+			modal_width=850;
+		}else if(modal_width<900 && modal_width<1000){
+			modal_width=950;
+		}else if(modal_width<1000 && modal_width<1100){
+			modal_width=1050;
+		}else{
+			modal_width=1200;
+		}
  		document.getElementById("modal-content").style.width = modal_width+'px';
  	});
 
@@ -351,12 +448,25 @@
  		$('.related_image').hide();
 
  		var modal_width = $('.image_view').width();
- 		if(modal_width>1050){
- 			modal_width=1050;
- 		}
- 		if(modal_width<750){
- 			modal_width=750;
- 		}
+		 if(modal_width<300 && modal_width<400){
+			modal_width=350;
+			}else if(modal_width<400 && modal_width<500){
+				modal_width=450;
+			}else if(modal_width<500 && modal_width<600){
+				modal_width=550;
+			}else if(modal_width<600 && modal_width<700){
+				modal_width=650;
+			}else if(modal_width<700 && modal_width<800){
+				modal_width=750;
+			}else if(modal_width<800 && modal_width<900){
+				modal_width=850;
+			}else if(modal_width<900 && modal_width<1000){
+				modal_width=950;
+			}else if(modal_width<1000 && modal_width<1100){
+				modal_width=1050;
+			}else{
+				modal_width=1200;
+			}
  		document.getElementById("modal-content").style.width = modal_width+'px';
 
  	});
@@ -377,6 +487,7 @@
 
   });
 
+  
  </script>
  <!--end modal-->
 
@@ -499,27 +610,24 @@
  		}
  	});
 
- 	$('.share_on_gplus').click(function(){
+ 	$('.b_download').click(function(){
  		var gp_link = '/'+$(".main_image").attr( "src" );
  		var gp_splited = gp_link.split("images/");
  		var gp_length = gp_splited.length;
  		var gp_link = gp_splited[gp_length-2];
  		var gp_mainImage = gp_splited[gp_length-1];
 
- 		var gp_related_image = $(".related_image").attr( "src" );
  		var site_url = $(".site_url").val();
- 		var current_date = $(".current_date").val();
- 		if(gp_related_image != ''){
- 			var gp_related_splited = gp_related_image.split("/");
- 			var gp_related_length = gp_related_splited.length;
- 			var gp_related_image = gp_related_splited[gp_related_length-1];
+		 console.log(gp_link,site_url);
+		$.ajax({
+			method: "GET",
+			url: "{{ Route('download') }}",
+			data: {
+				image_gp_link: gp_link,
+				image: gp_mainImage
+			}
+		});		
 
- 			var gp_requested_url = site_url+gp_link+'images/shared/'+gp_mainImage+'/'+gp_related_image;
- 			window.open('https://plus.google.com/share?url='+gp_requested_url,  '', 'window settings');
- 		}else{
- 			var gp_requested_url = site_url+gp_link+'images/shared/'+gp_mainImage;
- 				window.open('https://plus.google.com/share?url='+gp_requested_url,  '', 'window settings');
- 		}
  	});
 
 

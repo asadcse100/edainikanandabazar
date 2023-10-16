@@ -17,7 +17,7 @@
 
     <body class="login">
         <div class="main-login col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
-            <div class="logo"><a href="{{url('/')}}"><img src="{{ asset('assets/images/samakal_logo_green.png') }}" alt="" class="img-responsive" width="200px" /></a></div>            
+            <div class="logo"><a href="{{Route('home')}}"><img src="{{ asset('assets/images/samakal_logo_green.png') }}" alt="" class="img-responsive" width="200px" /></a></div>            
                 <div class="panel panel-info">
                     <div class="panel-heading">Sign in to your account</div>
 
