@@ -16,7 +16,7 @@ class EpaperController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function gtdownload(Request $request)
+     public function download(Request $request)
      {
          // Normalize the file path to use only forward slashes
          $filePath = public_path($request->image_gp_link . 'images/' . $request->image);

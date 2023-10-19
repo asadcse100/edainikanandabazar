@@ -618,7 +618,7 @@
  		var site_url = $(".site_url").val();
 		$.ajax({
 			method: "GET",
-			url: "{{ Route('gtdownload') }}",
+			url: "{{ Route('download') }}",
 			data: {
 				image_gp_link: gp_link,
 				image: gp_mainImage
