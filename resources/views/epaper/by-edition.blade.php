@@ -297,7 +297,6 @@
   ## modal open ##
   ###################################*/
   function modalOpen(image,image_location,related_item,image_relation,image_width){
-
   	modal.style.display = "block";
 
   	var site_url = $('.site_url').val();
@@ -334,7 +333,6 @@
 
   	var image = site_url+'/'+image_location +'/' + image;
   	$(".modal-body .image_view").attr( "src", image );
-
 
   	/*==next prev button==*/
   	if(related_item != ''){
@@ -618,14 +616,27 @@
  		var gp_mainImage = gp_splited[gp_length-1];
 
  		var site_url = $(".site_url").val();
-		 console.log(gp_link,site_url);
 		$.ajax({
 			method: "GET",
-			url: "{{ Route('download') }}",
+			url: "{{ Route('gtdownload') }}",
 			data: {
 				image_gp_link: gp_link,
 				image: gp_mainImage
-			}
+			},
+			xhrFields: {
+                responseType: 'blob'
+            },
+			success: function(response){
+				console.log(response);
+                var blob = new Blob([response]);
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+				link.download = site_url + gp_link + "images/" + gp_mainImage;
+                link.click();
+            },
+            error: function(blob){
+                console.log(blob);
+            }
 		});		
 
  	});

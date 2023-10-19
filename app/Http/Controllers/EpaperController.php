@@ -16,13 +16,14 @@ class EpaperController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function download(Request $request)
+     public function gtdownload(Request $request)
      {
          // Normalize the file path to use only forward slashes
          $filePath = public_path($request->image_gp_link . 'images/' . $request->image);
 
          if (File::exists($filePath)) {
-            return Response::download($filePath, $request->image)->setStatusCode(200);
+            // return Response::download($filePath, $request->image)->setStatusCode(200);
+            return response()->download($filePath);
          } else {
              // Handle the case where the file does not exist
              abort(404, 'File not found');
