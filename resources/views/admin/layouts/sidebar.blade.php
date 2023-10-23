@@ -19,7 +19,7 @@
 		<!-- sidebar menu: : style can be found in sidebar.less -->
 		<ul class="sidebar-menu">
 
-			<li class="header">ePaper Operator Controls</li>
+			<li class="header" style="color: #00C0EF">ePaper Operator Controls</li>
 			<li class="{{ Request::is('home') ? 'active' : '' }}">
 				<a href="{{url('/home')}}">
 					<i class="fa fa-dashboard"></i> <span>Dashboard</span>
@@ -51,7 +51,7 @@
 			</li>
 
 			@if(Auth::user()->role == 'admin')
-			<li class="header">ePaper Admin Controls</li>
+			<li class="header" style="color: #00C0EF">ePaper Admin Controls</li>
 
 			<li class="{{ Request::is('manage-advertisements') ? 'active' : '' }}">
 				<a href="{{url('/manage-advertisements')}}">

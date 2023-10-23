@@ -17,7 +17,6 @@
   <!-- Theme style -->
   <link rel="stylesheet" type="text/css" href="{{asset('admin/assets/css/AdminLTE.css')}}">
   <link rel="stylesheet" type="text/css" href="{{asset('admin/assets/css/skins/_all-skins.min.css')}}">
-
   @yield('page-css')
 
 </head>
@@ -32,7 +31,7 @@
         <span class="logo-lg" style="margin-top: 10px"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" class="img-responsive" style="width: 130px" /></span>
       </a>
       <!-- Header Navbar: style can be found in header.less -->
-      <nav class="navbar navbar-static-top">
+      <nav class="navbar navbar-static-top" style="background-color: #1F3F49">
         <!-- Sidebar toggle button-->
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
           <span class="sr-only">Toggle navigation</span>
@@ -41,7 +40,7 @@
           <span class="icon-bar"></span>
         </a>
 
-        <div class="navbar-custom-menu">
+        <div class="navbar-custom-menu" >
           <ul class="nav navbar-nav">
 
             <!-- User Account: style can be found in dropdown.less -->
