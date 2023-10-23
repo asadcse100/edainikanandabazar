@@ -68,29 +68,6 @@
 <section class="content">
 	<div class="row">
 
-		<div class="col-md-5">
-			<div class="box box-success">
-				<div class="box-header with-border"><h4 class="box-title">Add New Category</h4></div>
-				<div class="box-body">
-					
-					<form class="form-horizontal" action="{{url('/category/create')}}" method="post" enctype="multipart/form-data">
-						<input type="hidden" name="_token" value="{{csrf_token()}}">
-
-						<div class="form-group">
-							<label class="col-sm-3 control-label">Category Title</label>
-							<div class="col-sm-9">
-								<input type="text" name="category_name" class="form-control" placeholder="Category Title" required="required">
-							</div>
-						</div>
-						<div class="box-footer">
-							<button type="submit" class="btn btn-primary pull-right">Save Category !</button>
-						</div>
-					</form>
-
-				</div>
-			</div>
-		</div>
-
 		<!-- category list -->
 		<div class="col-md-7">
 			<div class="box box-success">
@@ -138,7 +115,28 @@
 			</div>
 		</div>
 		<!-- end category list -->
+		<div class="col-md-5">
+			<div class="box box-success">
+				<div class="box-header with-border"><h4 class="box-title">Add New Category</h4></div>
+				<div class="box-body">
+					
+					<form class="form-horizontal" action="{{url('/category/create')}}" method="post" enctype="multipart/form-data">
+						<input type="hidden" name="_token" value="{{csrf_token()}}">
 
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Category Title</label>
+							<div class="col-sm-9">
+								<input type="text" name="category_name" class="form-control" placeholder="Category Title" required="required">
+							</div>
+						</div>
+						<div class="box-footer">
+							<button type="submit" class="btn btn-primary pull-right">Save Category !</button>
+						</div>
+					</form>
+
+				</div>
+			</div>
+		</div>
 
 	</div>
 </section>

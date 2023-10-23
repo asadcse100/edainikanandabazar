@@ -61,39 +61,6 @@
 <section class="content">
 	<div class="row">
 
-		<div class="col-md-5">
-			<div class="box box-success">
-				<div class="box-header with-border"><h4 class="box-title">Add New Edition</h4></div>
-				<div class="box-body">
-					
-					<form class="form-horizontal" action="{{url('/edition/create')}}" method="post" enctype="multipart/form-data">
-						<input type="hidden" name="_token" value="{{csrf_token()}}">
-
-						<div class="form-group">
-							<label class="col-sm-3 control-label">Edition Name</label>
-							<div class="col-sm-9">
-								<input type="text" name="edition_name" class="form-control" placeholder="Edition Name" required="required">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-sm-3 control-label">Edition Title</label>
-							<div class="col-sm-9">
-								<input type="text" name="edition_title" class="form-control" placeholder="Edition Title" required="required">
-							</div>
-						</div>
-
-						<div class="box-footer">
-							<button type="submit" class="btn btn-primary pull-right">Save Edition !</button>
-						</div>
-
-						
-					</form>
-
-				</div>
-			</div>
-		</div>
-
 		<!-- edition list -->
 		<div class="col-md-7">
 			<div class="box box-success">
@@ -145,6 +112,38 @@
 		</div>
 		<!-- end edition list -->
 
+		<div class="col-md-5">
+			<div class="box box-success">
+				<div class="box-header with-border"><h4 class="box-title">Add New Edition</h4></div>
+				<div class="box-body">
+					
+					<form class="form-horizontal" action="{{url('/edition/create')}}" method="post" enctype="multipart/form-data">
+						<input type="hidden" name="_token" value="{{csrf_token()}}">
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Edition Name</label>
+							<div class="col-sm-9">
+								<input type="text" name="edition_name" class="form-control" placeholder="Edition Name" required="required">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Edition Title</label>
+							<div class="col-sm-9">
+								<input type="text" name="edition_title" class="form-control" placeholder="Edition Title" required="required">
+							</div>
+						</div>
+
+						<div class="box-footer">
+							<button type="submit" class="btn btn-primary pull-right">Save Edition !</button>
+						</div>
+
+						
+					</form>
+
+				</div>
+			</div>
+		</div>
 
 	</div>
 </section>

@@ -188,6 +188,7 @@
 							<a href="{{Route('home')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="height: 50px;padding: 5px 0px" ></a>
 							<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" onclick='printDiv("<?php echo $date_show; ?>");'  name="b_print" class="btn btn-success"> <i class="fa fa-print"></i></button>
 							<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" name="b_download" class="btn btn-success b_download"> <i class="fa fa-download"></i></button>
+							<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" name="copyImagePath" class="btn btn-success copyImagePath"> <i class="fa fa-link"></i></button>
 						</p>
 					</td>
 
@@ -607,6 +608,42 @@
  				window.open('https://twitter.com/intent/tweet?url='+tw_requested_url,  '', 'window settings');
  		}
  	});
+
+	 $('.copyImagePath').click(function () {
+    var gp_link = '/' + $(".main_image").attr("src");
+    var gp_splited = gp_link.split("images/");
+    var gp_length = gp_splited.length;
+    var gp_link = gp_splited[gp_length - 2];
+    var gp_mainImage = gp_splited[gp_length - 1];
+
+    var site_url = $(".site_url").val();
+    $.ajax({
+        method: "GET",
+        url: "{{ route('copyImagePath') }}",
+        data: {
+            image_gp_link: gp_link,
+            image: gp_mainImage
+        },
+        dataType: "json", // Set the dataType to "json"
+        success: function (response) {
+            
+            var copyImagePath = response.copyImagePath;
+			console.log(response);
+            // Copy the image URL to the clipboard
+            var imageUrl = site_url + copyImagePath;
+			
+            navigator.clipboard.writeText(imageUrl).then(function () {
+                // URL copied successfully
+                alert('Image URL copied to clipboard: ' + imageUrl);
+            }).catch(function (error) {
+                console.error('Failed to copy URL: ' + error);
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+});
 
  	$('.b_download').click(function(){
  		var gp_link = '/'+$(".main_image").attr( "src" );

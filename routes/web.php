@@ -27,11 +27,10 @@ use Illuminate\Support\Facades\Route;
 
 ##LogIn Routes
 
-
-
 ##Home
 Route::get('/', 'EpaperController@index')->name('home');
 Route::get('/download', 'EpaperController@download')->name('download');
+Route::get('/copyImagePath', 'EpaperController@copyImagePath')->name('copyImagePath');
 ##SharedItem
 Route::get('/uploads/epaper/{year_month}/{month}/{day}/images/shared/{mainImg}/{reatedImg?}', 'EpaperController@SharedItem')->name('Shared');
 ##ByEdition
@@ -45,7 +44,6 @@ Route::group(['middleware' => 'auth'], function() {
 
 	#Logout
 	Route::get('/logout', 'Auth\LoginController@logout');
-
 
 	##########################
 	## Dashboard Module
