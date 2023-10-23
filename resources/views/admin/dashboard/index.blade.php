@@ -146,11 +146,9 @@
     <div class="col-md-12">
       <div class="box box-success">
         <div class="box-header with-border">
-          <h3 class="box-title" style="color:rgb(176, 0, 12)">Temporery Folder's</h3>
-
-          <div class="box-tools">
-            <p style="color:brown">NB: Please delete "Temporary Folder" after a certain period. </p>
-          </div>
+          <h1 class="box-title" style="color:rgb(6, 0, 0)">Temporery Folder's</h1>
+          <p style="color:brown">NB: Please delete "Temporary Folder" after a certain period. </p>
+          
         </div>
         <div class="box-body">
 
