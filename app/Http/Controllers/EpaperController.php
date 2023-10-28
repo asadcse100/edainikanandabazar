@@ -25,7 +25,7 @@ class EpaperController extends Controller
         $sourcePath = public_path($request->image_gp_link . 'images/' . $request->image);
 
         // Load the logo image and resize it to 150x80 pixels
-        $logo = Image::make(public_path('logo/' . setting()->logo))->resize(250, 100);
+        $logo = Image::make(public_path('logo/' . setting()->logo))->resize(250, 50);
         $image = Image::make($sourcePath);
 
         // Create a new image with white space at the top (100 pixels)
@@ -58,11 +58,11 @@ class EpaperController extends Controller
         $sourcePath = public_path($request->image_gp_link . 'images/' . $request->image);
 
         // Load the logo image and resize it to 150x80 pixels
-        $logo = Image::make(public_path('logo/' . setting()->logo))->resize(250, 100);
+        $logo = Image::make(public_path('logo/' . setting()->logo))->resize(250, 50);
         $image = Image::make($sourcePath);
 
         // Create a new image with white space at the top (100 pixels)
-        $newImage = Image::canvas($image->width(), $image->height() + 100, '#ffffff');
+        $newImage = Image::canvas($image->width(), $image->height() + 80, '#ffffff');
 
         // Insert the main image into the new image, below the white space
         $newImage->insert($image, 'bottom');
@@ -101,6 +101,7 @@ class EpaperController extends Controller
             }
 
             $by_edition = \DB::table('editions')->where('title', 'nogor-edition')->select('editions.id', 'editions.title')->first();
+
             $data['page_edition'] = $by_edition->title;
 
             $get_categories = \DB::table($pages_table)->where($pages_table . '.publish_date', $date)->where($pages_table . '.status', 1)

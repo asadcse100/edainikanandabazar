@@ -86,6 +86,68 @@
 }
 
 </style>
+<style>
+    /* Base styles for the modal content */
+    .modal-content {
+        max-width: 100%;
+        padding: 20px;
+    }
+
+    /* Center the content */
+    .modal-body {
+        text-align: center;
+    }
+
+    /* Make the image responsive */
+    .image_view {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Center the share buttons */
+    .share-buttons {
+        text-align: center;
+    }
+
+    /* Adjust button styles for small screens */
+    .btn {
+        padding: 5px 7px;
+    }
+
+    /* Adjust close button styles for small screens */
+    .close {
+        padding: 8px 10px;
+        margin-top: 2px;
+        font-size: 16px;
+        border-radius: 50%;
+    }
+
+    /* Show previous and next buttons on small screens */
+    .trigger-prev,
+    .trigger-next {
+        display: inline-block;
+        padding: 2px 6px;
+    }
+
+    /* Make the image container and share buttons stack on top of each other for small screens */
+    @media (max-width: 768px) {
+        .modal-content {
+            max-height: 70vh; /* Set a maximum height and enable vertical scrolling */
+            overflow-y: auto; /* Enable the scrollbar when content exceeds the height */
+        }
+
+        .modal-main-img {
+            display: block;
+        }
+
+        .share-buttons {
+            margin-top: 10px;
+        }
+    }
+
+</style>
+
+<link rel="stylesheet" type="text/css" href="{{asset('assets/css/print-styles.css')}}" media="print">
 
 @section('content')
 
@@ -490,8 +552,6 @@
  </script>
  <!--end modal-->
 
-
-
  <!--pagination-->
  <script src="{{asset('assets/js/jquery.paginate.js')}}" type="text/javascript"></script>
  <script type="text/javascript">
@@ -529,8 +589,6 @@
  </script>
  <!--pagination end-->
 
-
-
  <!-- article print-->
  <script type="text/javascript">
  	function printDiv(bangla_date) 
@@ -546,12 +604,36 @@
  		var related_image = site_url+'/'+related_image_link;
 
  		newWin.document.open();
+ // Define a CSS style to add a top margin for the first page
+ var firstPageStyle = "<style>@media print { @page { size: letter; margin-top: 50px; } }</style>";
 
- 		if(related_image_link != ''){
- 			newWin.document.write('<html><body onload="window.print()">'+'<center><img src="@if(!empty(setting()->logo)) {{asset("logo")}}/{{setting()->logo}}@endif" style="height:50px;" />'+'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">'+bangla_date+'</p>'+'<img src='+main_image_link+' />'+'</center></body>'+'<body><center>'+'<img src='+related_image_link+' />'+'</center></body>'+'</html>');
- 		}else{
- 			newWin.document.write('<html><body onload="window.print()">'+'<center><img src="@if(!empty(setting()->logo)) {{asset("logo")}}/{{setting()->logo}}@endif" style="height:50px;" />'+'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">'+bangla_date+'</p>'+'<img src='+main_image_link+' />'+'</center></body></html>');
- 		}
+if (related_image_link != '') {
+	newWin.document.write(
+		'<html><head>' + firstPageStyle + '</head><body onload="window.print()">' +
+		'<center><img src="@if(!empty(setting()->logo)) {{asset("logo")}}/{{setting()->logo}}@endif" style="height:50px;" />' +
+		'<div class="content-to-hide-on-first-page">' +
+		'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">' + bangla_date + '</p>' +
+		'<img src=' + main_image_link + ' class="image_view"/>' +
+		'</center>' +
+		'</div>' +
+		'</body>' +
+		'<body><center>' +
+		'<img src=' + related_image_link + ' class="image_view"/>' +
+		'</center></body>' +
+		'</html>'
+	);
+} else {
+	newWin.document.write(
+		'<html><head>' + firstPageStyle + '</head><body onload="window.print()">' +
+		'<center><img src="@if(!empty(setting()->logo)) {{asset("logo")}}/{{setting()->logo}}@endif" style="height:50px;" />' +
+		'<div class="content-to-hide-on-first-page">' +
+		'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">' + bangla_date + '</p>' +
+		'<img src=' + main_image_link + ' class="image_view"/>' +
+		'</center>' +
+		'</div>' +
+		'</body></html>'
+	);
+}
 
  		newWin.document.close();
  		setTimeout(function(){newWin.close();},10);

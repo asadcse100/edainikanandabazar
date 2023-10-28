@@ -34,7 +34,7 @@ Route::get('/copyImagePath', 'EpaperController@copyImagePath')->name('copyImageP
 ##SharedItem
 Route::get('/uploads/epaper/{year_month}/{month}/{day}/images/shared/{mainImg}/{reatedImg?}', 'EpaperController@SharedItem')->name('Shared');
 ##ByEdition
-Route::get('/{edition}/{date}/{page_no}', 'EpaperController@byEdition')->name('By Edition');
+// 
 ##AllPage
 Route::get('/all/pages/{edition}/{date}', 'EpaperController@allPages')->name('All Pages');
 
@@ -107,7 +107,7 @@ Route::group(['middleware' => 'auth'], function() {
 	##updatePage
 	Route::post('/page/update/{page_id}', 'PageController@updatePage')->name('Update Page');
 	##DeletePage
-	Route::get('/page/delete/{page_id}/new/{page_name}/new/{publish_date}', 'PageController@deletePage')->name('Delete Page');
+	Route::get('/page/delete/{page_id}/{page_name}/{publish_date}', 'PageController@deletePage')->name('Delete Page');
 
 
 	##########################
@@ -127,7 +127,7 @@ Route::group(['middleware' => 'auth'], function() {
 	##imageRelationsSave
 	Route::post('/manage-relations-save/{image_date}/new/{image_id}', 'ImageController@imageRelationsSave')->name('Image Relations Save');
 	##DeleteImage
-	Route::get('/image-mapping/delete/{image_id}/new/{image_name}/new/{publish_date}', 'ImageController@deleteImage')->name('Delete Image');
+	Route::get('/image-mapping/delete/{image_id}/{image_name}/{publish_date}', 'ImageController@deleteImage')->name('Delete Image');
 
 
 
@@ -152,3 +152,5 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('/user/update', 'UserController@update')->name('Update User');
 
 });
+
+Route::get('/{edition}/{date}/{page_no}', 'EpaperController@byEdition')->name('By Edition');

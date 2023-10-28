@@ -103,8 +103,8 @@
 										<li class="fb btn"><a href="<?php echo $arr[5]; ?>" target="_blank"><abbr title="Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></abbr></a>
 										</li>
 										<li class="twit btn"><a href="<?php echo $arr[6]; ?>" target="_blank"><abbr title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
-													<path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
-												</svg></abbr></a>
+														<path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
+													</svg></abbr></a>
 										</li>
 										<li class="gplus btn"><a href="<?php echo $arr[7]; ?>" target="_blank"><i class="fa fa-youtube" aria-hidden="true"></i></a>
 										</li>
@@ -124,7 +124,7 @@
 						<div style="flex: 1; padding: 3px;">
 							<div class="add text-center">
 								<a href="{{Route('home')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="width: 250px"></a>
-								
+
 							</div>
 						</div>
 						<div style="flex: 1; padding: 3px;">
@@ -132,10 +132,10 @@
 								@if(!empty($date))
 								<p>
 									@php $date_show=\App\Models\Epaper::GetBanglaDate($date); @endphp
-									<p style="font-size: 18px; margin-bottom: 0px; line-height: 21px; color: #BB1919; padding-top: 3px">{{isset($date_show) ? $date_show : ''}}</p>
-									<input type="hidden" id="bangla_date" name="bangla_date" value="{{isset($date_show) ? $date_show : ''}}">
+								<p style="font-size: 18px; margin-bottom: 0px; line-height: 21px; color: #BB1919; padding-top: 3px">{{isset($date_show) ? $date_show : ''}}</p>
+								<input type="hidden" id="bangla_date" name="bangla_date" value="{{isset($date_show) ? $date_show : ''}}">
 								</p>
-				
+
 								<p style="margin-top: 10px">
 									@if(!empty($date))
 									<a href="{{url('/all/pages/nogor-edition/'.$date)}}"><img src="{{asset('assets/images/front/all1.png')}}"></a>
@@ -159,14 +159,9 @@
 						</div>
 					</div>
 				</div>
-				
-					
-				
 			</div>
 
-
 			<div class="row-div" style="overflow: hidden;">
-
 
 				@if(empty($page_name) && !empty($get_categories) && (count($get_categories)>0))
 				<!-- left paper div -->
