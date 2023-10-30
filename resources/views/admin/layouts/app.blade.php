@@ -4,7 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>ePaper | {{Route::currentRouteName() ? Route::currentRouteName() :'Admin Panel'}}</title>
-  <link rel="icon" type="image/png" href="{{asset('admin/assets/images/32x32.png')}}">
+  <!-- <link rel="icon" type="image/png" href="{{asset('admin/assets/images/32x32.png')}}"> -->
+  <link rel="icon" type="image/png" href="@if(!empty(setting()->favicon)) {{asset('favicon')}}/{{setting()->favicon}}@endif">
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -16,7 +17,6 @@
   <!-- Theme style -->
   <link rel="stylesheet" type="text/css" href="{{asset('admin/assets/css/AdminLTE.css')}}">
   <link rel="stylesheet" type="text/css" href="{{asset('admin/assets/css/skins/_all-skins.min.css')}}">
-
   @yield('page-css')
 
 </head>
@@ -27,11 +27,11 @@
     <header class="main-header">
       <!-- Logo -->
       <a href="{{url('/home')}}" class="logo" style="text-align: -webkit-center;background-color: white">
-        <span class="logo-mini"><img src="{{ asset('admin/assets/images/32x32.png') }}" style="width: 100%" class="img-responsive" /></span>
-        <span class="logo-lg" style="margin-top: 10px"><img src="{{ asset('admin/assets/images/logo1.png') }}" class="img-responsive" style="width: 130px" /></span>
+        <span class="logo-mini"><img src="@if(!empty(setting()->favicon)) {{asset('favicon')}}/{{setting()->favicon}}@endif" style="width: 100%" class="img-responsive" /></span>
+        <span class="logo-lg" style="margin-top: 10px"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" class="img-responsive" style="width: 130px" /></span>
       </a>
       <!-- Header Navbar: style can be found in header.less -->
-      <nav class="navbar navbar-static-top">
+      <nav class="navbar navbar-static-top" style="background-color: #1F3F49">
         <!-- Sidebar toggle button-->
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
           <span class="sr-only">Toggle navigation</span>
@@ -40,7 +40,7 @@
           <span class="icon-bar"></span>
         </a>
 
-        <div class="navbar-custom-menu">
+        <div class="navbar-custom-menu" >
           <ul class="nav navbar-nav">
 
             <!-- User Account: style can be found in dropdown.less -->
@@ -111,7 +111,7 @@
 <!-- ./wrapper -->
 
 <!-- jQuery 2.2.3 -->
-<script src="{{asset('admin/assets/plugins/jQuery/jquery-2.2.3.min.js')}}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="{{asset('admin/assets/bootstrap/js/bootstrap.min.js')}}"></script>
 <!-- SlimScroll -->

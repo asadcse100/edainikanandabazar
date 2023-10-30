@@ -42,11 +42,17 @@
 
 <!-- Main content -->
 <section class="content">
-
   <div class="row">
+    <div class="col-md-12">
+      <div class="box box-success">
+        <div class="box-body">
+          <h4>Hello <b>{{Auth::user()->name}}</b> ! <br> You are successfully logged in to ePaper Solution.</h4>
+        </div>
+      </div>
+    </div>
     <div class="col-lg-3 col-xs-6">
       <!-- small box -->
-      <div class="small-box bg-aqua">
+      <div class="small-box bg-aqua" style="border-radius: 10px;">
         <div class="inner">
           <h3>{{isset($total_pages) ? $total_pages : ''}}</h3>
 
@@ -61,7 +67,35 @@
     <!-- ./col -->
     <div class="col-lg-3 col-xs-6">
       <!-- small box -->
-      <div class="small-box bg-green">
+      <div class="small-box bg-yellow" style="border-radius: 10px;">
+        <div class="inner">
+          <h3>{{isset($total_pages) ? $total_pages : ''}}</h3>
+
+          <p>Total Published Page</p>
+        </div>
+        <div class="icon">
+          <i class="fa fa-file-text-o"></i>
+        </div>
+        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-red" style="border-radius: 10px;">
+        <div class="inner">
+          <h3>{{isset($total_pages) ? $total_pages : ''}}</h3>
+
+          <p>Total Image</p>
+        </div>
+        <div class="icon">
+          <i class="fa fa-file-text-o"></i>
+        </div>
+        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-green" style="border-radius: 10px;">
         <div class="inner">
           <h3>{{isset($active_ads) ? $active_ads : ''}}</h3>
 
@@ -76,7 +110,7 @@
     <!-- ./col -->
     <div class="col-lg-3 col-xs-6">
       <!-- small box -->
-      <div class="small-box bg-yellow">
+      <div class="small-box bg-yellow" style="border-radius: 10px;">
         <div class="inner">
           <h3>{{isset($total_users) ? $total_users : ''}}</h3>
 
@@ -91,7 +125,7 @@
     <!-- ./col -->
     <div class="col-lg-3 col-xs-6">
       <!-- small box -->
-      <div class="small-box bg-red">
+      <div class="small-box bg-red" style="border-radius: 10px;">
         <div class="inner">
           <h3>{{isset($total_category) ? $total_category : ''}}</h3>
 
@@ -104,28 +138,17 @@
       </div>
     </div>
     <!-- ./col -->
+  
   </div>
 
   <div class="row">
 
-    <div class="col-md-6">
-      <div class="box box-success">
-        <div class="box-body">
-          <h4>Hello <b>{{Auth::user()->name}}</b> ! <br> You are successfully logged in to ePaper Solution.</h4>
-          <br>
-          <h4>[NB: Please delete "Temporary Folder" after a certain period. ]</h4>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-6">
+    <div class="col-md-12">
       <div class="box box-success">
         <div class="box-header with-border">
-          <h3 class="box-title">Temporery Folder's</h3>
-
-          <div class="box-tools pull-right">
-
-          </div>
+          <h1 class="box-title" style="color:rgb(6, 0, 0)">Temporery Folder's</h1>
+          <p style="color:brown">NB: Please delete "Temporary Folder" after a certain period. </p>
+          
         </div>
         <div class="box-body">
 
@@ -162,7 +185,9 @@
         </div>
       </div>
     </div>
+  <!-- ./col -->
 
+  <!-- ./col -->
 
   </div>
 

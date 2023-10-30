@@ -68,8 +68,54 @@
 <section class="content">
 	<div class="row">
 
-		<!-- category list -->
 		<div class="col-md-7">
+			<div class="box box-success">
+				<div class="box-header with-border"><h4 class="box-title">Website Settings</h4></div>
+				<div class="box-body">
+					
+					<form class="form-horizontal" action="{{Route('settings.store')}}" method="post" enctype="multipart/form-data">
+						<input type="hidden" name="_token" value="{{csrf_token()}}">
+						<input type="hidden" name="id" id="id" value="1">
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Site Name</label>
+							<div class="col-sm-9">
+								<input type="text" name="site_name" class="form-control" value="@if(!empty($setting->site_name)){{$setting->site_name}}@endif">
+								<small>eg. Prothom Alo</small>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Logo</label>
+							<div class="col-sm-9">
+								<input type="file" name="logo" class="form-control">
+							<img src="{{asset('logo')}}/{{setting()->logo}}" alt="logo" height="100px">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Favicon</label>
+							<div class="col-sm-9">
+								<input type="file" name="favicon" class="form-control">
+								<img src="{{asset('favicon')}}/{{setting()->favicon}}" alt="favicon" height="50px">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Water Mark Image</label>
+							<div class="col-sm-9">
+								<input type="file" name="water_mark" class="form-control">
+								<img src="{{asset('water_mark')}}/{{setting()->water_mark}}" alt="water_mark" height="50px">
+							</div>
+						</div>
+
+						<div class="box-footer">
+							<button type="submit" class="btn btn-primary pull-right">Save</button>
+						</div>
+					</form>
+
+				</div>
+			</div>
+		</div>
+
+		<!-- category list -->
+		<!-- <div class="col-md-7">
 			<div class="box box-success">
 				<div class="box-header with-border"><h4 class="box-title">Category List</h4></div>
 				<div class="box-body">
@@ -113,37 +159,16 @@
 
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<!-- end category list -->
-		<div class="col-md-5">
-			<div class="box box-success">
-				<div class="box-header with-border"><h4 class="box-title">Add New Category</h4></div>
-				<div class="box-body">
-					
-					<form class="form-horizontal" action="{{url('/category/create')}}" method="post" enctype="multipart/form-data">
-						<input type="hidden" name="_token" value="{{csrf_token()}}">
 
-						<div class="form-group">
-							<label class="col-sm-3 control-label">Category Title</label>
-							<div class="col-sm-9">
-								<input type="text" name="category_name" class="form-control" placeholder="Category Title" required="required">
-							</div>
-						</div>
-						<div class="box-footer">
-							<button type="submit" class="btn btn-primary pull-right">Save Category !</button>
-						</div>
-					</form>
-
-				</div>
-			</div>
-		</div>
 
 	</div>
 </section>
 <!-- /.content -->
 
 <!-- edit modal -->
-<div class="modal fade" id="editCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+<!-- <div class="modal fade" id="editCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -168,7 +193,7 @@
 			</form>
 		</div>
 	</div>
-</div>
+</div> -->
 <!-- end edit modal -->
 
 @endsection

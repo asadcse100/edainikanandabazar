@@ -19,7 +19,7 @@
 		<!-- sidebar menu: : style can be found in sidebar.less -->
 		<ul class="sidebar-menu">
 
-			<li class="header">ePaper Operator Controls</li>
+			<li class="header" style="color: #00C0EF">ePaper Operator Controls</li>
 			<li class="{{ Request::is('home') ? 'active' : '' }}">
 				<a href="{{url('/home')}}">
 					<i class="fa fa-dashboard"></i> <span>Dashboard</span>
@@ -32,11 +32,11 @@
 				</a>
 			</li>
 
-			<!-- <li class="{{ Request::is('manage-edition') ? 'active' : '' }}">
+			<li class="{{ Request::is('manage-edition') ? 'active' : '' }}">
 				<a href="{{url('/manage-edition')}}">
 					<i class="fa fa-adjust"></i> <span>Manage Editions</span>
 				</a>
-			</li> -->
+			</li>
 
 			<li class="{{ Request::is('manage-pages') || (Route::currentRouteName()=='Image Mapping') ? 'active' : '' }}">
 				<a href="{{url('/manage-pages')}}">
@@ -49,13 +49,9 @@
 					<i class="fa fa-eye"></i> <span>Publish Pages </span>
 				</a>
 			</li>
-			<li onclick="sidebar_open();">
-				<a>
-					<i class="fa fa-creative-commons"></i> <span>Manage Tittle</span>
-				</a>
-			</li>
+
 			@if(Auth::user()->role == 'admin')
-			<li class="header">ePaper Admin Controls</li>
+			<li class="header" style="color: #00C0EF">ePaper Admin Controls</li>
 
 			<li class="{{ Request::is('manage-advertisements') ? 'active' : '' }}">
 				<a href="{{url('/manage-advertisements')}}">
@@ -70,7 +66,23 @@
 			</li>
 			@endif
 
+			<li onclick="sidebar_open();">
+				<a>
+					<i class="fa fa-copy"></i> <span>Copy Right Text</span>
+				</a>
+			</li>
 
+			<li class="{{ Request::is('settings') ? 'active' : '' }}">
+				<a href="{{Route('settings')}}">
+					<i class="fa fa-cog"></i> <span>Settings</span>
+				</a>
+			</li>
+
+			<li class="{{ Request::is('topbar_info') ? 'active' : '' }}">
+				<a href="{{Route('topbar_info')}}">
+					<i class="fa fa-cog"></i> <span>Topbar Info</span>
+				</a>
+			</li>
 		</ul>
 	</section>
 	<!-- /.sidebar -->
@@ -229,12 +241,12 @@
 		<input class="in1" type="text" value="<?php echo $arr[6]; ?> ">
 	</div>
 	<div class="in_block">
-		<lebel>Google Link</lebel>
+		<lebel>Youtube Link</lebel>
 		<input class="in1" type="text" value="<?php echo $arr[7]; ?> ">
 	</div>
 	@endif
-	<div style="position:relative;width:300px;height:100px;"><img src="{{asset('admin/assets/images/logo1.png')}}" style="width:100%;height:100%;position:absolute;z-index:1;top:0px;left:0px;" id="logo_img">
-		<input type="file" accept="image/*" src="{{asset('admin/assets/images/logo1.png')}}" style="width:100%;height:100%;position:absolute;z-index:2;top:0px;left:0px;opacity:0px;opacity:0;" oninput="send_image(this)">
+	<div style="position:relative;width:300px;height:100px;"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="width:100%;height:100%;position:absolute;z-index:1;top:0px;left:0px;" id="logo_img">
+		<input type="file" accept="image/*" src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="width:100%;height:100%;position:absolute;z-index:2;top:0px;left:0px;opacity:0px;opacity:0;" oninput="send_image(this)">
 	</div>
 	<input type="button" value="save" onclick="send_ajax()">
 </div>

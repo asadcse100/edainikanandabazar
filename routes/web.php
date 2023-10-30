@@ -27,14 +27,14 @@ use Illuminate\Support\Facades\Route;
 
 ##LogIn Routes
 
-
-
 ##Home
 Route::get('/', 'EpaperController@index')->name('home');
+Route::get('/download', 'EpaperController@download')->name('download');
+Route::get('/copyImagePath', 'EpaperController@copyImagePath')->name('copyImagePath');
 ##SharedItem
 Route::get('/uploads/epaper/{year_month}/{month}/{day}/images/shared/{mainImg}/{reatedImg?}', 'EpaperController@SharedItem')->name('Shared');
 ##ByEdition
-Route::get('/{edition}/{date}/{page_no}', 'EpaperController@byEdition')->name('By Edition');
+// 
 ##AllPage
 Route::get('/all/pages/{edition}/{date}', 'EpaperController@allPages')->name('All Pages');
 
@@ -44,7 +44,6 @@ Route::group(['middleware' => 'auth'], function() {
 
 	#Logout
 	Route::get('/logout', 'Auth\LoginController@logout');
-
 
 	##########################
 	## Dashboard Module
@@ -57,7 +56,11 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('/profile', 'DashboardController@profile')->name('Profile');
 	##ProfileUpdate
 	Route::post('/profile/update', 'DashboardController@profileUpdate')->name('Profile Update');
-
+	Route::get('/settings', 'DashboardController@settings')->name('settings');
+	Route::post('/settings', 'DashboardController@store')->name('settings.store');
+	Route::get('/topbar_information', 'DashboardController@topbar_info')->name('topbar_info');
+	Route::post('/topbar_info', 'DashboardController@topbarinfo_store')->name('topbar_info.store');
+	Route::post('/topbar_info/update', 'DashboardController@topbarinfo_update')->name('topbarinfo_update');
 
 	##########################
 	## Category Module
@@ -104,7 +107,7 @@ Route::group(['middleware' => 'auth'], function() {
 	##updatePage
 	Route::post('/page/update/{page_id}', 'PageController@updatePage')->name('Update Page');
 	##DeletePage
-	Route::get('/page/delete/{page_id}/new/{page_name}/new/{publish_date}', 'PageController@deletePage')->name('Delete Page');
+	Route::get('/page/delete/{page_id}/{page_name}/{publish_date}', 'PageController@deletePage')->name('Delete Page');
 
 
 	##########################
@@ -124,7 +127,7 @@ Route::group(['middleware' => 'auth'], function() {
 	##imageRelationsSave
 	Route::post('/manage-relations-save/{image_date}/new/{image_id}', 'ImageController@imageRelationsSave')->name('Image Relations Save');
 	##DeleteImage
-	Route::get('/image-mapping/delete/{image_id}/new/{image_name}/new/{publish_date}', 'ImageController@deleteImage')->name('Delete Image');
+	Route::get('/image-mapping/delete/{image_id}/{image_name}/{publish_date}', 'ImageController@deleteImage')->name('Delete Image');
 
 
 
@@ -149,3 +152,5 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('/user/update', 'UserController@update')->name('Update User');
 
 });
+
+Route::get('/{edition}/{date}/{page_no}', 'EpaperController@byEdition')->name('By Edition');

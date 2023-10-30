@@ -7,32 +7,147 @@
 
 <!-- pagination -->
 <style type="text/css">
-	.pagination {
-		display: inline-block;
-		margin-top: 15px;
+
+	/* Modal Content (image) */
+	.modal-content {
+	margin: auto;
+	display: block;
+	width: 100%;
+	max-width: 1200px !important;
 	}
-	.pagination a {
-		color: white;
-		float: left;
-		padding: 2px 7px;
-		text-decoration: none;
-		background-color: #846d6d;
-		border: 1px solid #ddd;
-		margin: 0 4px;
+
+	.modal {
+		display: none; /* Hidden by default */
+		position: fixed; /* Stay in place */
+		z-index: 1; /* Sit on top */
+		padding-top: 100px; /* Location of the box */
+		left: 0;
+		top: 0;
+		width: 100%; /* Full width */
+		height: 100%; /* Full height */
+		overflow: auto; /* Enable scroll if needed */
+		background-color: rgb(0,0,0); /* Fallback color */
+		background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+		}
+
+/* Caption of Modal Image */
+#caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 1200px !important;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* Add Animation */
+.modal-content, #caption {  
+  -webkit-animation-name: zoom;
+  -webkit-animation-duration: 0.6s;
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+  from {-webkit-transform:scale(0)} 
+  to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+  from {transform:scale(0)} 
+  to {transform:scale(1)}
+}
+
+
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+	/* 100% Image Width on Smaller Screens */
+	@media only screen and (max-width: 1200px){
+	.modal-content {
+		width: 100% !important;
 	}
-	.pagination a.active {
-		background-color: #CC0000;
-		color: white;
-		border: 1px solid #CC0000;
 	}
-	.pagination a:hover:not(.active) {background-color: #ddd;}
+
 </style>
 
 <style type="text/css">
 	.modal{
 		background-image: url({{asset('assets/images/overlay.png')}});
+		
 }
+
 </style>
+<style>
+    /* Base styles for the modal content */
+    .modal-content {
+        max-width: 100%;
+        padding: 20px;
+    }
+
+    /* Center the content */
+    .modal-body {
+        text-align: center;
+    }
+
+    /* Make the image responsive */
+    .image_view {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Center the share buttons */
+    .share-buttons {
+        text-align: center;
+    }
+
+    /* Adjust button styles for small screens */
+    .btn {
+        padding: 5px 7px;
+    }
+
+    /* Adjust close button styles for small screens */
+    .close {
+        padding: 8px 10px;
+        margin-top: 2px;
+        font-size: 16px;
+        border-radius: 50%;
+    }
+
+    /* Show previous and next buttons on small screens */
+    .trigger-prev,
+    .trigger-next {
+        display: inline-block;
+        padding: 2px 6px;
+    }
+
+    /* Make the image container and share buttons stack on top of each other for small screens */
+    @media (max-width: 768px) {
+        .modal-content {
+            max-height: 70vh; /* Set a maximum height and enable vertical scrolling */
+            overflow-y: auto; /* Enable the scrollbar when content exceeds the height */
+        }
+
+        .modal-main-img {
+            display: block;
+        }
+
+        .share-buttons {
+            margin-top: 10px;
+        }
+    }
+
+</style>
+
+<link rel="stylesheet" type="text/css" href="{{asset('assets/css/print-styles.css')}}" media="print">
 
 @section('content')
 
@@ -82,6 +197,7 @@
 				$related_item = \App\Models\Epaper::GetRelatedItem($date, $article->related_image_id);
 
 				$get_image_width = \App\Models\Epaper::GetImageSize($image_width_location.$article->image);
+
 				@endphp
 
 				<area shape="rect" coords="{{$article->coords}}" data-image="{{$article->image}}"  class="main-img"  onclick="modalOpen('<?php echo $article->image; ?>','<?php echo $image_location; ?>','<?php echo $related_item; ?>','<?php echo $article->relation; ?>', '<?php echo $get_image_width; ?>')"/>
@@ -122,8 +238,8 @@
 
 
 <!-- The Modal -->
-<div id="newsPopup" class="modal" >
-	<div class="modal-content customized_content loading_img" id="modal-content" >
+<div id="newsPopup" class="modal">
+	<div class="modal-content customized_content loading_img" id="modal-content" style="width: 1000px;">
 		<div class="modal-head" >
 			<table width="100%" class="modal_table">
 				<tr>
@@ -131,7 +247,10 @@
 					</td>
 					<td class="text-center"> 
 						<p>
-							<a href="{{url('/')}}"><img src="{{asset('assets/images/logo1.png')}}" style="height: 50px;padding: 5px 0px" ></a>
+							<a href="{{Route('home')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="height: 50px;padding: 5px 0px" ></a>
+							<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" onclick='printDiv("<?php echo $date_show; ?>");'  name="b_print" class="btn btn-success"> <i class="fa fa-print"></i></button>
+							<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" name="b_download" class="btn btn-success b_download"> <i class="fa fa-download"></i></button>
+							<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" name="copyImagePath" class="btn btn-success copyImagePath"> <i class="fa fa-link"></i></button>
 						</p>
 					</td>
 
@@ -145,15 +264,12 @@
 		</div>
 
 		<div class="modal-body text-center" style="padding: 20px;">
-			<div id='DivIdToPrint' class="modal-main-img" id="newsImg" style="overflow-x: auto;">
-
+			<div id='DivIdToPrint' class="modal-main-img img-responsive" id="newsImg">
 				<center>
-					<img src=""  id="singleNewsImg" class="image_view" style="border: 2px solid #CCC;" >
-					<img src="" class="related_image" style="border: 2px solid #CCC;display: none" >
+					<img src=""  id="singleNewsImg" class="image_view">
+					<img src="" class="related_image">
 				</center>
-
 			</div>
-
 
 			<div style="margin-top: 20px;padding-bottom: 20px">
 				<div style="float: left">
@@ -162,9 +278,9 @@
 
 					<button type="button" style="background-color: #1DA1F2;border-radius: 50%;padding: 5px 7px 5px 7px;"  class="btn btn-default share_on_twt"><i class="fa fa-twitter" style="color: white" aria-hidden="true"></i></button>
 
-					<button type="button"  class="btn btn-default share_on_gplus" style="background-color: #E53935;border-radius: 50%;padding: 5px 7px 5px 7px;"><i class="fa fa-google" style="color: white" aria-hidden="true"></i></button>
+					<!-- <button type="button"  class="btn btn-default share_on_gplus" style="background-color: #E53935;border-radius: 50%;padding: 5px 7px 5px 7px;"><i class="fa fa-google" style="color: white" aria-hidden="true"></i></button> -->
 
-					<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" onclick='printDiv("<?php echo $date_show; ?>");'  name="b_print" class="btn btn-success"> <i class="fa fa-print"></i></button>
+					<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button"  name="wahtsapp" class="btn btn-success"> <i class="fa fa-whatsapp"></i></button>
 				</div>
 
 				<div style="float: right">
@@ -174,8 +290,10 @@
 			</div>
 			<br/>
 		</div>
+		
 	</div>
 </div>
+
 <!--modal end-->
 
 
@@ -242,20 +360,32 @@
   ## modal open ##
   ###################################*/
   function modalOpen(image,image_location,related_item,image_relation,image_width){
-
   	modal.style.display = "block";
 
   	var site_url = $('.site_url').val();
 
   	/*==modal width set==*/
   	var modal_width = image_width;
-  	if(modal_width>1050){
-  		modal_width=1050;
-  	}
 
-  	if(modal_width<750){
-  		modal_width=750;
-  	}
+	if(modal_width<300 && modal_width<400){
+		modal_width=350;
+	}else if(modal_width<400 && modal_width<500){
+		modal_width=450;
+	}else if(modal_width<500 && modal_width<600){
+		modal_width=550;
+	}else if(modal_width<600 && modal_width<700){
+		modal_width=650;
+	}else if(modal_width<700 && modal_width<800){
+		modal_width=750;
+	}else if(modal_width<800 && modal_width<900){
+		modal_width=850;
+	}else if(modal_width<900 && modal_width<1000){
+		modal_width=950;
+	}else if(modal_width<1000 && modal_width<1100){
+		modal_width=1050;
+	}else{
+		modal_width=1200;
+	}
 
   	document.getElementById("modal-content").style.width = modal_width+'px';
   	$('.related_image').hide();
@@ -266,7 +396,6 @@
 
   	var image = site_url+'/'+image_location +'/' + image;
   	$(".modal-body .image_view").attr( "src", image );
-
 
   	/*==next prev button==*/
   	if(related_item != ''){
@@ -286,12 +415,25 @@
   	$('.related_image').show();
 
   	var modal_width = $('.related_image').width();
-  	if(modal_width>1050){
-  		modal_width=1050;
-  	}
-  	if(modal_width<750){
-  		modal_width=750;
-  	}
+	  if(modal_width<300 && modal_width<400){
+		modal_width=350;
+	}else if(modal_width<400 && modal_width<500){
+		modal_width=450;
+	}else if(modal_width<500 && modal_width<600){
+		modal_width=550;
+	}else if(modal_width<600 && modal_width<700){
+		modal_width=650;
+	}else if(modal_width<700 && modal_width<800){
+		modal_width=750;
+	}else if(modal_width<800 && modal_width<900){
+		modal_width=850;
+	}else if(modal_width<900 && modal_width<1000){
+		modal_width=950;
+	}else if(modal_width<1000 && modal_width<1100){
+		modal_width=1050;
+	}else{
+		modal_width=1200;
+	}
   	document.getElementById("modal-content").style.width = modal_width+'px';
   });
 
@@ -306,12 +448,25 @@
   	$('.related_image').hide();
 
   	var modal_width = $('.image_view').width();
-  	if(modal_width>1050){
-  		modal_width=1050;
-  	}
-  	if(modal_width<750){
-  		modal_width=750;
-  	}
+	  if(modal_width<300 && modal_width<400){
+		modal_width=350;
+	}else if(modal_width<400 && modal_width<500){
+		modal_width=450;
+	}else if(modal_width<500 && modal_width<600){
+		modal_width=550;
+	}else if(modal_width<600 && modal_width<700){
+		modal_width=650;
+	}else if(modal_width<700 && modal_width<800){
+		modal_width=750;
+	}else if(modal_width<800 && modal_width<900){
+		modal_width=850;
+	}else if(modal_width<900 && modal_width<1000){
+		modal_width=950;
+	}else if(modal_width<1000 && modal_width<1100){
+		modal_width=1050;
+	}else{
+		modal_width=1200;
+	}
   	document.getElementById("modal-content").style.width = modal_width+'px';
   });
  }
@@ -325,12 +480,25 @@
  		$('.related_image').show();
 
  		var modal_width = $('.related_image').width();
- 		if(modal_width>1050){
- 			modal_width=1050;
- 		}
- 		if(modal_width<750){
- 			modal_width=750;
- 		}
+		 if(modal_width<300 && modal_width<400){
+			modal_width=350;
+		}else if(modal_width<400 && modal_width<500){
+			modal_width=450;
+		}else if(modal_width<500 && modal_width<600){
+			modal_width=550;
+		}else if(modal_width<600 && modal_width<700){
+			modal_width=650;
+		}else if(modal_width<700 && modal_width<800){
+			modal_width=750;
+		}else if(modal_width<800 && modal_width<900){
+			modal_width=850;
+		}else if(modal_width<900 && modal_width<1000){
+			modal_width=950;
+		}else if(modal_width<1000 && modal_width<1100){
+			modal_width=1050;
+		}else{
+			modal_width=1200;
+		}
  		document.getElementById("modal-content").style.width = modal_width+'px';
  	});
 
@@ -341,12 +509,25 @@
  		$('.related_image').hide();
 
  		var modal_width = $('.image_view').width();
- 		if(modal_width>1050){
- 			modal_width=1050;
- 		}
- 		if(modal_width<750){
- 			modal_width=750;
- 		}
+		 if(modal_width<300 && modal_width<400){
+			modal_width=350;
+			}else if(modal_width<400 && modal_width<500){
+				modal_width=450;
+			}else if(modal_width<500 && modal_width<600){
+				modal_width=550;
+			}else if(modal_width<600 && modal_width<700){
+				modal_width=650;
+			}else if(modal_width<700 && modal_width<800){
+				modal_width=750;
+			}else if(modal_width<800 && modal_width<900){
+				modal_width=850;
+			}else if(modal_width<900 && modal_width<1000){
+				modal_width=950;
+			}else if(modal_width<1000 && modal_width<1100){
+				modal_width=1050;
+			}else{
+				modal_width=1200;
+			}
  		document.getElementById("modal-content").style.width = modal_width+'px';
 
  	});
@@ -367,10 +548,9 @@
 
   });
 
+  
  </script>
  <!--end modal-->
-
-
 
  <!--pagination-->
  <script src="{{asset('assets/js/jquery.paginate.js')}}" type="text/javascript"></script>
@@ -409,8 +589,6 @@
  </script>
  <!--pagination end-->
 
-
-
  <!-- article print-->
  <script type="text/javascript">
  	function printDiv(bangla_date) 
@@ -426,12 +604,36 @@
  		var related_image = site_url+'/'+related_image_link;
 
  		newWin.document.open();
+ // Define a CSS style to add a top margin for the first page
+ var firstPageStyle = "<style>@media print { @page { size: letter; margin-top: 50px; } }</style>";
 
- 		if(related_image_link != ''){
- 			newWin.document.write('<html><body onload="window.print()">'+'<center><img src="{{asset("assets/images/logo1.png")}}" style="height:50px;" />'+'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">'+bangla_date+'</p>'+'<img src='+main_image_link+' />'+'</center></body>'+'<body><center>'+'<img src='+related_image_link+' />'+'</center></body>'+'</html>');
- 		}else{
- 			newWin.document.write('<html><body onload="window.print()">'+'<center><img src="{{asset("assets/images/logo1.png")}}" style="height:50px;" />'+'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">'+bangla_date+'</p>'+'<img src='+main_image_link+' />'+'</center></body></html>');
- 		}
+if (related_image_link != '') {
+	newWin.document.write(
+		'<html><head>' + firstPageStyle + '</head><body onload="window.print()">' +
+		'<center><img src="@if(!empty(setting()->logo)) {{asset("logo")}}/{{setting()->logo}}@endif" style="height:50px;" />' +
+		'<div class="content-to-hide-on-first-page">' +
+		'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">' + bangla_date + '</p>' +
+		'<img src=' + main_image_link + ' class="image_view"/>' +
+		'</center>' +
+		'</div>' +
+		'</body>' +
+		'<body><center>' +
+		'<img src=' + related_image_link + ' class="image_view"/>' +
+		'</center></body>' +
+		'</html>'
+	);
+} else {
+	newWin.document.write(
+		'<html><head>' + firstPageStyle + '</head><body onload="window.print()">' +
+		'<center><img src="@if(!empty(setting()->logo)) {{asset("logo")}}/{{setting()->logo}}@endif" style="height:50px;" />' +
+		'<div class="content-to-hide-on-first-page">' +
+		'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">' + bangla_date + '</p>' +
+		'<img src=' + main_image_link + ' class="image_view"/>' +
+		'</center>' +
+		'</div>' +
+		'</body></html>'
+	);
+}
 
  		newWin.document.close();
  		setTimeout(function(){newWin.close();},10);
@@ -489,27 +691,73 @@
  		}
  	});
 
- 	$('.share_on_gplus').click(function(){
+	 $('.copyImagePath').click(function () {
+    var gp_link = '/' + $(".main_image").attr("src");
+    var gp_splited = gp_link.split("images/");
+    var gp_length = gp_splited.length;
+    var gp_link = gp_splited[gp_length - 2];
+    var gp_mainImage = gp_splited[gp_length - 1];
+
+    var site_url = $(".site_url").val();
+    $.ajax({
+        method: "GET",
+        url: "{{ route('copyImagePath') }}",
+        data: {
+            image_gp_link: gp_link,
+            image: gp_mainImage
+        },
+        dataType: "json", // Set the dataType to "json"
+        success: function (response) {
+            
+            var copyImagePath = response.copyImagePath;
+			console.log(response);
+            // Copy the image URL to the clipboard
+            var imageUrl = site_url + copyImagePath;
+			
+            navigator.clipboard.writeText(imageUrl).then(function () {
+                // URL copied successfully
+                alert('Image URL copied to clipboard: ' + imageUrl);
+            }).catch(function (error) {
+                console.error('Failed to copy URL: ' + error);
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
+});
+
+ 	$('.b_download').click(function(){
  		var gp_link = '/'+$(".main_image").attr( "src" );
  		var gp_splited = gp_link.split("images/");
  		var gp_length = gp_splited.length;
  		var gp_link = gp_splited[gp_length-2];
  		var gp_mainImage = gp_splited[gp_length-1];
 
- 		var gp_related_image = $(".related_image").attr( "src" );
  		var site_url = $(".site_url").val();
- 		var current_date = $(".current_date").val();
- 		if(gp_related_image != ''){
- 			var gp_related_splited = gp_related_image.split("/");
- 			var gp_related_length = gp_related_splited.length;
- 			var gp_related_image = gp_related_splited[gp_related_length-1];
+		$.ajax({
+			method: "GET",
+			url: "{{ Route('download') }}",
+			data: {
+				image_gp_link: gp_link,
+				image: gp_mainImage
+			},
+			xhrFields: {
+                responseType: 'blob'
+            },
+			success: function(response){
+				console.log(response);
+                var blob = new Blob([response]);
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+				link.download = site_url + gp_link + "images/" + gp_mainImage;
+                link.click();
+            },
+            error: function(blob){
+                console.log(blob);
+            }
+		});		
 
- 			var gp_requested_url = site_url+gp_link+'images/shared/'+gp_mainImage+'/'+gp_related_image;
- 			window.open('https://plus.google.com/share?url='+gp_requested_url,  '', 'window settings');
- 		}else{
- 			var gp_requested_url = site_url+gp_link+'images/shared/'+gp_mainImage;
- 				window.open('https://plus.google.com/share?url='+gp_requested_url,  '', 'window settings');
- 		}
  	});
 
 

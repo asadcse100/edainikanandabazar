@@ -135,7 +135,7 @@ class Epaper extends Model
 	######################
 	public static function GetImageSize($image_location){
 
-		// list($width, $height) = getimagesize($image_location);
+		list($width, $height) = getimagesize($image_location);
 
 		if(!empty($width)){
 			$width=$width;

@@ -28,6 +28,7 @@
 
 	<!-- icon -->
 	<link rel="icon" type="image/png" href="{{asset('assets/images/32x32.png')}}" />
+
 	<!-- font awesome css -->
 	<link rel="stylesheet" type="text/css" href="{{asset('assets/font-awesome/css/font-awesome.min.css')}}" />
 	<!-- main css -->
@@ -66,8 +67,11 @@
 </head>
 
 <body id="body">
-	<?php	
-		$file=fopen("log.txt","r");$arr=fread($file,filesize("log.txt"));fclose($file);$arr=explode("⎌",$arr); 
+	<?php
+	$file = fopen("log.txt", "r");
+	$arr = fread($file, filesize("log.txt"));
+	fclose($file);
+	$arr = explode("⎌", $arr);
 	?>
 	<div class="main-container" style="margin-top: 10px;margin-bottom: 10px;border: 3px solid #e2dbdb;width: 1150px">
 		<div class="header-div">
@@ -79,18 +83,30 @@
 						<tr>
 							<td>
 								<div class="date text-left" style="margin-top: 2px">
-									<p style="color: black;font-size: 17px"><?php echo $arr[0]; ?>| অনলাইন ভার্সন দেখতে ক্লিক করুন <a style="color: #3C5A98" href="<?php echo $arr[1]; ?>" target="_blank">অনলাইন ভার্সন</a></p>
+									<!-- <p style="color: black;font-size: 17px"><?php echo $arr[0]; ?>| অনলাইন ভার্সন দেখতে ক্লিক করুন <a style="color: #3C5A98" href="<?php echo $arr[1]; ?>" target="_blank">অনলাইন ভার্সন</a></p> -->
+									<!-- <p style="color: black;font-size: 17px"><?php echo $arr[0]; ?>| <a style="color: #3C5A98" href="<?php echo $arr[1]; ?>" target="_blank">অনলাইন ভার্সন</a></p> -->
+
+									<p style="color: black;font-size: 17px">
+										<?php echo $arr[0]; ?>| <a style="color: #3C5A98" href="<?php echo $arr[1]; ?>" target="_blank">অনলাইন ভার্সন</a>
+										@foreach(DB::table('topbar_infos')->get() as $data)
+										<a style="color: #3C5A98" href="{{$data->url}}" target="_blank">
+											{{$data->title}} |
+										</a>
+										@endforeach
+									</p>
 								</div>
 							</td>
 
 							<td>
 								<div class="social-icon" style="text-align: right;margin-top: 3px">
 									<ul class="list-unstyled" style="height: 32px;margin-left: 0;padding-left: 0">
-										<li class="fb btn"><a href="<?php echo $arr[5]; ?>" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+										<li class="fb btn"><a href="<?php echo $arr[5]; ?>" target="_blank"><abbr title="Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></abbr></a>
 										</li>
-										<li class="twit btn"><a href="<?php echo $arr[6]; ?>" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+										<li class="twit btn"><a href="<?php echo $arr[6]; ?>" target="_blank"><abbr title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+														<path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
+													</svg></abbr></a>
 										</li>
-										<li class="gplus btn"><a href="<?php echo $arr[7]; ?>" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+										<li class="gplus btn"><a href="<?php echo $arr[7]; ?>" target="_blank"><i class="fa fa-youtube" aria-hidden="true"></i></a>
 										</li>
 									</ul>
 								</div>
@@ -103,40 +119,49 @@
 				@endif
 
 
+				<div class="container">
+					<div style="display: flex; items-center">
+						<div style="flex: 1; padding: 3px;">
+							<div class="add text-center">
+								<a href="{{Route('home')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="width: 250px"></a>
 
-				<div class="add text-center" style="background-color: #ffffff;margin: 10px;padding: 15px 10px 15px 10px">
-					<a href="{{url('/')}}"><img src="{{asset('assets/images/logo1.png')}}" style="width: 300px"></a>
+							</div>
+						</div>
+						<div style="flex: 1; padding: 3px;">
+							<div class="add text-center">
+								@if(!empty($date))
+								<p>
+									@php $date_show=\App\Models\Epaper::GetBanglaDate($date); @endphp
+								<p style="font-size: 18px; margin-bottom: 0px; line-height: 21px; color: #BB1919; padding-top: 3px">{{isset($date_show) ? $date_show : ''}}</p>
+								<input type="hidden" id="bangla_date" name="bangla_date" value="{{isset($date_show) ? $date_show : ''}}">
+								</p>
 
-					<!-- epaper_header_top_ad -->
-					@php $epaper_header_top_ad = \App\Models\Epaper::GetAdvertisement('epaper_header_top'); @endphp
-					@if(!empty($epaper_header_top_ad) && !empty($epaper_header_top_ad->ad_code) && ($epaper_header_top_ad->ad_status=='1'))
-
-					<?php echo $epaper_header_top_ad->ad_code; ?>
-
-					@endif
-					<!-- end epaper_header_top_ad -->
-
-					@if(!empty($date))
-					<p>
-						@php $date_show=\App\Models\Epaper::GetBanglaDate($date); @endphp
-					<p style="font-size: 18px;margin-bottom: 0px;line-height: 21px;color: #BB1919;padding-top: 3px">{{isset($date_show) ? $date_show : ''}}</p>
-					<input type="hidden" id="bangla_date" name="bangla_date" value="{{isset($date_show) ? $date_show : ''}}"></p>
-
-					<p style="margin-top: 10px">
-						@if(!empty($date))
-						<a href="{{url('/all/pages/nogor-edition/'.$date)}}"><img src="{{asset('assets/images/front/all1.png')}}"></a>
-						@endif
-						@if(!empty($home_page) && !empty($date))
-						<a href="javascript::void(0)" onclick='printPage("{{asset('uploads/epaper/'.date('Y',strtotime($home_page->publish_date)).'/'.date('m',strtotime($home_page->publish_date)).'/'.date('d',strtotime($home_page->publish_date)).'/pages/'.$home_page->image)}}");'><img src="{{asset('assets/images/front/print.png')}}"></a>
-						@endif
-					</p>
-					@endif
+								<p style="margin-top: 10px">
+									@if(!empty($date))
+									<a href="{{url('/all/pages/nogor-edition/'.$date)}}"><img src="{{asset('assets/images/front/all1.png')}}"></a>
+									@endif
+									@if(!empty($home_page) && !empty($date))
+									<a href="javascript::void(0)" onclick='printPage("{{asset('uploads/epaper/'.date('Y',strtotime($home_page->publish_date)).'/'.date('m',strtotime($home_page->publish_date)).'/'.date('d',strtotime($home_page->publish_date)).'/pages/'.$home_page->image)}}");'><img src="{{asset('assets/images/front/print.png')}}"></a>
+									@endif
+								</p>
+								@endif
+							</div>
+						</div>
+						<div style="flex: 1; padding: 3px;">
+							<div class="add text-center">
+								<!-- epaper_header_top_ad -->
+								@php $epaper_header_top_ad = \App\Models\Epaper::GetAdvertisement('epaper_header_top'); @endphp
+								@if(!empty($epaper_header_top_ad) && !empty($epaper_header_top_ad->ad_code) && ($epaper_header_top_ad->ad_status=='1'))
+								<?php echo $epaper_header_top_ad->ad_code; ?>
+								@endif
+								<!-- end epaper_header_top_ad -->
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 
-
 			<div class="row-div" style="overflow: hidden;">
-
 
 				@if(empty($page_name) && !empty($get_categories) && (count($get_categories)>0))
 				<!-- left paper div -->
@@ -249,7 +274,7 @@
 						<table style="width: 100%">
 							<tr>
 								<td style="width: 250px">
-									<p class="footerLogo"><img src="{{asset('assets/images/logo1.png')}}" style="width: 250px"></p>
+									<p class="footerLogo"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="width: 250px"></p>
 								</td>
 								<td>
 									<div style="text-align: left !important;padding-left: 10px">
@@ -262,9 +287,8 @@
 						</table>
 					</div>
 
-					<p style="font-size: 14px;color:black;border-top:1px solid #636363;margin-top: 10px;text-align: left;padding-right: 0px;padding-left: 0px">
-						{{ date('Y') }} <?php echo $arr[4]; ?> <!--কারিগরি সহযোগীতায় : <a style="color:black" href="https://Originitbd.com/" target="_blank">ওরাকল আইটি.</a> -->
-					</p>
+					<p class="text-right" style="font-size: 14px;color:black;border-top:1px solid #636363;margin-top: 10px;text-align: left;padding-right: 0px;padding-left: 0px">
+						{{ date('Y') }} <?php echo $arr[4]; ?> | Developed by: <a style="color:black" href="https://Originitbd.com/" target="_blank">Contriver IT</a></p>
 				</div>
 			</div>
 			@endif
@@ -320,7 +344,7 @@
 			});
 		</script>
 
-		<input type="hidden" class="site_url" value="{{url('/')}}">
+		<input type="hidden" class="site_url" value="{{Route('home')}}">
 		{{-- <input type="hidden" class="site_url_name" value="@if(!empty(Request::route()->getName()))){{\Request::route()->getName()}}@endif"> --}}
 		{{-- <input type="hidden" class="current_url" value="{{Route::getCurrentRoute()->getPath()}}"> --}}
 

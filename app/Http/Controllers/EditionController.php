@@ -158,7 +158,5 @@ class EditionController extends Controller
     	}
     }
 
-
-
     #---------------End-----------------#
 }
