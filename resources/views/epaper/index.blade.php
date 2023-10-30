@@ -14,7 +14,7 @@
 		z-index:9000;
 		background-color:#000;
 		display:none;
-	}  
+	}
 	#boxes .window {
 		position:absolute;
 		left:0;
@@ -28,7 +28,7 @@
 		text-align: center;
 	}
 	#boxes #dialog {
-		width:auto; 
+		width:auto;
 		height:auto;
 		padding:10px;
 	}
@@ -72,13 +72,27 @@
 <table style="width: 100%;background-color: #d2d0ce;margin: 0px 0px 10px 0px">
 	<tr>
 		<td>
+
 			<center>
 				<div class="pagination" style="margin: 0px;padding: 5px">
+
+
+                        @if(!empty($date))
+                        <a href="{{url('/all/pages/nogor-edition/'.$date)}}"><img src="{{asset('assets/images/front/all1.png')}}"></a>
+                        @endif
+
+
+
 					<a style="margin-left: 0px;" href="#">&laquo;</a>
 					@for($i=1; $i <= count($pagination_pages); $i++)
 					<a href="{{url('/nogor-edition/'.$date.'/'.$i)}}">{{$i}}</a>
 					@endfor
 					<a href="{{url('/nogor-edition/'.$date.'/1')}}">&raquo;</a>
+
+
+                    @if(!empty($home_page) && !empty($date))
+                    <a href="javascript::void(0)" onclick='printPage("{{asset('uploads/epaper/'.date('Y',strtotime($home_page->publish_date)).'/'.date('m',strtotime($home_page->publish_date)).'/'.date('d',strtotime($home_page->publish_date)).'/pages/'.$home_page->image)}}");'><img src="{{asset('assets/images/front/print.png')}}"></a>
+                    @endif
 				</div>
 			</center>
 		</td>
@@ -95,14 +109,14 @@
 
 		<map name="enewspaper" >
 			@php
-			$image_location='uploads/epaper/'.date('Y',strtotime($date)).'/'.date('m',strtotime($date)).'/'.date('d',strtotime($date)).'/images/'; 
+			$image_location='uploads/epaper/'.date('Y',strtotime($date)).'/'.date('m',strtotime($date)).'/'.date('d',strtotime($date)).'/images/';
 			@endphp
 
 			@if(!empty($epaper_articles) && (count($epaper_articles)>0))
 			@foreach($epaper_articles as $key => $article)
 
-			@php 
-			$related_item = \App\Models\Epaper::GetRelatedItem($date, $article->related_image_id); 
+			@php
+			$related_item = \App\Models\Epaper::GetRelatedItem($date, $article->related_image_id);
 			$get_image_width = \App\Models\Epaper::GetImageSize($image_location.$article->image);
 			@endphp
 
@@ -113,7 +127,7 @@
 		@else
 		<img src="{{asset('assets/images/underConstruction.png')}}">
 		@endif
-	</div>  
+	</div>
 
 	<table width="100%" class="page-trigger" style="padding: 10px 10px 0px 10px;margin-left: 0px">
 		<tr>
@@ -143,7 +157,7 @@
 				<tr>
 					<td style="width: 40px">
 					</td>
-					<td class="text-center"> 
+					<td class="text-center">
 						<p>
 							<a href="{{Route('home')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="height: 50px;padding: 5px 0px" ></a>
 						</p>
@@ -186,7 +200,7 @@
 
 				<div style="float: right">
 					<button  class="btn btn-info trigger-prev prvs" style="display: none;padding: 2px 6px"><i class="fa fa-backward" aria-hidden="true"></i>&nbsp;&nbsp;পূর্ববর্তী অংশ</button>
-					<button class="btn btn-info trigger-next nxt" style="display: none;padding: 2px 6px">পরবর্তী অংশ&nbsp;&nbsp;<i class="fa fa-forward" aria-hidden="true"></i></button> 
+					<button class="btn btn-info trigger-next nxt" style="display: none;padding: 2px 6px">পরবর্তী অংশ&nbsp;&nbsp;<i class="fa fa-forward" aria-hidden="true"></i></button>
 				</div>
 			</div>
 			<br/>
@@ -248,7 +262,7 @@
   ## modal open ##
   ###################################*/
   function modalOpen(image,image_location,related_item,image_width){
-  	$('#newsPopup').fadeIn(100); 
+  	$('#newsPopup').fadeIn(100);
   	modal.style.display = "block";
   	/*==modal width set==*/
   	var modal_width = image_width;
@@ -385,7 +399,7 @@
  			display     : display_pages,
  			border          : false,
  			text_color        : '#888',
- 			background_color      : '#EEE', 
+ 			background_color      : '#EEE',
  			text_hover_color      : 'black',
  			background_hover_color  : '#CFCFCF'
  		});
@@ -405,7 +419,7 @@
 
  <!-- article print-->
  <script type="text/javascript">
- 	function printDiv(bangla_date) 
+ 	function printDiv(bangla_date)
  	{
  		var newWin=window.open('','Print-Window');
  		var site_url = $(".site_url").val();
@@ -492,12 +506,12 @@
 				image_gp_link: gp_link,
 				image: gp_mainImage
 			}
-		});		
+		});
 
  	});
 
 
- 	function printPage(printPage) 
+ 	function printPage(printPage)
  	{
 
  		var newWinPage=window.open('','Print-Window');

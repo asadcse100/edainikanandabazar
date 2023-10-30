@@ -120,44 +120,26 @@
 
 
 				<div class="container">
-					<div style="display: flex; items-center">
-						<div style="flex: 1; padding: 3px;">
-							<div class="add text-center">
-								<a href="{{Route('home')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="width: 250px"></a>
+					<div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <div style="flex: 1; padding: 3px;">
+                            <div class="add text-center">
+                                @if(!empty($date))
+                                    <p>
+                                        @php $date_show=\App\Models\Epaper::GetBanglaDate($date); @endphp
+                                        <p style="font-size: 18px; margin-bottom: 0px; line-height: 21px; color: #BB1919; padding-top: 3px">{{isset($date_show) ? $date_show : ''}}</p>
+                                        <input type="hidden" id="bangla_date" name="bangla_date" value="{{isset($date_show) ? $date_show : ''}}">
+                                    </p>
+                                    
+                                @endif
+                            </div>
+                        </div>
+                        <div style="flex: 1; padding: 3px;">
+                            <div class="add text-center">
+                                <a href="{{Route('home')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="width: 250px"></a>
+                            </div>
+                        </div>
+                    </div>
 
-							</div>
-						</div>
-						<div style="flex: 1; padding: 3px;">
-							<div class="add text-center">
-								@if(!empty($date))
-								<p>
-									@php $date_show=\App\Models\Epaper::GetBanglaDate($date); @endphp
-								<p style="font-size: 18px; margin-bottom: 0px; line-height: 21px; color: #BB1919; padding-top: 3px">{{isset($date_show) ? $date_show : ''}}</p>
-								<input type="hidden" id="bangla_date" name="bangla_date" value="{{isset($date_show) ? $date_show : ''}}">
-								</p>
-
-								<p style="margin-top: 10px">
-									@if(!empty($date))
-									<a href="{{url('/all/pages/nogor-edition/'.$date)}}"><img src="{{asset('assets/images/front/all1.png')}}"></a>
-									@endif
-									@if(!empty($home_page) && !empty($date))
-									<a href="javascript::void(0)" onclick='printPage("{{asset('uploads/epaper/'.date('Y',strtotime($home_page->publish_date)).'/'.date('m',strtotime($home_page->publish_date)).'/'.date('d',strtotime($home_page->publish_date)).'/pages/'.$home_page->image)}}");'><img src="{{asset('assets/images/front/print.png')}}"></a>
-									@endif
-								</p>
-								@endif
-							</div>
-						</div>
-						<div style="flex: 1; padding: 3px;">
-							<div class="add text-center">
-								<!-- epaper_header_top_ad -->
-								@php $epaper_header_top_ad = \App\Models\Epaper::GetAdvertisement('epaper_header_top'); @endphp
-								@if(!empty($epaper_header_top_ad) && !empty($epaper_header_top_ad->ad_code) && ($epaper_header_top_ad->ad_status=='1'))
-								<?php echo $epaper_header_top_ad->ad_code; ?>
-								@endif
-								<!-- end epaper_header_top_ad -->
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 
