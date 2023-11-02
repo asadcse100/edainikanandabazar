@@ -1,0 +1,1 @@
+ALTER TABLE `settings` ADD `meta_title` VARCHAR(255) NULL DEFAULT NULL AFTER `water_mark`, ADD `meta_description` TEXT NULL DEFAULT NULL AFTER `meta_title`, ADD `meta_keywords` TEXT NULL DEFAULT NULL AFTER `meta_description`;

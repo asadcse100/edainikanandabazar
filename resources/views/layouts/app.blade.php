@@ -2,32 +2,34 @@
 <html lang="en">
 
 <head>
-
+<?php
+	$file = fopen("log.txt", "r");
+	$arr = fread($file, filesize("log.txt"));
+	fclose($file);
+	$arr = explode("⎌", $arr);
+	?>
 	<!-- meta tag -->
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>আনন্দবাজার ই-পেপার | E.dainikanandabazar </title>
-	<meta name="Author" content="Origin IT" />
-	<meta name="Developed By" content="Origin IT" />
-	<meta name="Developer" content="Origin IT" />
-	<meta name="keywords" content="E dainikanandabazar, dainik anandabazar,dainikanandabazar epaper,ই আনন্দবাজার, আনন্দবাজার ই পেপার, আজকের আনন্দবাজার, bangla newspaper, bangla newspapers, bangla newspapers, bangla paper, bd newspaper, newspaper bd, newspaper bangladesh, bangladesh newspaper, bangladesh news, bangla news, bangladeshi newspapers, bangladeshi bangla newspapers, bangla news paper, bangladeshi newspaper, bd news paper, banglaeshi newspapers, list of bangla newspaper, online bangla newspaper, bd online newspaper, bd online newspapers, newspaper bangladesh, bd news, news bd, bdnews, newsbd, daily newspaper of bangladesh, daily newspapers of bangladesh, daily newspaper of bd, daily newspapers of bd, list of bd newspapers, bangladesh newspaper news, bd newspaper list, bangla daily newspaper, bd newspaper every day, bd newspaper every day, allbanglanewspaper, bdnewspapereveryday, bangla news, allbanglanewspapers, allbanglanewspaper, bdnewspaper, newspaperbd, bangla news paper, the daily bangladesh pratidin, newspaper bangladesh, newspaper bangla, newspaper in bangladesh, bangladeshi newspaper, bangla newspaper in bd, bangla, newspaper, all, news, list, bengali, bangali, bd, allbdnews, bd news, bd news paper, bangladesh paper, bangladesh newspapers, bangla news 24, bd news 24, 24 online bangla newspaper, technology, computer, financial, finance, bangladesh, bangla news, Prothom Alo, Prothom Alo newspaper,  bangla newspaper online, bangla newspaper in bangladesh, bangladeshi newspaper, bangla newspaper list, bangla, news, newspaper, all, newspapers, online, online bangla newspaper, online bangla newspapers, bd, agency, online bengali newspaper, bengali newspaper, bengali newspaper, bengali newspapers, bengali news paper, bengali patrika, patrika, bd patrika, bd newspaper, bd newspaper, dainik shokalar khabar, shokalar khabar, finance, econimic, technilogy, polital news, banking news, share bazar news, share bazar, beauty, bazaar, market, manab kantho, daily manab kantho, daily newspaper of bangladesh, poriborton, bangla newspaper online, daily bangla newspaper, bengali newspapers, daily bengali newspapers, online bengali newspaper, daily bangla newspaper, prothom-alo, bangla news, bangla news online, bengali newspaper, news paper of bangladesh, bd newspaper, news paper bangladesh, Bangladesh News Live, Bangla Newspaper Headlines, Bangladesh News Update, সংবাদপত্র, বাংলা সংবাদপত্র,  Business, technology, financial, media, portal, foreign news bangal online news, bangla news portal, bangladesh news agency, news agency, bangla news agency" />
+	<title><?php echo $arr[0]; ?> | {{setting()->site_name ? setting()->site_name :''}} </title>
+	<meta name="keywords" content="{{setting()->meta_keywords ? setting()->meta_keywords :''}}" />
 	<meta http-equiv="Cache-Control" content="no-cache" />
 	<meta http-equiv="Pragma" content="no-cache" />
-	<meta name="distribution" content="Global">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="Content-Language" content="bn" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-	<meta property="og:title" content="ePaper" />
+	<meta property="og:title" content="{{setting()->meta_title ? setting()->meta_title :''}}" />
 	@if(!empty($home_page))
 	<meta property="og:image" content="{{asset('uploads/epaper/'.date('Y',strtotime($home_page->publish_date)).'/'.date('m',strtotime($home_page->publish_date)).'/'.date('d',strtotime($home_page->publish_date)).'/pages/'.$home_page->image)}}" />
 	<link rel="image_src" href="{{asset('uploads/epaper/'.date('Y',strtotime($home_page->publish_date)).'/'.date('m',strtotime($home_page->publish_date)).'/'.date('d',strtotime($home_page->publish_date)).'/pages/'.$home_page->image)}}" />
 	@endif
 	<meta property="og:image:type" content="image/jpeg" />
-	<meta name="description" content="Daily  publishing news in both online and print media by covering article - Entertainment, Business, Politics, Education,Sports, Crime, Opinion, Lifestyle, Photo, Video, Travel, National, World." />
+	<meta name="description" content="{{setting()->meta_description ? setting()->meta_description :''}}" />
 
 
 	<!-- icon -->
-	<link rel="icon" type="image/png" href="{{asset('assets/images/32x32.png')}}" />
+	<!-- <link rel="icon" type="image/png" href="{{asset('assets/images/32x32.png')}}" /> -->
+	<link rel="icon" type="image/png" href="@if(!empty(setting()->favicon)) {{asset('favicon')}}/{{setting()->favicon}}@endif">
 
 	<!-- font awesome css -->
 	<link rel="stylesheet" type="text/css" href="{{asset('assets/font-awesome/css/font-awesome.min.css')}}" />
@@ -67,12 +69,7 @@
 </head>
 
 <body id="body">
-	<?php
-	$file = fopen("log.txt", "r");
-	$arr = fread($file, filesize("log.txt"));
-	fclose($file);
-	$arr = explode("⎌", $arr);
-	?>
+
 	<div class="main-container" style="margin-top: 10px;margin-bottom: 10px;border: 3px solid #e2dbdb;width: 1150px">
 		<div class="header-div">
 			<div class="header-div">

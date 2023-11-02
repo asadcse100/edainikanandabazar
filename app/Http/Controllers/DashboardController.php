@@ -200,6 +200,9 @@ class DashboardController extends Controller
             ],
             [
                 'site_name' => $request->site_name,
+                'meta_title' => $request->meta_title,
+                'meta_description' => $request->meta_description,
+                'meta_keywords' => $request->meta_keywords,
                 'logo' => $logoName,
                 'favicon' => $faviconName,
                 'water_mark' => $water_markName,

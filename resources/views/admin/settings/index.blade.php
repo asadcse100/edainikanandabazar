@@ -63,7 +63,6 @@
 </section>
 <!-- end messages -->
 
-
 <!-- Main content -->
 <section class="content">
 	<div class="row">
@@ -105,6 +104,27 @@
 							</div>
 						</div>
 
+						<div class="box-header with-border"><h4 class="box-title">SEO Settings</h4></div>
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Meta Title</label>
+							<div class="col-sm-9">
+								<input type="text" name="meta_title" class="form-control" value="@if(!empty($setting->meta_title)){{$setting->meta_title}}@endif">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Meta description</label>
+							<div class="col-sm-9">
+								<textarea class="form-control" name="meta_description" cols="30" rows="10">@if(!empty($setting->meta_description)){{$setting->meta_description}}@endif</textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Meta keywords</label>
+							<div class="col-sm-9">
+							<textarea class="form-control" name="meta_keywords" cols="30" rows="10">@if(!empty($setting->meta_keywords)){{$setting->meta_keywords}}@endif</textarea>
+							</div>
+						</div>
+
 						<div class="box-footer">
 							<button type="submit" class="btn btn-primary pull-right">Save</button>
 						</div>
@@ -114,87 +134,10 @@
 			</div>
 		</div>
 
-		<!-- category list -->
-		<!-- <div class="col-md-7">
-			<div class="box box-success">
-				<div class="box-header with-border"><h4 class="box-title">Category List</h4></div>
-				<div class="box-body">
-					
-					<table class="table table-bordered table-hover table-text-center" id="category-dataTable">
-						<thead>
-							<tr>
-								<th>SL</th>
-								<th>Category Title</th>
-								<th>Crt. Date</th>
-								<th>Crt. By</th>
-								<th>Status</th>
-								<th>Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							@if(!empty($category_list) && (count($category_list)>0))
-							@foreach($category_list as $key => $list)
-							<tr>
-								<td>{{$key+1}}</td>
-								<td>{{$list->name}}</td>
-								<td>{{ date("d-M-y", strtotime($list->created_at))}}</td>
-								<td><b>{{$list->creator_name}}</b></td>
-								<td>
-									@if(isset($list->status) && ($list->status==1))
-									<button type="button" data-id="{{$list->id}}" data-status="0" class="btn btn-default btn-xs changeStatus"><i class="fa fa-check"></i></button>
-									@else
-									<button type="button" data-id="{{$list->id}}" data-status="1" class="btn btn-danger btn-xs changeStatus"><i class="fa fa-times"></i></button>
-									@endif
-								</td>
-								<td>
-									<button type="button" class="btn btn-info btn-xs openEditModal" data-toggle="modal" data-target="#editCategory" data-id="{{$list->id}}" data-category="{{$list->name}}"><i class="fa fa-edit"></i></button>
-
-									<button type="button" data-confirm-url="{{url('/category/delete',$list->id)}}"  class="btn btn-danger btn-xs confirm_box"><i class="fa fa-trash"></i></button>
-								</td>
-							</tr>
-							@endforeach
-							@endif
-						</tbody>
-					</table>
-
-				</div>
-			</div>
-		</div> -->
-		<!-- end category list -->
-
-
 	</div>
 </section>
 <!-- /.content -->
 
-<!-- edit modal -->
-<!-- <div class="modal fade" id="editCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="exampleModalLabel">Update Category</h4>
-			</div>
-			<form class="form-horizontal" action="{{url('/category/update')}}" method="post" enctype="multipart/form-data">
-				<input type="hidden" name="_token" value="{{csrf_token()}}">
-				<div class="modal-body">
-					<div class="form-group">
-						<label class="col-sm-3 control-label">Category Title</label>
-						<div class="col-sm-9">
-							<input type="text" name="category_name" id="category_name" class="form-control" required="required">
-							<input type="hidden" name="category_id" id="id">
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary">Update Category !</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div> -->
-<!-- end edit modal -->
 
 @endsection
 

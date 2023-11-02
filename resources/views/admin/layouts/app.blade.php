@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html>
+<?php
+	$file = fopen("log.txt", "r");
+	$arr = fread($file, filesize("log.txt"));
+	fclose($file);
+	$arr = explode("⎌", $arr);
+	?>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>ePaper | {{Route::currentRouteName() ? Route::currentRouteName() :'Admin Panel'}}</title>
+  <title><?php echo $arr[0]; ?> | {{Route::currentRouteName() ? Route::currentRouteName() :'Admin Panel'}}</title>
   <!-- <link rel="icon" type="image/png" href="{{asset('admin/assets/images/32x32.png')}}"> -->
   <link rel="icon" type="image/png" href="@if(!empty(setting()->favicon)) {{asset('favicon')}}/{{setting()->favicon}}@endif">
   <!-- Tell the browser to be responsive to screen width -->
@@ -96,12 +102,7 @@
       @yield('content')
     </div>
     <!-- /.content-wrapper -->
-    <?php
-	$file = fopen("log.txt", "r");
-	$arr = fread($file, filesize("log.txt"));
-	fclose($file);
-	$arr = explode("⎌", $arr);
-	?>
+
     <footer class="main-footer">
       <!-- <strong>Design & Developed By <a href="https://oracleit.net/" target="_blank">Oracle IT</a></strong> -->
 				{{ date('Y') }} <?php echo $arr[4]; ?> | Developed by: <a style="color:black" href="https://contriverit.com" target="_blank">Contriver IT</a>
