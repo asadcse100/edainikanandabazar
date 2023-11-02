@@ -233,12 +233,11 @@ class DashboardController extends Controller
         if($v->passes()){
 
             try{
-
                 $topbar_data=array(
                  'title' => \Request::input('title'),
                  'url' => \Request::input('url'),
-                 'user_status' => 1,
-                 'created_at' => $now,
+                 'is_active' => 1,
+                 'created_at' => $now
                  );
 
                 $user_save=\DB::table('topbar_infos')->insert($topbar_data);

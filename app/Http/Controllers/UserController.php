@@ -29,60 +29,114 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function create()
+    // {
+    //     date_default_timezone_set("Asia/Dhaka");
+    //     $now=date('Y-m-d H:i:s');
+
+    //     $rules=array(
+    //       'name' => 'required',
+    //       'email' => 'required|email',
+    //       'password' => 'required|min:6',
+    //       'role' => 'required',
+    //       );
+    //     $v=\Validator::make(\Request::all(), $rules);
+
+    //     if($v->passes()){
+
+    //         try{
+
+    //             $name_explode=explode(' ',strtolower(\Request::input('name')));
+    //             $name_implode=implode('-',$name_explode);
+
+    //             if(!empty(\Request::file('user_image'))){
+    //                 $image = \Request::file('user_image');
+    //                 $img_ext=$image->getClientOriginalExtension();
+    //                 $filename  = $name_implode.'-'.time().'.'.$img_ext;
+    //                 $path ='assets/images/avatars/' . $filename;
+    //                 \Image::make($image)->resize(150, 170)->save($path);
+    //             }else{
+    //                 $filename='';
+    //             }
+
+    //             $user_data=array(
+    //              'name' => \Request::input('name'),
+    //              'email' => \Request::input('email'),
+    //              'password' => bcrypt(\Request::input('password')),
+    //              'role' => \Request::input('role'),
+    //              'user_image' => $filename,
+    //              'login_status' => 0,
+    //              'user_status' => 1
+    //              );
+    //              \DB::enableQueryLog();
+    //             $user_save=\DB::table('users')->insert($user_data);
+    //         }catch(\Exception $e){
+
+    //             unlink('assets/images/avatars/'.$filename);
+
+    //             return \Redirect::to('/manage-users')->with('message',"Problem creating user.please try again..!");
+    //         }
+
+    //         return \Redirect::to('/manage-users')->with('message',"User has been created successfully !");
+
+    //     }else return \Redirect::to('/manage-users')->withInput()->withErrors($v->messages());
+    // }
+
     public function create()
-    {
-        date_default_timezone_set("Asia/Dhaka");
-        $now=date('Y-m-d H:i:s');
+{
+    date_default_timezone_set("Asia/Dhaka");
+    $now = now();
 
-        $rules=array(
-          'name' => 'required',
-          'email' => 'required|email',
-          'password' => 'required|min:6',
-          'role' => 'required',
-          );
-        $v=\Validator::make(\Request::all(), $rules);
+    $rules = [
+        'name'     => 'required',
+        'email'    => 'required|email',
+        'password' => 'required|min:6',
+        'role'     => 'required',
+    ];
 
-        if($v->passes()){
+    $validator = \Validator::make(\Request::all(), $rules);
 
-            try{
+    if ($validator->passes()) {
+        try {
+            $name = \Request::input('name');
+            $name_implode = str_replace(' ', '-', strtolower($name));
+            $filename = '';
 
-                $name_explode=explode(' ',strtolower(\Request::input('name')));
-                $name_implode=implode('-',$name_explode);
-
-                if(!empty(\Request::file('user_image'))){
-                    $image = \Request::file('user_image');
-                    $img_ext=$image->getClientOriginalExtension();
-                    $filename  = $name_implode.'-'.time().'.'.$img_ext;
-                    $path ='assets/images/avatars/' . $filename;
-                    \Image::make($image)->resize(150, 170)->save($path);
-                }else{
-                    $filename='';
-                }
-
-                $user_data=array(
-                 'name' => \Request::input('name'),
-                 'email' => \Request::input('email'),
-                 'password' => bcrypt(\Request::input('password')),
-                 'role' => \Request::input('role'),
-                 'user_image' => $filename,
-                 'login_status' => 0,
-                 'user_status' => 1,
-                 'created_at' => $now,
-                 );
-
-                $user_save=\DB::table('users')->insert($user_data);
-
-            }catch(\Exception $e){
-
-                unlink('assets/images/avatars/'.$filename);
-
-                return \Redirect::to('/manage-users')->with('message',"Problem creating user.please try again..!");
+            if (!empty(\Request::file('user_image'))) {
+                $image = \Request::file('user_image');
+                $img_ext = $image->getClientOriginalExtension();
+                $filename = $name_implode . '-' . time() . '.' . $img_ext;
+                $path = 'assets/images/avatars/' . $filename;
+                \Image::make($image)->resize(150, 170)->save($path);
             }
 
-            return \Redirect::to('/manage-users')->with('message',"User has been created successfully !");
+            $user_data = [
+                'name'         => $name,
+                'email'        => \Request::input('email'),
+                'password'     => bcrypt(\Request::input('password')),
+                'role'         => \Request::input('role'),
+                'user_image'   => $filename,
+                'login_status' => 0,
+                'user_status'  => 1,
+                'created_at'   => $now
+            ];
 
-        }else return \Redirect::to('/manage-users')->withInput()->withErrors($v->messages());
+            \DB::enableQueryLog();
+            \DB::table('users')->insert($user_data);
+
+            return \Redirect::to('/manage-users')->with('message', "User has been created successfully!");
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            if (!empty($filename)) {
+                unlink('assets/images/avatars/' . $filename);
+            }
+
+            return \Redirect::to('/manage-users')->with('message', "Problem creating user. Please try again..!");
+        }
+    } else {
+        return \Redirect::to('/manage-users')->withInput()->withErrors($validator->messages());
     }
+}
 
 
 
@@ -150,9 +204,6 @@ class UserController extends Controller
         }else return \Redirect::to('/manage-users')->withErrors($v->messages());
 
     }
-
-
-
 
     #----------------- End -----------------#
 }

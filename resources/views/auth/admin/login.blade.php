@@ -6,7 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>ePaper | {{Route::currentRouteName() ? Route::currentRouteName() :'Admin Panel'}}</title>
 
-  <link rel="icon" type="image/png" href="{{asset('assets/images/32x32.png')}}">
+  <!-- <link rel="icon" type="image/png" href="{{asset('assets/images/32x32.png')}}"> -->
+  <link rel="icon" type="image/png" href="@if(!empty(setting()->favicon)) {{asset('favicon')}}/{{setting()->favicon}}@endif">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   
   <!-- Bootstrap 3.3.6 -->
@@ -62,7 +63,7 @@
       </div>
     </form>
     <br>
-    <p class="text-right">Developed by: <a style="color:black" href="https://contriverit.com" target="_blank">Contriver IT</a></p>
+    <p class="text-center">Developed by: <a style="color:black" href="https://contriverit.com" target="_blank">Contriver IT</a></p>
   </div>
 
 </div>

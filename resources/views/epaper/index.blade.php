@@ -302,7 +302,7 @@
 
 <input type="hidden" class="get_pagination" value="{{isset($pagination_pages) ? count($pagination_pages) : ''}}">
 <input type="hidden" class="current_date" value="{{isset($date) ? $date : ''}}">
-
+<img src="" class="main_image" style="display: none" >
 
 
 <!-- js for the page -->
@@ -540,8 +540,6 @@
  </script>
  <!--end js for modal-->
 
-
-
  <!--pagination-->
  <script src="{{asset('assets/js/jquery.paginate.js')}}" type="text/javascript"></script>
  <script type="text/javascript">
@@ -572,30 +570,6 @@
  	}
  </script>
  <!--pagination end-->
-
-
-
- <!-- article print-->
- <!-- <script type="text/javascript">
- 	function printDiv(bangla_date)
- 	{
- 		var newWin=window.open('','Print-Window');
- 		var site_url = $(".site_url").val();
- 		var main_image_link = $(".image_view").attr( "src" );
- 		var main_image = site_url+'/'+main_image_link;
- 		var related_image_link = $(".related_image").attr( "src" );
- 		var related_image = site_url+'/'+related_image_link;
- 		newWin.document.open();
- 		if(related_image_link != ''){
- 			newWin.document.write('<html><body onload="window.print()">'+'<center><img src="{{asset("assets/images/logo1.png")}}" style="height:50px;" />'+'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">'+bangla_date+'</p>'+'<img src='+main_image+' />'+'</center></body>'+'<body><center>'+'<img src='+related_image+' />'+'</center></body>'+'</html>');
- 		}else{
- 			newWin.document.write('<html><body onload="window.print()">'+'<center><img src="{{asset("assets/images/logo1.png")}}" style="height:50px;" />'+'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">'+bangla_date+'</p>'+'<img src='+main_image+' />'+'</center></body></html>');
- 		}
- 		newWin.document.close();
- 		setTimeout(function(){newWin.close();},10);
- 	}
- </script> -->
-
  
  <!-- article print-->
  <script type="text/javascript">
@@ -774,6 +748,7 @@ if (related_image_link != '') {
  		var gp_mainImage = gp_splited[gp_length-1];
 
  		var site_url = $(".site_url").val();
+		 console.log(site_url, gp_link, gp_mainImage);
 		$.ajax({
 			method: "GET",
 			url: "{{ Route('download') }}",

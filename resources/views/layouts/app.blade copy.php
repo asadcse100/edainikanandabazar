@@ -264,10 +264,8 @@
 						</table>
 					</div>
 
-					<p class="text-center" style="font-size: 14px; color: black; border-top: 1px solid #636363; margin-top: 10px; text-align: center; padding-right: 0px; padding-left: 0px">
-						Developed by: <a style="color: black; text-decoration: none;" href="https://contriverit.com" target="_blank"><strong>Contriver IT</strong></a>
-					</p>
-
+					<p class="text-right" style="font-size: 14px;color:black;border-top:1px solid #636363;margin-top: 10px;text-align: left;padding-right: 0px;padding-left: 0px">
+						{{ date('Y') }} <?php echo $arr[4]; ?> | Developed by: <a style="color:black" href="https://contriverit.com" target="_blank">Contriver IT</a></p>
 				</div>
 			</div>
 			@endif

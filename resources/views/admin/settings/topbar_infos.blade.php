@@ -64,7 +64,7 @@
         <div class="col-md-12">
             <div class="box box-success">
                 <div class="box-header with-border">
-                    <h4 class="box-title">User Management</h4> <button type="button" data-toggle="modal" data-target="#addNewUser" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</button>
+                    <h4 class="box-title">Top Bar</h4> <button type="button" data-toggle="modal" data-target="#addNewUser" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</button>
                 </div>
                 <div class="box-body">
 

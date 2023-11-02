@@ -103,9 +103,9 @@
     </div>
     <!-- /.content-wrapper -->
 
-    <footer class="main-footer">
+    <footer class="main-footer" style="text-align: center;">
       <!-- <strong>Design & Developed By <a href="https://oracleit.net/" target="_blank">Oracle IT</a></strong> -->
-				{{ date('Y') }} <?php echo $arr[4]; ?> | Developed by: <a style="color:black" href="https://contriverit.com" target="_blank">Contriver IT</a>
+			Developed by: <a style="color: black; text-decoration: none;" href="https://contriverit.com" target="_blank"><strong>Contriver IT</strong></a>
     </footer>
 
     <!-- Control Sidebar -->
