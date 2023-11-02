@@ -81,9 +81,9 @@
 							<td>
 								<div class="date text-left" style="margin-top: 2px">									
 									<p style="color: black;font-size: 17px">
-										<?php echo $arr[0]; ?> | <a style="color: #3C5A98" href="<?php echo $arr[1]; ?>" target="_blank">অনলাইন ভার্সন</a>
+										<?php echo $arr[0]; ?> | <a style="color: #3C5A98; text-decoration: none;" href="<?php echo $arr[1]; ?>" target="_blank">অনলাইন ভার্সন</a>
 										@foreach(DB::table('topbar_infos')->get() as $data)
-										<a style="color: #3C5A98" href="{{$data->url}}" target="_blank">
+										<a style="color: #3C5A98; text-decoration: none;" href="{{$data->url}}" target="_blank">
 											{{$data->title}} |
 										</a>
 										@endforeach
