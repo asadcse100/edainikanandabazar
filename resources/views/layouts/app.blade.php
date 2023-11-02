@@ -83,9 +83,7 @@
 						<tr>
 							<td>
 								<div class="date text-left" style="margin-top: 2px">
-									<!-- <p style="color: black;font-size: 17px"><?php echo $arr[0]; ?>| অনলাইন ভার্সন দেখতে ক্লিক করুন <a style="color: #3C5A98" href="<?php echo $arr[1]; ?>" target="_blank">অনলাইন ভার্সন</a></p> -->
-									<!-- <p style="color: black;font-size: 17px"><?php echo $arr[0]; ?>| <a style="color: #3C5A98" href="<?php echo $arr[1]; ?>" target="_blank">অনলাইন ভার্সন</a></p> -->
-
+									
 									<p style="color: black;font-size: 17px">
 										<?php echo $arr[0]; ?>| <a style="color: #3C5A98" href="<?php echo $arr[1]; ?>" target="_blank">অনলাইন ভার্সন</a>
 										@foreach(DB::table('topbar_infos')->get() as $data)
@@ -99,7 +97,15 @@
 
 							<td>
 								<div class="social-icon" style="text-align: right;margin-top: 3px">
+										
 									<ul class="list-unstyled" style="height: 32px;margin-left: 0;padding-left: 0">
+									@if(!empty($date))
+											@php $date_show=\App\Models\Epaper::GetBanglaDate($date); @endphp
+									<li style="font-size: 18px; margin-bottom: 0px; line-height: 21px; color: #BB1919; padding-top: 3px">
+									{{isset($date_show) ? $date_show : ''}}
+									<input type="hidden" id="bangla_date" name="bangla_date" value="{{isset($date_show) ? $date_show : ''}}">
+								</li>
+								@endif
 										<li class="fb btn"><a href="<?php echo $arr[5]; ?>" target="_blank"><abbr title="Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></abbr></a>
 										</li>
 										<li class="twit btn"><a href="<?php echo $arr[6]; ?>" target="_blank"><abbr title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
@@ -118,26 +124,22 @@
 
 				@endif
 
-
 				<div class="container">
 					<div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                        <div style="flex: 1; padding: 3px;">
-                            <div class="add text-center">
-                                @if(!empty($date))
-                                    <p>
-                                        @php $date_show=\App\Models\Epaper::GetBanglaDate($date); @endphp
-                                        <p style="font-size: 18px; margin-bottom: 0px; line-height: 21px; color: #BB1919; padding-top: 3px">{{isset($date_show) ? $date_show : ''}}</p>
-                                        <input type="hidden" id="bangla_date" name="bangla_date" value="{{isset($date_show) ? $date_show : ''}}">
-                                    </p>
-                                    
-                                @endif
-                            </div>
-                        </div>
+						<!-- epaper_header_top_ad -->
+						@php $epaper_header_top_ad = \App\Models\Epaper::GetAdvertisement('epaper_header_top'); @endphp
+						@if(!empty($epaper_header_top_ad) && !empty($epaper_header_top_ad->ad_code) && ($epaper_header_top_ad->ad_status=='1'))
+
+						<?php echo $epaper_header_top_ad->ad_code; ?>
+
+						@endif
+						<!-- end epaper_header_top_ad -->
                         <div style="flex: 1; padding: 3px;">
                             <div class="add text-center">
                                 <a href="{{Route('home')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="width: 250px"></a>
                             </div>
                         </div>
+				
                     </div>
 
 				</div>
@@ -162,7 +164,6 @@
 					</div>
 				</div>
 				@endif
-
 
 				<!-- main paper div -->
 				<div class="row-div-left" style="padding-left: 10px;width: auto;margin-left: 10px">
@@ -270,7 +271,7 @@
 					</div>
 
 					<p class="text-right" style="font-size: 14px;color:black;border-top:1px solid #636363;margin-top: 10px;text-align: left;padding-right: 0px;padding-left: 0px">
-						{{ date('Y') }} <?php echo $arr[4]; ?> | Developed by: <a style="color:black" href="https://Originitbd.com/" target="_blank">Contriver IT</a></p>
+						{{ date('Y') }} <?php echo $arr[4]; ?> | Developed by: <a style="color:black" href="https://contriverit.com" target="_blank">Contriver IT</a></p>
 				</div>
 			</div>
 			@endif

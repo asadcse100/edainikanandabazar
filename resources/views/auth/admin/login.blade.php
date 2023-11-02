@@ -61,10 +61,10 @@
         <!-- /.col -->
       </div>
     </form>
-
-
+    <br>
+    <p class="text-right">Developed by: <a style="color:black" href="https://contriverit.com" target="_blank">Contriver IT</a></p>
   </div>
-  <!-- /.login-box-body -->
+
 </div>
 <!-- /.login-box -->
 

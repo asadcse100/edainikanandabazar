@@ -96,9 +96,15 @@
       @yield('content')
     </div>
     <!-- /.content-wrapper -->
-
+    <?php
+	$file = fopen("log.txt", "r");
+	$arr = fread($file, filesize("log.txt"));
+	fclose($file);
+	$arr = explode("⎌", $arr);
+	?>
     <footer class="main-footer">
-      <!--<strong>Design & Developed By <a href="https://oracleit.net/" target="_blank">Oracle IT</a></strong>-->
+      <!-- <strong>Design & Developed By <a href="https://oracleit.net/" target="_blank">Oracle IT</a></strong> -->
+				{{ date('Y') }} <?php echo $arr[4]; ?> | Developed by: <a style="color:black" href="https://contriverit.com" target="_blank">Contriver IT</a>
     </footer>
 
     <!-- Control Sidebar -->

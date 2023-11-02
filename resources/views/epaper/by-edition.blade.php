@@ -27,8 +27,28 @@
 		height: 100%; /* Full height */
 		overflow: auto; /* Enable scroll if needed */
 		background-color: rgb(0,0,0); /* Fallback color */
-		background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+		background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
 		}
+
+		.pagination {
+		display: inline-block;
+		margin-top: 15px;
+	}
+	.pagination a {
+		color: white;
+		float: left;
+		padding: 2px 7px;
+		text-decoration: none;
+		background-color: #846d6d;
+		border: 1px solid #ddd;
+		margin: 0 4px;
+	}
+	.pagination a.active {
+		background-color: #CC0000;
+		color: white;
+		border: 1px solid #CC0000;
+	}
+	.pagination a:hover:not(.active) {background-color: #ddd;}
 
 /* Caption of Modal Image */
 #caption {
@@ -60,8 +80,6 @@
   to {transform:scale(1)}
 }
 
-
-
 .close:hover,
 .close:focus {
   color: #bbb;
@@ -77,16 +95,6 @@
 	}
 	}
 
-</style>
-
-<style type="text/css">
-	.modal{
-		background-image: url({{asset('assets/images/overlay.png')}});
-		
-}
-
-</style>
-<style>
     /* Base styles for the modal content */
     .modal-content {
         max-width: 100%;
@@ -157,7 +165,7 @@
 
 	@if(!empty($date))
 	@php $date_show=\App\Models\Epaper::GetBanglaDate($date); @endphp
-	<table style="width: 100%;background-color: #D2D0CE;margin: 0px 0px 10px 0px">
+	<!-- <table class="pagination" style="width: 100%;background-color: #EEEEEE;margin: 0px 0px 10px 0px">
 		<tr>
 			<td>
 				<center>
@@ -171,7 +179,34 @@
 				</center>
 			</td>
 		</tr>
-	</table>
+	</table> -->
+	<div class="pagination" style="width: 100%;background-color: #EEEEEE;margin: 0px 0px 10px 0px;">
+
+<div class="row">
+	<div class="col-xs-4">
+		@if(!empty($date))
+		<a href="{{url('/all/pages/nogor-edition/'.$date)}}">সব পাতা</a>
+		@endif
+	</div>
+	<div class="col-xs-4 text-center">
+		<a style="margin-left: 0px;" href="#">&laquo;</a>
+		@for($i=1; $i <= count($pagination_pages); $i++)
+		<a href="{{url('/nogor-edition/'.$date.'/'.$i)}}">{{$i}}</a>
+		@endfor
+		<a href="{{url('/nogor-edition/'.$date.'/1')}}">&raquo;</a>
+	</div>
+	<div class="col-xs-4">
+		<div class="text-right">
+			@if(!empty($home_page) && !empty($date))
+			<a href="javascript::void(0)" onclick='printPage("{{asset('uploads/epaper/'.date('Y',strtotime($home_page->publish_date)).'/'.date('m',strtotime($home_page->publish_date)).'/'.date('d',strtotime($home_page->publish_date)).'/pages/'.$home_page->image)}}");'>
+			প্রিন্ট</a>
+			@endif
+		</div>
+	</div>
+</div>
+
+
+</div>
 	@else
 	@php $date_show=Null; $data = Null; @endphp
 	@endif
@@ -239,7 +274,9 @@
 
 <!-- The Modal -->
 <div id="newsPopup" class="modal">
+
 	<div class="modal-content customized_content loading_img" id="modal-content" style="width: 1000px;">
+
 		<div class="modal-head" >
 			<table width="100%" class="modal_table">
 				<tr>
@@ -265,6 +302,7 @@
 
 		<div class="modal-body text-center" style="padding: 20px;">
 			<div id='DivIdToPrint' class="modal-main-img img-responsive" id="newsImg">
+
 				<center>
 					<img src=""  id="singleNewsImg" class="image_view">
 					<img src="" class="related_image">
@@ -280,7 +318,7 @@
 
 					<!-- <button type="button"  class="btn btn-default share_on_gplus" style="background-color: #E53935;border-radius: 50%;padding: 5px 7px 5px 7px;"><i class="fa fa-google" style="color: white" aria-hidden="true"></i></button> -->
 
-					<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button"  name="wahtsapp" class="btn btn-success"> <i class="fa fa-whatsapp"></i></button>
+					<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" class="btn btn-success share_on_whatsapp"> <i class="fa fa-whatsapp"></i></button>
 				</div>
 
 				<div style="float: right">
@@ -690,6 +728,35 @@ if (related_image_link != '') {
  				window.open('https://twitter.com/intent/tweet?url='+tw_requested_url,  '', 'window settings');
  		}
  	});
+
+	 $('.share_on_whatsapp').click(function(){
+    var site_url = $(".site_url").val();
+    var fb_link = '/' + $(".main_image").attr("src");
+    var splitedfb = fb_link.split("images/");
+    var lengthfb = splitedfb.length;
+    var fb_link = splitedfb[lengthfb-2];
+    var mainImage = splitedfb[lengthfb-1];
+
+    var related_image = $(".related_image").attr("src");
+
+    if (related_image != '') {
+        var splited = related_image.split("/");
+        var length = splited.length;
+        var related_image = splited[length-1];
+        var requested_url = site_url + fb_link + 'images/shared/' + mainImage + '/' + related_image;
+    } else {
+        var requested_url = site_url + fb_link + 'images/shared/' + mainImage;
+    }
+
+    var whatsappMessage = 'Check out this link: ' + requested_url;
+
+    // Encode the message and URL for WhatsApp
+    var encodedMessage = encodeURIComponent(whatsappMessage);
+    var whatsappURL = 'https://api.whatsapp.com/send?text=' + encodedMessage;
+
+    // Open the WhatsApp share URL in a new window
+    window.open(whatsappURL, '', 'window settings');
+});
 
 	 $('.copyImagePath').click(function () {
     var gp_link = '/' + $(".main_image").attr("src");

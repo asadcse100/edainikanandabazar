@@ -1,36 +1,41 @@
 @extends('layouts.app')
+
 <style type="text/css">
 	li.current_edition:hover{
 		background-color: inherit !important
 	}
+
+	#mask {
+		position:absolute;
+		left:0;
+		top:0;
+		z-index:9000;
+		background-color:#000;
+		display:none;
+	}
+	#boxes .window {
+		position:absolute;
+		left:0;
+		top:20px;
+		width:auto;
+		height:auto;
+		display:none;
+		z-index:9999;
+		padding:20px;
+		border-radius: 10px;
+		text-align: center;
+	}
+	#boxes #dialog {
+		width:auto;
+		height:auto;
+		padding:10px;
+	}
 </style>
+
 
 <!-- pagination -->
 <style type="text/css">
-
-	/* Modal Content (image) */
-	.modal-content {
-	margin: auto;
-	display: block;
-	width: 100%;
-	max-width: 1200px !important;
-	}
-
-	.modal {
-		display: none; /* Hidden by default */
-		position: fixed; /* Stay in place */
-		z-index: 1; /* Sit on top */
-		padding-top: 100px; /* Location of the box */
-		left: 0;
-		top: 0;
-		width: 100%; /* Full width */
-		height: 100%; /* Full height */
-		overflow: auto; /* Enable scroll if needed */
-		background-color: rgb(0,0,0); /* Fallback color */
-		background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
-		}
-
-		.pagination {
+	.pagination {
 		display: inline-block;
 		margin-top: 15px;
 	}
@@ -49,113 +54,9 @@
 		border: 1px solid #CC0000;
 	}
 	.pagination a:hover:not(.active) {background-color: #ddd;}
-
-/* Caption of Modal Image */
-#caption {
-  margin: auto;
-  display: block;
-  width: 80%;
-  max-width: 1200px !important;
-  text-align: center;
-  color: #ccc;
-  padding: 10px 0;
-  height: 150px;
-}
-
-/* Add Animation */
-.modal-content, #caption {  
-  -webkit-animation-name: zoom;
-  -webkit-animation-duration: 0.6s;
-  animation-name: zoom;
-  animation-duration: 0.6s;
-}
-
-@-webkit-keyframes zoom {
-  from {-webkit-transform:scale(0)} 
-  to {-webkit-transform:scale(1)}
-}
-
-@keyframes zoom {
-  from {transform:scale(0)} 
-  to {transform:scale(1)}
-}
-
-.close:hover,
-.close:focus {
-  color: #bbb;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-
-	/* 100% Image Width on Smaller Screens */
-	@media only screen and (max-width: 1200px){
-	.modal-content {
-		width: 100% !important;
-	}
-	}
-
-    /* Base styles for the modal content */
-    .modal-content {
-        max-width: 100%;
-        padding: 20px;
-    }
-
-    /* Center the content */
-    .modal-body {
-        text-align: center;
-    }
-
-    /* Make the image responsive */
-    .image_view {
-        max-width: 100%;
-        height: auto;
-    }
-
-    /* Center the share buttons */
-    .share-buttons {
-        text-align: center;
-    }
-
-    /* Adjust button styles for small screens */
-    .btn {
-        padding: 5px 7px;
-    }
-
-    /* Adjust close button styles for small screens */
-    .close {
-        padding: 8px 10px;
-        margin-top: 2px;
-        font-size: 16px;
-        border-radius: 50%;
-    }
-
-    /* Show previous and next buttons on small screens */
-    .trigger-prev,
-    .trigger-next {
-        display: inline-block;
-        padding: 2px 6px;
-    }
-
-    /* Make the image container and share buttons stack on top of each other for small screens */
-    @media (max-width: 768px) {
-        .modal-content {
-            max-height: 70vh; /* Set a maximum height and enable vertical scrolling */
-            overflow-y: auto; /* Enable the scrollbar when content exceeds the height */
-        }
-
-        .modal-main-img {
-            display: block;
-        }
-
-        .share-buttons {
-            margin-top: 10px;
-        }
-    }
-
 </style>
 
-<link rel="stylesheet" type="text/css" href="{{asset('assets/css/print-styles.css')}}" media="print">
+
 @section('content')
 
 @if(!empty($date))
@@ -243,18 +144,15 @@
 
 <!-- The Modal -->
 <div id="newsPopup" class="modal">
-	<div class="modal-content customized_content loading_img" id="modal-content" style="width: 1000px;">
+	<div class="modal-content customized_content loading_img" id="modal-content">
 		<div class="modal-head" >
 			<table width="100%" class="modal_table">
 				<tr>
 					<td style="width: 40px">
 					</td>
-					<td class="text-center"> 
+					<td class="text-center">
 						<p>
 							<a href="{{Route('home')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="height: 50px;padding: 5px 0px" ></a>
-							<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" onclick='printDiv("<?php echo $date_show; ?>");'  name="b_print" class="btn btn-success"> <i class="fa fa-print"></i></button>
-							<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" name="b_download" class="btn btn-success b_download"> <i class="fa fa-download"></i></button>
-							<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" name="copyImagePath" class="btn btn-success copyImagePath"> <i class="fa fa-link"></i></button>
 						</p>
 					</td>
 
@@ -265,36 +163,42 @@
 					</td>
 				</tr>
 			</table>
+
+
 		</div>
 
 		<div class="modal-body text-center" style="padding: 20px;">
-			<div id='DivIdToPrint' class="modal-main-img img-responsive" id="newsImg">
+			<div class="modal-main-img" id="newsImg" style="overflow-x: auto;">
+
 				<center>
-					<img src=""  id="singleNewsImg" class="image_view">
-					<img src="" class="related_image">
+					<img src="" class="image_view" style="border: 2px solid #CCC;" />
+					<img src="" class="related_image" style="border: 2px solid #CCC;display: none" />
 				</center>
+
 			</div>
 
-			<div style="margin-top: 20px;padding-bottom: 20px">
-				<div style="float: left">
+			<div style="margin-top: 20px;margin-right:auto;padding-bottom: 20px">
+
+				<div style="float: left;">
 					<span style="font-size: 20px;border-bottom: 2px solid black;">শেয়ার করুন</span>
 					<button type="button" style="background-color: #3C5A98;border-radius: 50%;padding: 5px 9px 5px 9px"  class="btn btn-default share_on_fb"><i class="fa fa-facebook" style="color: white" aria-hidden="true"></i></button>
 
 					<button type="button" style="background-color: #1DA1F2;border-radius: 50%;padding: 5px 7px 5px 7px;"  class="btn btn-default share_on_twt"><i class="fa fa-twitter" style="color: white" aria-hidden="true"></i></button>
 
-					<!-- <button type="button"  class="btn btn-default share_on_gplus" style="background-color: #E53935;border-radius: 50%;padding: 5px 7px 5px 7px;"><i class="fa fa-google" style="color: white" aria-hidden="true"></i></button> -->
+					<button type="button"  class="btn btn-default share_on_gplus" style="background-color: #E53935;border-radius: 50%;padding: 5px 7px 5px 7px;"><i class="fa fa-google" style="color: white" aria-hidden="true"></i></button>
 
-					<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" class="btn btn-success share_on_whatsapp"> <i class="fa fa-whatsapp"></i></button>
+					<button style="border-radius: 50%;padding: 5px 7px 5px 7px;" type="button" onclick='printDiv("<?php echo $date_show; ?>");'  name="b_print" class="btn btn-success"> <i class="fa fa-print"></i></button>
+
 				</div>
 
 				<div style="float: right">
 					<button  class="btn btn-info trigger-prev prvs" style="display: none;padding: 2px 6px"><i class="fa fa-backward" aria-hidden="true"></i>&nbsp;&nbsp;পূর্ববর্তী অংশ</button>
-					<button class="btn btn-info trigger-next nxt" style="display: none;padding: 2px 6px">পরবর্তী অংশ&nbsp;&nbsp;<i class="fa fa-forward" aria-hidden="true"></i></button> 
+					<button class="btn btn-info trigger-next nxt" style="display: none;padding: 2px 6px">পরবর্তী অংশ&nbsp;&nbsp;<i class="fa fa-forward" aria-hidden="true"></i></button>
 				</div>
 			</div>
 			<br/>
 		</div>
-		
+
 	</div>
 </div>
 <!--modal end-->
@@ -346,18 +250,16 @@
   	}
   }
 
- /*##################################
+
+  /*##################################
   ## modal open ##
   ###################################*/
-  function modalOpen(image,image_location,related_item,image_relation,image_width){
+  function modalOpen(image,image_location,related_item,image_width){
+  	$('#newsPopup').fadeIn(100);
   	modal.style.display = "block";
-
-  	var site_url = $('.site_url').val();
-
   	/*==modal width set==*/
   	var modal_width = image_width;
-
-	if(modal_width<300 && modal_width<400){
+	  if(modal_width<300 && modal_width<400){
 		modal_width=350;
 	}else if(modal_width<400 && modal_width<500){
 		modal_width=450;
@@ -379,29 +281,28 @@
 
   	document.getElementById("modal-content").style.width = modal_width+'px';
   	$('.related_image').hide();
-
-  	var main_image = image_location +'/' + image;
-  	$(".main_image").attr( 'src' ,main_image );
-
-
-  	var image = site_url+'/'+image_location +'/' + image;
+  	var image = image_location + image;
   	$(".modal-body .image_view").attr( "src", image );
 
   	/*==next prev button==*/
   	if(related_item != ''){
-  		var related_image = site_url+'/'+image_location +'/' + related_item;
+  		var related_image = image_location + related_item;
   		$(".modal-body .related_image").attr( "src", related_image );
+  		$('.nxt').show();
+  		$('.prvs').hide();
+  	}
 
-  		if(image_relation == 'next'){
+  }
+
+
 
   /*##################################
   ## click on next button ##
   ###################################*/
-  $('.nxt').show();
   $(".nxt").click(function(){
+  	$('.image_view').hide();
   	$('.prvs').show();
   	$('.nxt').hide();
-  	$('.image_view').hide();
   	$('.related_image').show();
 
   	var modal_width = $('.related_image').width();
@@ -428,13 +329,14 @@
   });
 
 
+
   /*##################################
   ## click on previous ##
   ###################################*/
   $(".prvs").click(function(){
-  	$('.nxt').show();
-  	$('.prvs').hide();
   	$('.image_view').show();
+  	$('.prvs').hide();
+  	$('.nxt').show();
   	$('.related_image').hide();
 
   	var modal_width = $('.image_view').width();
@@ -459,73 +361,6 @@
 	}
   	document.getElementById("modal-content").style.width = modal_width+'px';
   });
- }
- if(image_relation == 'previous'){
- 	$('.prvs').show();
-
- 	$(".prvs").click(function(){
- 		$('.prvs').hide();
- 		$('.nxt').show();
- 		$('.image_view').hide();
- 		$('.related_image').show();
-
- 		var modal_width = $('.related_image').width();
-		 if(modal_width<300 && modal_width<400){
-			modal_width=350;
-		}else if(modal_width<400 && modal_width<500){
-			modal_width=450;
-		}else if(modal_width<500 && modal_width<600){
-			modal_width=550;
-		}else if(modal_width<600 && modal_width<700){
-			modal_width=650;
-		}else if(modal_width<700 && modal_width<800){
-			modal_width=750;
-		}else if(modal_width<800 && modal_width<900){
-			modal_width=850;
-		}else if(modal_width<900 && modal_width<1000){
-			modal_width=950;
-		}else if(modal_width<1000 && modal_width<1100){
-			modal_width=1050;
-		}else{
-			modal_width=1200;
-		}
- 		document.getElementById("modal-content").style.width = modal_width+'px';
- 	});
-
- 	$(".nxt").click(function(){
- 		$('.nxt').hide();
- 		$('.prvs').show();
- 		$('.image_view').show();
- 		$('.related_image').hide();
-
- 		var modal_width = $('.image_view').width();
-		 if(modal_width<300 && modal_width<400){
-			modal_width=350;
-			}else if(modal_width<400 && modal_width<500){
-				modal_width=450;
-			}else if(modal_width<500 && modal_width<600){
-				modal_width=550;
-			}else if(modal_width<600 && modal_width<700){
-				modal_width=650;
-			}else if(modal_width<700 && modal_width<800){
-				modal_width=750;
-			}else if(modal_width<800 && modal_width<900){
-				modal_width=850;
-			}else if(modal_width<900 && modal_width<1000){
-				modal_width=950;
-			}else if(modal_width<1000 && modal_width<1100){
-				modal_width=1050;
-			}else{
-				modal_width=1200;
-			}
- 		document.getElementById("modal-content").style.width = modal_width+'px';
-
- 	});
- }
-
-}
-
-}
 
 
   /*##################################
@@ -576,7 +411,7 @@
 
 
  <!-- article print-->
- <!-- <script type="text/javascript">
+ <script type="text/javascript">
  	function printDiv(bangla_date)
  	{
  		var newWin=window.open('','Print-Window');
@@ -591,58 +426,6 @@
  		}else{
  			newWin.document.write('<html><body onload="window.print()">'+'<center><img src="{{asset("assets/images/logo1.png")}}" style="height:50px;" />'+'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">'+bangla_date+'</p>'+'<img src='+main_image+' />'+'</center></body></html>');
  		}
- 		newWin.document.close();
- 		setTimeout(function(){newWin.close();},10);
- 	}
- </script> -->
-
- 
- <!-- article print-->
- <script type="text/javascript">
- 	function printDiv(bangla_date) 
- 	{
- 		var newWin=window.open('','Print-Window');
-
- 		var site_url = $(".site_url").val();
-
- 		var main_image_link = $(".image_view").attr( "src" );
- 		var main_image = site_url+'/'+main_image_link;
-
- 		var related_image_link = $(".related_image").attr( "src" );
- 		var related_image = site_url+'/'+related_image_link;
-
- 		newWin.document.open();
- // Define a CSS style to add a top margin for the first page
- var firstPageStyle = "<style>@media print { @page { size: letter; margin-top: 50px; } }</style>";
-
-if (related_image_link != '') {
-	newWin.document.write(
-		'<html><head>' + firstPageStyle + '</head><body onload="window.print()">' +
-		'<center><img src="@if(!empty(setting()->logo)) {{asset("logo")}}/{{setting()->logo}}@endif" style="height:50px;" />' +
-		'<div class="content-to-hide-on-first-page">' +
-		'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">' + bangla_date + '</p>' +
-		'<img src=' + main_image_link + ' class="image_view"/>' +
-		'</center>' +
-		'</div>' +
-		'</body>' +
-		'<body><center>' +
-		'<img src=' + related_image_link + ' class="image_view"/>' +
-		'</center></body>' +
-		'</html>'
-	);
-} else {
-	newWin.document.write(
-		'<html><head>' + firstPageStyle + '</head><body onload="window.print()">' +
-		'<center><img src="@if(!empty(setting()->logo)) {{asset("logo")}}/{{setting()->logo}}@endif" style="height:50px;" />' +
-		'<div class="content-to-hide-on-first-page">' +
-		'<p style="text-align:center;border-top:1px solid black;border-bottom:1px solid black;padding:5px;font-size:20px">' + bangla_date + '</p>' +
-		'<img src=' + main_image_link + ' class="image_view"/>' +
-		'</center>' +
-		'</div>' +
-		'</body></html>'
-	);
-}
-
  		newWin.document.close();
  		setTimeout(function(){newWin.close();},10);
  	}
@@ -675,36 +458,6 @@ if (related_image_link != '') {
  		}
  	});
 
-	
-	 $('.share_on_whatsapp').click(function(){
-    var site_url = $(".site_url").val();
-    var fb_link = '/' + $(".main_image").attr("src");
-    var splitedfb = fb_link.split("images/");
-    var lengthfb = splitedfb.length;
-    var fb_link = splitedfb[lengthfb-2];
-    var mainImage = splitedfb[lengthfb-1];
-
-    var related_image = $(".related_image").attr("src");
-
-    if (related_image != '') {
-        var splited = related_image.split("/");
-        var length = splited.length;
-        var related_image = splited[length-1];
-        var requested_url = site_url + fb_link + 'images/shared/' + mainImage + '/' + related_image;
-    } else {
-        var requested_url = site_url + fb_link + 'images/shared/' + mainImage;
-    }
-
-    var whatsappMessage = 'Check out this link: ' + requested_url;
-
-    // Encode the message and URL for WhatsApp
-    var encodedMessage = encodeURIComponent(whatsappMessage);
-    var whatsappURL = 'https://api.whatsapp.com/send?text=' + encodedMessage;
-
-    // Open the WhatsApp share URL in a new window
-    window.open(whatsappURL, '', 'window settings');
-});
-
  	$('.share_on_twt').click(function(){
  		var tw_link = '/'+$(".image_view").attr( "src" );
  		var tw_splited = tw_link.split("images/");
@@ -730,42 +483,6 @@ if (related_image_link != '') {
  	});
 
 
-	 $('.copyImagePath').click(function () {
-    var gp_link = '/' + $(".main_image").attr("src");
-    var gp_splited = gp_link.split("images/");
-    var gp_length = gp_splited.length;
-    var gp_link = gp_splited[gp_length - 2];
-    var gp_mainImage = gp_splited[gp_length - 1];
-
-    var site_url = $(".site_url").val();
-    $.ajax({
-        method: "GET",
-        url: "{{ route('copyImagePath') }}",
-        data: {
-            image_gp_link: gp_link,
-            image: gp_mainImage
-        },
-        dataType: "json", // Set the dataType to "json"
-        success: function (response) {
-            
-            var copyImagePath = response.copyImagePath;
-			console.log(response);
-            // Copy the image URL to the clipboard
-            var imageUrl = site_url + copyImagePath;
-			
-            navigator.clipboard.writeText(imageUrl).then(function () {
-                // URL copied successfully
-                alert('Image URL copied to clipboard: ' + imageUrl);
-            }).catch(function (error) {
-                console.error('Failed to copy URL: ' + error);
-            });
-        },
-        error: function (xhr, status, error) {
-            console.error(error);
-        }
-    });
-});
-
  	$('.b_download').click(function(){
  		var gp_link = '/'+$(".main_image").attr( "src" );
  		var gp_splited = gp_link.split("images/");
@@ -774,28 +491,15 @@ if (related_image_link != '') {
  		var gp_mainImage = gp_splited[gp_length-1];
 
  		var site_url = $(".site_url").val();
+		 console.log(gp_link,site_url);
 		$.ajax({
 			method: "GET",
 			url: "{{ Route('download') }}",
 			data: {
 				image_gp_link: gp_link,
 				image: gp_mainImage
-			},
-			xhrFields: {
-                responseType: 'blob'
-            },
-			success: function(response){
-				console.log(response);
-                var blob = new Blob([response]);
-                var link = document.createElement('a');
-                link.href = window.URL.createObjectURL(blob);
-				link.download = site_url + gp_link + "images/" + gp_mainImage;
-                link.click();
-            },
-            error: function(blob){
-                console.log(blob);
-            }
-		});		
+			}
+		});
 
  	});
 

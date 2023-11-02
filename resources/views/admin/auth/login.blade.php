@@ -60,6 +60,7 @@
         </div>
 
         <div class="col-xs-12" style="margin-top: 10px;text-align: center;">
+        
           <!--<p>Design & Developed By <a href="https://oracleit.net/" target="_blank">Oracle IT</a></p>-->
         </div>
         <!-- /.col -->
