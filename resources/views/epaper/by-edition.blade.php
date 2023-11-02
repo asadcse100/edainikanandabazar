@@ -3,10 +3,32 @@
 	li.current_edition:hover{
 		background-color: inherit !important
 	}
-</style>
 
-<!-- pagination -->
-<style type="text/css">
+	#mask {
+		position:absolute;
+		left:0;
+		top:0;
+		z-index:9000;
+		background-color:#000;
+		display:none;
+	}
+	#boxes .window {
+		position:absolute;
+		left:0;
+		top:20px;
+		width:auto;
+		height:auto;
+		display:none;
+		z-index:9999;
+		padding:20px;
+		border-radius: 10px;
+		text-align: center;
+	}
+	#boxes #dialog {
+		width:auto;
+		height:auto;
+		padding:10px;
+	}
 
 	/* Modal Content (image) */
 	.modal-content {
@@ -29,26 +51,6 @@
 		background-color: rgb(0,0,0); /* Fallback color */
 		background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
 		}
-
-		.pagination {
-		display: inline-block;
-		margin-top: 15px;
-	}
-	.pagination a {
-		color: white;
-		float: left;
-		padding: 2px 7px;
-		text-decoration: none;
-		background-color: #846d6d;
-		border: 1px solid #ddd;
-		margin: 0 4px;
-	}
-	.pagination a.active {
-		background-color: #CC0000;
-		color: white;
-		border: 1px solid #CC0000;
-	}
-	.pagination a:hover:not(.active) {background-color: #ddd;}
 
 /* Caption of Modal Image */
 #caption {
@@ -154,6 +156,28 @@
     }
 
 </style>
+<!-- pagination -->
+<style type="text/css">
+	.pagination {
+		display: inline-block;
+		margin-top: 15px;
+	}
+	.pagination a {
+		color: white;
+		float: left;
+		padding: 2px 7px;
+		text-decoration: none;
+		background-color: #846d6d;
+		border: 1px solid #ddd;
+		margin: 0 4px;
+	}
+	.pagination a.active {
+		background-color: #CC0000;
+		color: white;
+		border: 1px solid #CC0000;
+	}
+	.pagination a:hover:not(.active) {background-color: #ddd;}
+</style>
 
 <link rel="stylesheet" type="text/css" href="{{asset('assets/css/print-styles.css')}}" media="print">
 
@@ -191,7 +215,7 @@
 	<div class="col-xs-4 text-center">
 		<a style="margin-left: 0px;" href="#">&laquo;</a>
 		@for($i=1; $i <= count($pagination_pages); $i++)
-		<a href="{{url('/nogor-edition/'.$date.'/'.$i)}}">{{$i}}</a>
+		<a class="{{$i == $current_page ? 'active' : ''}}" href="{{url('/nogor-edition/'.$date.'/'.$i)}}">{{$i}}</a>
 		@endfor
 		<a href="{{url('/nogor-edition/'.$date.'/1')}}">&raquo;</a>
 	</div>
