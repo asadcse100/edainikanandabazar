@@ -17,38 +17,104 @@ class EpaperController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    // public function download(Request $request)
+    // {
+    //     $savePath = public_path('uploads/temp/'); // Change 'team/' to your desired folder name
+    //     // Normalize the source file path to use only forward slashes
+    //     $sourcePath = public_path($request->image_gp_link . 'images/' . $request->image);
+    //     // Load the logo image and resize it to 150x80 pixels
+    //     $logo = Image::make(public_path('logo/' . setting()->logo))->resize(250, 60);
+
+    //     if(!empty($request->related_image)){
+    //         $related_image_sourcePath = public_path($request->image_gp_link . 'images/' . $request->related_image);
+    //         $related_image = Image::make($related_image_sourcePath);
+    //         $new_related_image = Image::canvas($related_image->width(), $related_image->height() + 80, '#ffffff');
+    //         // Insert the main image into the new image, below the white space
+    //         $new_related_image->insert($related_image, 'bottom');
+    //         // Insert the logo at the top of the new image
+    //         $new_related_image->insert($logo, 'top', 1, 1);
+    //         // Save the modified image to the specified directory
+    //         $new_related_image->save($savePath . $request->related_image);
+    //         $new_related_image_savedImagePath = $savePath . $request->related_image;
+    //     }
+
+    //     $image = Image::make($sourcePath);
+    //     // Create a new image with white space at the top (100 pixels)
+    //     $newImage = Image::canvas($image->width(), $image->height() + 80, '#ffffff');
+    //     // Insert the main image into the new image, below the white space
+    //     $newImage->insert($image, 'bottom');
+    //     // Insert the logo at the top of the new image
+    //     $newImage->insert($logo, 'top', 1, 1);
+    //     // Save the modified image to the specified directory
+    //     $newImage->save($savePath . $request->image);
+    //     $savedImagePath = $savePath . $request->image;
+
+    //     $imgArr = [];
+    //     if(!empty($new_related_image_savedImagePath)){
+    //         $imgArr = [$savedImagePath,$new_related_image_savedImagePath];
+    //     }else{
+    //         $imgArr = [$savedImagePath]; 
+    //     }
+
+    //     $existingFiles = [];
+    //     foreach ($imgArr as $filePath) {
+    //         if (File::exists($filePath)) {
+    //             $existingFiles[] = $filePath;
+    //         }
+    //     }
+    //     dd($existingFiles);
+    //     if (!empty($existingFiles)) {
+    //         return response()->download($existingFiles);
+    //     } else {
+    //         abort(404, 'File not found');
+    //     }
+    // }
+
     public function download(Request $request)
-    {
-        $savePath = public_path('uploads/temp/'); // Change 'team/' to your desired folder name
+{
+    $savePath = public_path('uploads/temp/');
+    $sourcePath = public_path($request->input('image_gp_link') . 'images/' . $request->input('image'));
 
-        // Normalize the source file path to use only forward slashes
-        $sourcePath = public_path($request->image_gp_link . 'images/' . $request->image);
+    $logo = Image::make(public_path('logo/' . setting()->logo))->resize(250, 60);
 
-        // Load the logo image and resize it to 150x80 pixels
-        $logo = Image::make(public_path('logo/' . setting()->logo))->resize(250, 50);
-        $image = Image::make($sourcePath);
+    if (!empty($request->input('related_image'))) {
+        $related_image_sourcePath = public_path($request->input('image_gp_link') . 'images/' . $request->input('related_image'));
+        $related_image = Image::make($related_image_sourcePath);
+        $new_related_image = Image::canvas($related_image->width(), $related_image->height() + 80, '#ffffff');
+        $new_related_image->insert($related_image, 'bottom');
+        $new_related_image->insert($logo, 'top', 1, 1);
+        $new_related_image->save($savePath . $request->input('related_image'));
+        $new_related_image_savedImagePath = $savePath . $request->input('related_image');
+    }
 
-        // Create a new image with white space at the top (100 pixels)
-        $newImage = Image::canvas($image->width(), $image->height() + 100, '#ffffff');
+    $image = Image::make($sourcePath);
+    $newImage = Image::canvas($image->width(), $image->height() + 80, '#ffffff');
+    $newImage->insert($image, 'bottom');
+    $newImage->insert($logo, 'top', 1, 1);
+    $newImage->save($savePath . $request->input('image'));
+    $savedImagePath = $savePath . $request->input('image');
 
-        // Insert the main image into the new image, below the white space
-        $newImage->insert($image, 'bottom');
+    $imgArr = [];
+    if (!empty($new_related_image_savedImagePath)) {
+        $imgArr = [$savedImagePath, $new_related_image_savedImagePath];
+    } else {
+        $imgArr = [$savedImagePath];
+    }
 
-        // Insert the logo at the top of the new image
-        $newImage->insert($logo, 'top', 1, 1);
-
-        // Save the modified image to the specified directory
-        $newImage->save($savePath . $request->image);
-
-        $savedImagePath = $savePath . $request->image;
-
-        if (File::exists($savedImagePath)) {
-            return response()->download($savedImagePath);
-        } else {
-            // Handle the case where the file does not exist
-            abort(404, 'File not found');
+    $existingFiles = [];
+    foreach ($imgArr as $filePath) {
+        if (File::exists($filePath)) {
+            $existingFiles[] = $filePath;
         }
     }
+
+    if (!empty($existingFiles)) {
+        return response()->download($existingFiles[0]);
+    } else {
+        abort(404, 'File not found');
+    }
+}
+
 
     public function copyImagePath(Request $request)
     {

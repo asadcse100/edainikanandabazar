@@ -64,19 +64,29 @@
 				display: none !important;
 			}
 		}
+		
 	</style>
 
 </head>
 
 <body id="body">
 
-	<div class="main-container" style="margin-top: 10px;margin-bottom: 10px;border: 3px solid #e2dbdb;width: 1150px">
-		<div class="header-div">
-			<div class="header-div">
+	<div style="flex: 1; padding: 3px;">
+		<div class="add text-center" style="text-align: center;">
+			<a href="{{Route('home')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="width: 250px"></a>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+	<div class="header-div">
 				@if(!empty($arr))
 				<!-- header top -->
+				
 				<div class="top-header" style="height: 33px;padding: 5px 10px;background-color: #EEEEEE;box-shadow: none;border-bottom: none;">
-					<table width="100%" cellspacing="0" cellpadding="0" border="0">
+				
+				<div class="main-container">
+				
+				<table width="100%" cellspacing="0" cellpadding="0" border="0">
 						<tr>
 							<td>
 								<div class="date text-left" style="margin-top: 2px">									
@@ -90,7 +100,7 @@
 									</p>
 								</div>
 							</td>
-
+							
 							<td>
 								<div class="social-icon" style="text-align: right;margin-top: 3px">
 										
@@ -100,34 +110,25 @@
 									<li style="font-size: 18px; margin-bottom: 0px; line-height: 21px; color: #BB1919; padding-top: 3px">
 									{{isset($date_show) ? $date_show : ''}}
 									<input type="hidden" id="bangla_date" name="bangla_date" value="{{isset($date_show) ? $date_show : ''}}">
-								</li>
-								@endif
-										<li class="fb btn"><a href="<?php echo $arr[5]; ?>" target="_blank"><abbr title="Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></abbr></a>
-										</li>
-										<li class="twit btn"><a href="<?php echo $arr[6]; ?>" target="_blank"><abbr title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
-														<path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
-													</svg></abbr></a>
-										</li>
-										<li class="gplus btn"><a href="<?php echo $arr[7]; ?>" target="_blank"><i class="fa fa-youtube" aria-hidden="true"></i></a>
-										</li>
+									</li>
+									@endif
+									
 									</ul>
+										
 								</div>
 							</td>
 						</tr>
 					</table>
 				</div>
+				</div>
 				<!-- header top end -->
 
+				
 				@endif
 
 				<div class="container">
 					<div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-						
-                        <div style="flex: 1; padding: 3px;">
-                            <div class="add text-center">
-                                <a href="{{Route('home')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="width: 250px"></a>
-                            </div>
-                        </div>
+
 					<!-- epaper_header_top_ad -->
 					@php $epaper_header_top_ad = \App\Models\Epaper::GetAdvertisement('epaper_header_top'); @endphp
 					@if(!empty($epaper_header_top_ad) && !empty($epaper_header_top_ad->ad_code) && ($epaper_header_top_ad->ad_status=='1'))
@@ -138,6 +139,10 @@
 
 				</div>
 			</div>
+	</div>
+	
+	<div class="main-container" style="margin-top: 10px;margin-bottom: 10px;border: 3px solid #e2dbdb;width: 1150px">
+	
 
 			<div class="row-div" style="overflow: hidden;">
 
@@ -233,36 +238,45 @@
 				</div>
 
 			</div>
-
-			<!-- epaper_header_bottom_ad -->
-			@php $epaper_header_bottom_ad = \App\Models\Epaper::GetAdvertisement('epaper_header_bottom'); @endphp
-			@if(!empty($epaper_header_bottom_ad) && !empty($epaper_header_bottom_ad->ad_code) && ($epaper_header_bottom_ad->ad_status=='1'))
-			<div class="add text-center" style="background-color: #EEEEEE;margin: 20px;padding: 15px 10px 15px 10px">
-				<?php echo $epaper_header_bottom_ad->ad_code; ?>
-			</div>
-			@endif
-			<!-- end epaper_header_bottom_ad -->
-
+	</div>
 			@if(!empty($arr))
+
 			<div class="footer" style="margin-top: 20px">
 				<div class="footer-contend" style="padding: 30px">
-
+					<div class="main-container">
 					<div style="width: 100%;" class="footer_texts">
 						<table style="width: 100%">
 							<tr>
 								<td style="width: 250px">
 									<p class="footerLogo"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="width: 250px"></p>
 								</td>
-								<td>
+								<td style="width: 750px">
 									<div style="text-align: left !important;padding-left: 10px">
 										<p style="color: black;font-size: 16px"><?php echo $arr[2]; ?> </p>
 										<p></p>
 										<p style="color: black;font-size: 16px"><?php echo $arr[3]; ?> </p>
 									</div>
 								</td>
+								<td>
+								<a href="<?php echo $arr[5]; ?>" target="_blank">
+									<abbr title="Facebook">
+										<img src="{{asset('logo/facebook.png')}}" height="30" alt=""></abbr>
+									</a>
+								
+									<a href="<?php echo $arr[6]; ?>" target="_blank">
+									<abbr title="Twitter">
+									<img src="{{asset('logo/twitter.png')}}" height="30" alt="">
+									</abbr></a>
+									
+									<a href="<?php echo $arr[7]; ?>" target="_blank">
+									<abbr title="Youtube"><img src="{{asset('logo/youtube.png')}}" height="30" alt=""></abbr>
+									</a>
+								</td>
 							</tr>
 						</table>
 					</div>
+					</div>
+					
 
 					<p class="text-center" style="font-size: 14px; color: black; border-top: 1px solid #636363; margin-top: 10px; text-align: center; padding-right: 0px; padding-left: 0px">
 						Developed by: <a style="color: black; text-decoration: none;" href="https://contriverit.com" target="_blank"><strong>Contriver IT</strong></a>
@@ -271,8 +285,14 @@
 				</div>
 			</div>
 			@endif
-		</div>
-
+			<!-- epaper_header_bottom_ad -->
+			@php $epaper_header_bottom_ad = \App\Models\Epaper::GetAdvertisement('epaper_header_bottom'); @endphp
+			@if(!empty($epaper_header_bottom_ad) && !empty($epaper_header_bottom_ad->ad_code) && ($epaper_header_bottom_ad->ad_status=='1'))
+			<div class="add text-center" style="background-color: #EEEEEE;margin: 20px;padding: 15px 10px 15px 10px">
+				<?php echo $epaper_header_bottom_ad->ad_code; ?>
+			</div>
+			@endif
+			<!-- end epaper_header_bottom_ad -->
 
 		@php $publishDates = DB::table('publish_dates')->where('status', 1)->pluck('publish_date'); @endphp
 
@@ -324,7 +344,7 @@
 		</script>
 
 		<input type="hidden" class="site_url" value="{{Route('home')}}">
-		{{-- <input type="hidden" class="site_url_name" value="@if(!empty(Request::route()->getName()))){{\Request::route()->getName()}}@endif"> --}}
+		<input type="hidden" class="site_url_name" value="@if(!empty(Request::route()->getName()))){{\Request::route()->getName()}}@endif">
 		{{-- <input type="hidden" class="current_url" value="{{Route::getCurrentRoute()->getPath()}}"> --}}
 
 </body>

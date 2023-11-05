@@ -3,10 +3,32 @@
 	li.current_edition:hover{
 		background-color: inherit !important
 	}
-</style>
 
-<!-- pagination -->
-<style type="text/css">
+	#mask {
+		position:absolute;
+		left:0;
+		top:0;
+		z-index:9000;
+		background-color:#000;
+		display:none;
+	}
+	#boxes .window {
+		position:absolute;
+		left:0;
+		top:20px;
+		width:auto;
+		height:auto;
+		display:none;
+		z-index:9999;
+		padding:20px;
+		border-radius: 10px;
+		text-align: center;
+	}
+	#boxes #dialog {
+		width:auto;
+		height:auto;
+		padding:10px;
+	}
 
 	/* Modal Content (image) */
 	.modal-content {
@@ -29,26 +51,6 @@
 		background-color: rgb(0,0,0); /* Fallback color */
 		background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
 		}
-
-		.pagination {
-		display: inline-block;
-		margin-top: 15px;
-	}
-	.pagination a {
-		color: white;
-		float: left;
-		padding: 2px 7px;
-		text-decoration: none;
-		background-color: #846d6d;
-		border: 1px solid #ddd;
-		margin: 0 4px;
-	}
-	.pagination a.active {
-		background-color: #CC0000;
-		color: white;
-		border: 1px solid #CC0000;
-	}
-	.pagination a:hover:not(.active) {background-color: #ddd;}
 
 /* Caption of Modal Image */
 #caption {
@@ -154,16 +156,39 @@
     }
 
 </style>
+<!-- pagination -->
+<style type="text/css">
+	.pagination {
+		display: inline-block;
+		margin-top: 15px;
+	}
+	.pagination a {
+		color: white;
+		float: left;
+		padding: 2px 7px;
+		text-decoration: none;
+		background-color: #846d6d;
+		border: 1px solid #ddd;
+		margin: 0 4px;
+	}
+	.pagination a.active {
+		background-color: #CC0000;
+		color: white;
+		border: 1px solid #CC0000;
+	}
+	.pagination a:hover:not(.active) {background-color: #ddd;}
+</style>
 
 <link rel="stylesheet" type="text/css" href="{{asset('assets/css/print-styles.css')}}" media="print">
 @section('content')
 
+<div class="row-div-left" style="margin-left: 0px;width: auto;">
 @if(!empty($date))
-@php $date_show=\App\Models\Epaper::GetBanglaDate($date); @endphp
-
-
+@php 
+$current_page = 1;
+$date_show=\App\Models\Epaper::GetBanglaDate($date); 
+@endphp
     <div class="pagination" style="width: 100%;background-color: #EEEEEE;margin: 0px 0px 10px 0px;">
-
     <div class="row">
         <div class="col-xs-4">
             @if(!empty($date))
@@ -173,7 +198,7 @@
         <div class="col-xs-4 text-center">
             <a style="margin-left: 0px;" href="#">&laquo;</a>
             @for($i=1; $i <= count($pagination_pages); $i++)
-            <a href="{{url('/nogor-edition/'.$date.'/'.$i)}}">{{$i}}</a>
+            <a class="{{$i == $current_page ? 'active' : ''}}" href="{{url('/nogor-edition/'.$date.'/'.$i)}}">{{$i}}</a>
             @endfor
             <a href="{{url('/nogor-edition/'.$date.'/1')}}">&raquo;</a>
         </div>
@@ -186,7 +211,6 @@
             </div>
         </div>
     </div>
-
 
     </div>
 
@@ -238,9 +262,7 @@
 	<br>
 
 </div>
-
-
-
+</div>
 <!-- The Modal -->
 <div id="newsPopup" class="modal">
 	<div class="modal-content customized_content loading_img" id="modal-content" style="width: 1000px;">
@@ -299,21 +321,26 @@
 </div>
 <!--modal end-->
 
-
 <input type="hidden" class="get_pagination" value="{{isset($pagination_pages) ? count($pagination_pages) : ''}}">
 <input type="hidden" class="current_date" value="{{isset($date) ? $date : ''}}">
+<input type="hidden" class="page_edition" value="{{$page_edition}}">
+<input type="hidden" class="current_page" value="{{$current_page}}">
 <img src="" class="main_image" style="display: none" >
 
 
 <!-- js for the page -->
 <script type="text/javascript">
+
 	/*==Get the modal==*/
 	var modal = document.getElementById('newsPopup');
 	var body = document.getElementById('body');
+
 	/*==Get the button that opens the modal==*/
 	var btn = document.getElementById("myBtn");
+
 	/*==Get the <span> element that closes the modal==*/
 	var button = document.getElementsByClassName("close")[0];
+
   /*################################
   ## click on modal (x) close ##
   #################################*/
@@ -321,6 +348,7 @@
   	/*==remove related image class==*/
   	var remove_image_item = document.getElementsByClassName("image_view")[0].innerHTML = "";
   	$(".modal-body .image_view").attr( "src", remove_image_item );
+
   	var remove_related_item = document.getElementsByClassName("related_image")[0].innerHTML = "";
   	$(".modal-body .related_image").attr( "src", remove_related_item );
 
@@ -346,7 +374,7 @@
   	}
   }
 
- /*##################################
+  /*##################################
   ## modal open ##
   ###################################*/
   function modalOpen(image,image_location,related_item,image_relation,image_width){
@@ -527,7 +555,6 @@
 
 }
 
-
   /*##################################
   ## click on close button ##
   ###################################*/
@@ -535,42 +562,47 @@
   	$('.nxt').hide();
   	$('.prvs').hide();
   	$('.image_view').show();
-  });
 
+  });
+  
  </script>
- <!--end js for modal-->
+ <!--end modal-->
 
  <!--pagination-->
  <script src="{{asset('assets/js/jquery.paginate.js')}}" type="text/javascript"></script>
  <script type="text/javascript">
  	$(function() {
+
  		var total_pages = $('.get_pagination').val();
+ 		var current_page = $('.current_page').val();
  		var display_pages =total_pages;
+
  		if(total_pages > 24){
  			display_pages = 23;
  		}
+
  		$("#demo").paginate({
  			count     : total_pages,
- 			start     : 1,
+ 			start     : current_page,
  			display     : display_pages,
  			border          : false,
  			text_color        : '#888',
- 			background_color      : '#EEE',
+ 			background_color      : '#EEE', 
  			text_hover_color      : 'black',
  			background_hover_color  : '#CFCFCF'
  		});
  	});
 
  	function getPage(page){
+ 		var page_edition = $('.page_edition').val();
  		var current_date = $('.current_date').val();
  		var site_url = $('.site_url').val();
- 		$('.current_page').val(page);
- 		var request_url = site_url+'/nogor-edition/'+current_date+'/'+page;
+ 		var request_url = site_url+'/'+page_edition+'/'+current_date+'/'+page;
  		window.location=request_url;
  	}
  </script>
  <!--pagination end-->
- 
+
  <!-- article print-->
  <script type="text/javascript">
  	function printDiv(bangla_date) 
@@ -616,18 +648,16 @@ if (related_image_link != '') {
 		'</body></html>'
 	);
 }
-
  		newWin.document.close();
  		setTimeout(function(){newWin.close();},10);
  	}
  </script>
 
-
  <!-- share apis -->
  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
  <script type="text/javascript">
  	$('.share_on_fb').click(function(){
- 		var fb_link = '/'+$(".image_view").attr( "src" );
+ 		var fb_link = '/'+$(".main_image").attr( "src" );
  		var splitedfb = fb_link.split("images/");
  		var lengthfb = splitedfb.length;
  		var fb_link = splitedfb[lengthfb-2];
@@ -636,20 +666,43 @@ if (related_image_link != '') {
  		var related_image = $(".related_image").attr( "src" );
  		var site_url = $(".site_url").val();
  		var current_date = $(".current_date").val();
-
  		if(related_image != ''){
  			var splited = related_image.split("/");
  			var length = splited.length;
  			var related_image = splited[length-1];
+
  			var requested_url = site_url+fb_link+'images/shared/'+mainImage+'/'+related_image;
  			window.open('https://www.facebook.com/sharer/sharer.php?u='+requested_url, '', 'window settings');
  		}else{
  			var requested_url = site_url+fb_link+'images/shared/'+mainImage;
  			window.open('https://www.facebook.com/sharer/sharer.php?u='+requested_url, '', 'window settings');
  		}
+
  	});
 
-	
+ 	$('.share_on_twt').click(function(){
+ 		var tw_link = '/'+$(".main_image").attr( "src" );
+ 		var tw_splited = tw_link.split("images/");
+ 		var tw_length = tw_splited.length;
+ 		var tw_link = tw_splited[tw_length-2];
+ 		var tw_mainImage = tw_splited[tw_length-1];
+
+ 		var tw_related_image = $(".related_image").attr( "src" );
+ 		var site_url = $(".site_url").val();
+ 		var current_date = $(".current_date").val();
+ 		if(tw_related_image != ''){
+ 			var tw_related_splited = tw_related_image.split("/");
+ 			var tw_related_length = tw_related_splited.length;
+ 			var tw_related_image = tw_related_splited[tw_related_length-1];
+
+ 			var tw_requested_url = site_url+tw_link+'images/shared/'+tw_mainImage+'/'+tw_related_image;
+ 			window.open('https://twitter.com/intent/tweet?url='+tw_requested_url,  '', 'window settings');
+ 		}else{
+ 			var tw_requested_url = site_url+tw_link+'images/shared/'+tw_mainImage;
+ 				window.open('https://twitter.com/intent/tweet?url='+tw_requested_url,  '', 'window settings');
+ 		}
+ 	});
+
 	 $('.share_on_whatsapp').click(function(){
     var site_url = $(".site_url").val();
     var fb_link = '/' + $(".main_image").attr("src");
@@ -678,31 +731,6 @@ if (related_image_link != '') {
     // Open the WhatsApp share URL in a new window
     window.open(whatsappURL, '', 'window settings');
 });
-
- 	$('.share_on_twt').click(function(){
- 		var tw_link = '/'+$(".image_view").attr( "src" );
- 		var tw_splited = tw_link.split("images/");
- 		var tw_length = tw_splited.length;
- 		var tw_link = tw_splited[tw_length-2];
- 		var tw_mainImage = tw_splited[tw_length-1];
-
- 		var tw_related_image = $(".related_image").attr( "src" );
- 		var site_url = $(".site_url").val();
- 		var current_date = $(".current_date").val();
-
- 		if(tw_related_image != ''){
- 			var tw_related_splited = tw_related_image.split("/");
- 			var tw_related_length = tw_related_splited.length;
- 			var tw_related_image = tw_related_splited[tw_related_length-1];
- 			var tw_requested_url = site_url+tw_link+'images/shared/'+tw_mainImage+'/'+tw_related_image;
- 			window.open('https://www.twitter.com/share?url='+tw_requested_url, '', 'window settings');
- 		}else{
- 			var tw_requested_url = site_url+tw_link+'images/shared/'+tw_mainImage;
- 			window.open('https://www.twitter.com/share?url='+tw_requested_url, '', 'window settings');
- 		}
-
- 	});
-
 
 	 $('.copyImagePath').click(function () {
     var gp_link = '/' + $(".main_image").attr("src");
@@ -740,21 +768,27 @@ if (related_image_link != '') {
     });
 });
 
- 	$('.b_download').click(function(){
+ 	$('.b_download').click(function(){		
+		var site_url = $(".site_url").val();
  		var gp_link = '/'+$(".main_image").attr( "src" );
  		var gp_splited = gp_link.split("images/");
  		var gp_length = gp_splited.length;
  		var gp_link = gp_splited[gp_length-2];
  		var gp_mainImage = gp_splited[gp_length-1];
 
- 		var site_url = $(".site_url").val();
-		 console.log(site_url, gp_link, gp_mainImage);
+		var related_image = $(".related_image").attr("src");
+		var related_image_gp_splited = related_image.split("images/");
+		var related_image_gp_length = related_image_gp_splited.length;
+		var related_image_gp_link = related_image_gp_splited[gp_length-2];
+		var related_image_gp_mainImage = related_image_gp_splited[gp_length-1];
+
 		$.ajax({
 			method: "GET",
 			url: "{{ Route('download') }}",
 			data: {
 				image_gp_link: gp_link,
-				image: gp_mainImage
+				image: gp_mainImage,
+				related_image: related_image_gp_mainImage
 			},
 			xhrFields: {
                 responseType: 'blob'
@@ -764,7 +798,12 @@ if (related_image_link != '') {
                 var blob = new Blob([response]);
                 var link = document.createElement('a');
                 link.href = window.URL.createObjectURL(blob);
-				link.download = site_url + gp_link + "images/" + gp_mainImage;
+				
+				if(related_image_gp_mainImage != ''){		
+					link.download = site_url + gp_link + "images/" + gp_mainImage + '/' + related_image_gp_mainImage;
+				}else{
+					link.download = site_url + gp_link + "images/" + gp_mainImage;
+				}
                 link.click();
             },
             error: function(blob){
@@ -774,16 +813,11 @@ if (related_image_link != '') {
 
  	});
 
-
- 	function printPage(printPage)
+ 	function printPage(printPage) 
  	{
-
  		var newWinPage=window.open('','Print-Window');
-
  		newWinPage.document.open();
-
  		newWinPage.document.write('<html><body onload="window.print()">'+'<center>'+'<img src='+printPage+' />'+'</center></body></html>');
-
  		newWinPage.document.close();
  		setTimeout(function(){newWinPage.close();},10);
  	}

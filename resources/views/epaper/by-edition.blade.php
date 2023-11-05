@@ -182,28 +182,12 @@
 <link rel="stylesheet" type="text/css" href="{{asset('assets/css/print-styles.css')}}" media="print">
 
 @section('content')
-
-
 <!-- content -->
 <div class="row-div-left" style="margin-left: 0px;width: auto;">
 
 	@if(!empty($date))
 	@php $date_show=\App\Models\Epaper::GetBanglaDate($date); @endphp
-	<!-- <table class="pagination" style="width: 100%;background-color: #EEEEEE;margin: 0px 0px 10px 0px">
-		<tr>
-			<td>
-				<center>
-					<div class="pagination" style="margin: 0px;padding: 5px">
-						<a style="margin-left: 0px;" href="{{url('/'.$page_edition.'/'.$date.'/'.$page_last)}}">&laquo;</a>
-						@for($i=1; $i <= count($pagination_pages); $i++)
-						<a class="{{$i == $current_page ? 'active' : ''}}" href="{{url('/'.$page_edition.'/'.$date.'/'.$i)}}">{{$i}}</a>
-						@endfor
-						<a href="{{url('/'.$page_edition.'/'.$date.'/'.$page_next)}}">&raquo;</a>
-					</div>
-				</center>
-			</td>
-		</tr>
-	</table> -->
+
 	<div class="pagination" style="width: 100%;background-color: #EEEEEE;margin: 0px 0px 10px 0px;">
 
 <div class="row">
@@ -229,7 +213,6 @@
 	</div>
 </div>
 
-
 </div>
 	@else
 	@php $date_show=Null; $data = Null; @endphp
@@ -254,9 +237,7 @@
 
 				@php 
 				$related_item = \App\Models\Epaper::GetRelatedItem($date, $article->related_image_id);
-
 				$get_image_width = \App\Models\Epaper::GetImageSize($image_width_location.$article->image);
-
 				@endphp
 
 				<area shape="rect" coords="{{$article->coords}}" data-image="{{$article->image}}"  class="main-img"  onclick="modalOpen('<?php echo $article->image; ?>','<?php echo $image_location; ?>','<?php echo $related_item; ?>','<?php echo $article->relation; ?>', '<?php echo $get_image_width; ?>')"/>
@@ -267,7 +248,6 @@
 			@endif
 		</div>
 		<!-- end main page -->
-
 
 		<!-- page trigger -->
 		<table width="100%" class="page-trigger" style="padding: 10px 10px 0px 10px;margin-left: 0px">
@@ -295,12 +275,9 @@
 </div>
 <!-- end content -->
 
-
 <!-- The Modal -->
 <div id="newsPopup" class="modal">
-
 	<div class="modal-content customized_content loading_img" id="modal-content" style="width: 1000px;">
-
 		<div class="modal-head" >
 			<table width="100%" class="modal_table">
 				<tr>
@@ -365,7 +342,6 @@
 <input type="hidden" class="current_page" value="{{$current_page}}">
 <img src="" class="main_image" style="display: none" >
 
-
 <!-- js for the page -->
 <script type="text/javascript">
 
@@ -378,7 +354,6 @@
 
 	/*==Get the <span> element that closes the modal==*/
 	var button = document.getElementsByClassName("close")[0];
-
 
   /*################################
   ## click on modal (x) close ##
@@ -395,7 +370,6 @@
   	document.getElementById("body").style.overflow = 'scroll';
   }
 
-
   /*##################################
   ## click on outside modal close ##
   ###################################*/
@@ -404,10 +378,8 @@
   		/*==remove related image class==*/
   		var remove_image_item = document.getElementsByClassName("image_view")[0].innerHTML = "";
   		$(".modal-body .image_view").attr( "src", remove_image_item );
-
   		var remove_related_item = document.getElementsByClassName("related_image")[0].innerHTML = "";
   		$(".modal-body .related_image").attr( "src", remove_related_item );
-
   		$('.image_view').show();
   		modal.style.display = "none";
   		$('.nxt').hide();
@@ -415,8 +387,6 @@
   		document.getElementById("body").style.overflow = 'scroll';
   	}
   }
-
-
 
   /*##################################
   ## modal open ##
@@ -599,7 +569,6 @@
 
 }
 
-
   /*##################################
   ## click on close button ##
   ###################################*/
@@ -609,7 +578,6 @@
   	$('.image_view').show();
 
   });
-
   
  </script>
  <!--end modal-->
@@ -640,11 +608,9 @@
  	});
 
  	function getPage(page){
-
  		var page_edition = $('.page_edition').val();
  		var current_date = $('.current_date').val();
  		var site_url = $('.site_url').val();
-
  		var request_url = site_url+'/'+page_edition+'/'+current_date+'/'+page;
  		window.location=request_url;
  	}
@@ -696,12 +662,10 @@ if (related_image_link != '') {
 		'</body></html>'
 	);
 }
-
  		newWin.document.close();
  		setTimeout(function(){newWin.close();},10);
  	}
  </script>
-
 
  <!-- share apis -->
  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -818,20 +782,27 @@ if (related_image_link != '') {
     });
 });
 
- 	$('.b_download').click(function(){
+ 	$('.b_download').click(function(){		
+		var site_url = $(".site_url").val();
  		var gp_link = '/'+$(".main_image").attr( "src" );
  		var gp_splited = gp_link.split("images/");
  		var gp_length = gp_splited.length;
  		var gp_link = gp_splited[gp_length-2];
  		var gp_mainImage = gp_splited[gp_length-1];
 
- 		var site_url = $(".site_url").val();
+		var related_image = $(".related_image").attr("src");
+		var related_image_gp_splited = related_image.split("images/");
+		var related_image_gp_length = related_image_gp_splited.length;
+		var related_image_gp_link = related_image_gp_splited[gp_length-2];
+		var related_image_gp_mainImage = related_image_gp_splited[gp_length-1];
+
 		$.ajax({
 			method: "GET",
 			url: "{{ Route('download') }}",
 			data: {
 				image_gp_link: gp_link,
-				image: gp_mainImage
+				image: gp_mainImage,
+				related_image: related_image_gp_mainImage
 			},
 			xhrFields: {
                 responseType: 'blob'
@@ -841,7 +812,12 @@ if (related_image_link != '') {
                 var blob = new Blob([response]);
                 var link = document.createElement('a');
                 link.href = window.URL.createObjectURL(blob);
-				link.download = site_url + gp_link + "images/" + gp_mainImage;
+				
+				if(related_image_gp_mainImage != ''){		
+					link.download = site_url + gp_link + "images/" + gp_mainImage + '/' + related_image_gp_mainImage;
+				}else{
+					link.download = site_url + gp_link + "images/" + gp_mainImage;
+				}
                 link.click();
             },
             error: function(blob){
@@ -851,17 +827,11 @@ if (related_image_link != '') {
 
  	});
 
-
-
  	function printPage(printPage) 
  	{
-
  		var newWinPage=window.open('','Print-Window');
-
  		newWinPage.document.open();
-
  		newWinPage.document.write('<html><body onload="window.print()">'+'<center>'+'<img src='+printPage+' />'+'</center></body></html>');
-
  		newWinPage.document.close();
  		setTimeout(function(){newWinPage.close();},10);
  	}
