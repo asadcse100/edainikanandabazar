@@ -633,7 +633,7 @@
 
  		newWin.document.open();
  // Define a CSS style to add a top margin for the first page
- var firstPageStyle = "<style>@media print { @page { size: letter; margin-top: 50px; } }</style>";
+ var firstPageStyle = "<style>@media print { @page { size: letter; margin-top: 5px; } }</style>";
 
 if (related_image_link != '') {
 	newWin.document.write(

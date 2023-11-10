@@ -152,6 +152,8 @@ class EpaperController extends Controller
 
     public function index()
     {
+        $edition = 'nogor-edition';
+        $page_no = 1;
         $page_info = \App\Models\Epaper::GetPageInfo();
 
         if (!empty($page_info->publish_date)) {
@@ -166,34 +168,49 @@ class EpaperController extends Controller
                 return view('errors.404');
             }
 
-            $by_edition = \DB::table('editions')->where('title', 'nogor-edition')->select('editions.id', 'editions.title')->first();
+            $by_edition = \DB::table('editions')->where('title', $edition)->select('editions.id', 'editions.name', 'editions.title')->first();
 
-            $data['page_edition'] = $by_edition->title;
+            // $get_categories = \DB::table($pages_table)->where($pages_table . '.publish_date', $date)->where($pages_table . '.status', 1)
+            //     ->leftjoin('categories', 'categories.id', '=', $pages_table . '.category_id')
+            //     ->select([\DB::RAW('DISTINCT(category_id)'), $pages_table . '.publish_date', $pages_table . '.page_number', $pages_table . '.image', 'categories.name'])->get();
+            // $data['get_categories'] = $get_categories;
 
             $get_categories = \DB::table($pages_table)->where($pages_table . '.publish_date', $date)->where($pages_table . '.status', 1)
+                ->leftjoin($edition_pages_table, $edition_pages_table . '.page_id', '=', $pages_table . '.id')->where($edition_pages_table . '.edition_id', $by_edition->id)
                 ->leftjoin('categories', 'categories.id', '=', $pages_table . '.category_id')
                 ->select([\DB::RAW('DISTINCT(category_id)'), $pages_table . '.publish_date', $pages_table . '.page_number', $pages_table . '.image', 'categories.name'])->get();
-            $data['get_categories'] = $get_categories;
+
+            // $get_page = \DB::table($pages_table)->where($pages_table . '.publish_date', $date)->where($pages_table . '.page_number', 1)->where($pages_table . '.status', 1)
+            //     ->leftjoin($edition_pages_table, $edition_pages_table . '.page_id', '=', $pages_table . '.id')->where($edition_pages_table . '.edition_id', $by_edition->id)
+            //     ->select($pages_table . '.*', $edition_pages_table . '.page_id', $edition_pages_table . '.edition_id')->first();
+            // $data['home_page'] = $get_page;
 
             $get_page = \DB::table($pages_table)->where($pages_table . '.publish_date', $date)->where($pages_table . '.page_number', 1)->where($pages_table . '.status', 1)
                 ->leftjoin($edition_pages_table, $edition_pages_table . '.page_id', '=', $pages_table . '.id')->where($edition_pages_table . '.edition_id', $by_edition->id)
                 ->select($pages_table . '.*', $edition_pages_table . '.page_id', $edition_pages_table . '.edition_id')->first();
-            $data['home_page'] = $get_page;
-
-
-            if (!empty($get_page->id)) {
-                $epaper_articles = \DB::table($images_table)->where('page_id', $get_page->id)->get();
-                $data['epaper_articles'] = $epaper_articles;
-            }
 
             $pagination_pages = \DB::table($pages_table)->where($pages_table . '.publish_date', $date)->where($pages_table . '.status', 1)
                 ->leftjoin($edition_pages_table, $edition_pages_table . '.page_id', '=', $pages_table . '.id')
-                ->leftjoin('editions', 'editions.id', '=', $edition_pages_table . '.edition_id')->where('editions.title', 'nogor-edition')->get();
-            $data['pagination_pages'] = $pagination_pages;
+                ->leftjoin('editions', 'editions.id', '=', $edition_pages_table . '.edition_id')->where('editions.title', $edition)->get();
+            
+            if (!empty($get_page->id)) {
+                $epaper_articles = \DB::table($images_table)->where('page_id', $get_page->id)->get();
+                $data['epaper_articles'] = $epaper_articles;
+                $data['home_page'] = $get_page;
+                $data['page_edition'] = $by_edition->title;
+                $data['date'] = $date;
+                $data['page_next'] = $page_no + 1;
+                $data['page_last'] = $page_no - 1;
+                $data['current_page'] = $page_no;
+                $data['get_categories'] = $get_categories;
+                $data['pagination_pages'] = $pagination_pages;
+            }
 
-
-            $data['date'] = $date;
-
+            // $pagination_pages = \DB::table($pages_table)->where($pages_table . '.publish_date', $date)->where($pages_table . '.status', 1)
+            //     ->leftjoin($edition_pages_table, $edition_pages_table . '.page_id', '=', $pages_table . '.id')
+            //     ->leftjoin('editions', 'editions.id', '=', $edition_pages_table . '.edition_id')->where('editions.title', $edition)->get();
+            // $data['pagination_pages'] = $pagination_pages;
+            
             return \View::make('epaper.index', $data);
         } else {
             return view('errors.404');
@@ -275,7 +292,6 @@ class EpaperController extends Controller
             $data['pagination_pages'] = $pagination_pages;
             $data['page_edition'] = $by_edition->title;
 
-
             if ($get_page != Null) {
                 $epaper_articles = \DB::table($images_table)->where('page_id', $get_page->id)->get();
                 $data['epaper_articles'] = $epaper_articles;
@@ -288,7 +304,6 @@ class EpaperController extends Controller
                 $data['current_page'] = $page_no;
                 $data['get_categories'] = $get_categories;
                 $data['current_edition'] = $by_edition->name;
-
                 return \View::make('epaper.by-edition', $data);
             } else {
 

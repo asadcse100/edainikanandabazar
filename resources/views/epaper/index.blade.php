@@ -180,89 +180,101 @@
 </style>
 
 <link rel="stylesheet" type="text/css" href="{{asset('assets/css/print-styles.css')}}" media="print">
+
 @section('content')
-
+<!-- content -->
 <div class="row-div-left" style="margin-left: 0px;width: auto;">
-@if(!empty($date))
-@php 
-$current_page = 1;
-$date_show=\App\Models\Epaper::GetBanglaDate($date); 
-@endphp
-    <div class="pagination" style="width: 100%;background-color: #EEEEEE;margin: 0px 0px 10px 0px;">
-    <div class="row">
-        <div class="col-xs-4">
-            @if(!empty($date))
-            <a href="{{url('/all/pages/nogor-edition/'.$date)}}">সব পাতা</a>
-            @endif
-        </div>
-        <div class="col-xs-4 text-center">
-            <a style="margin-left: 0px;" href="#">&laquo;</a>
-            @for($i=1; $i <= count($pagination_pages); $i++)
-            <a class="{{$i == $current_page ? 'active' : ''}}" href="{{url('/nogor-edition/'.$date.'/'.$i)}}">{{$i}}</a>
-            @endfor
-            <a href="{{url('/nogor-edition/'.$date.'/1')}}">&raquo;</a>
-        </div>
-        <div class="col-xs-4">
-            <div class="text-right">
-                @if(!empty($home_page) && !empty($date))
-                <a href="javascript::void(0)" onclick='printPage("{{asset('uploads/epaper/'.date('Y',strtotime($home_page->publish_date)).'/'.date('m',strtotime($home_page->publish_date)).'/'.date('d',strtotime($home_page->publish_date)).'/pages/'.$home_page->image)}}");'>
-                প্রিন্ট</a>
-                @endif
-            </div>
-        </div>
-    </div>
 
-    </div>
+	@if(!empty($date))
+	@php $date_show=\App\Models\Epaper::GetBanglaDate($date); @endphp
 
-@endif
+	<div class="pagination" style="width: 100%;background-color: #EEEEEE;margin: 0px 0px 10px 0px;">
 
-
-<div class="left-content">
-
-	<div class="main-img-div" style="padding-left: 10px;padding-right: 10px;padding-bottom: 10px">
-		@if(!empty($home_page) && !empty($date))
-		<img src="{{asset('uploads/epaper/'.date('Y',strtotime($home_page->publish_date)).'/'.date('m',strtotime($home_page->publish_date)).'/'.date('d',strtotime($home_page->publish_date)).'/pages/'.$home_page->image)}}" usemap="#enewspaper" class="map" />
-
-		<map name="enewspaper" >
-			@php
-			$image_location='uploads/epaper/'.date('Y',strtotime($date)).'/'.date('m',strtotime($date)).'/'.date('d',strtotime($date)).'/images/';
-			@endphp
-
-			@if(!empty($epaper_articles) && (count($epaper_articles)>0))
-			@foreach($epaper_articles as $key => $article)
-
-			@php
-			$related_item = \App\Models\Epaper::GetRelatedItem($date, $article->related_image_id);
-			$get_image_width = \App\Models\Epaper::GetImageSize($image_location.$article->image);
-			@endphp
-
-			<area  shape="rect" coords="{{$article->coords}}" data-image="{{$article->image}}"  class="main-img"  onclick="modalOpen('<?php echo $article->image; ?>','<?php echo $image_location; ?>','<?php echo $related_item; ?>','<?php echo $get_image_width; ?>')"/>
-			@endforeach
-			@endif
-		</map>
-		@else
-		<img src="{{asset('assets/images/underConstruction.png')}}">
+<div class="row">
+	<div class="col-xs-4">
+		@if(!empty($date))
+		<a href="{{url('/all/pages/nogor-edition/'.$date)}}">সব পাতা</a>
 		@endif
 	</div>
-
-	<table width="100%" class="page-trigger" style="padding: 10px 10px 0px 10px;margin-left: 0px">
-		<tr>
-			<td>
-				@if(!empty($date))
-				<a style="float: left" href="{{url('/all/pages/nogor-edition/'.$date)}}" style="padding: 8px"><img src="{{asset('assets/images/front/all.png')}}" /></a>
-				@endif
-			</td>
-			<td>
-				@if( !empty($get_categories) && (count($get_categories)>1) && (!empty($date)))
-				<a href="{{url('/nogor-edition/'.$date.'/2')}}" class="pull-right"><img src="{{asset('assets/images/front/next.png')}}" /></a>
-				@endif
-			</td>
-		</tr>
-	</table>
-	<br>
+	<div class="col-xs-4 text-center">
+		<a style="margin-left: 0px;" href="#">&laquo;</a>
+		@for($i=1; $i <= count($pagination_pages); $i++)
+		<a class="{{$i == $current_page ? 'active' : ''}}" href="{{url('/nogor-edition/'.$date.'/'.$i)}}">{{$i}}</a>
+		@endfor
+		<a href="{{url('/nogor-edition/'.$date.'/1')}}">&raquo;</a>
+	</div>
+	<div class="col-xs-4">
+		<div class="text-right">
+			@if(!empty($home_page) && !empty($date))
+			<a href="javascript::void(0)" onclick='printPage("{{asset('uploads/epaper/'.date('Y',strtotime($home_page->publish_date)).'/'.date('m',strtotime($home_page->publish_date)).'/'.date('d',strtotime($home_page->publish_date)).'/pages/'.$home_page->image)}}");'>
+			প্রিন্ট</a>
+			@endif
+		</div>
+	</div>
+</div>
 
 </div>
+	@else
+	@php $date_show=Null; $data = Null; @endphp
+	@endif
+
+	<div class="left-content">
+
+		<!-- main page -->
+		<div class="main-img-div" style="padding-left: 10px;padding-right: 10px;padding-bottom: 10px">
+			@if(!empty($home_page))
+			<img src="{{asset('uploads/epaper/'.date('Y',strtotime($home_page->publish_date)).'/'.date('m',strtotime($home_page->publish_date)).'/'.date('d',strtotime($home_page->publish_date)).'/pages/'.$home_page->image)}}" usemap="#enewspaper" class="map" />
+
+			<map name="enewspaper">
+				@php
+				$image_location='uploads/epaper/'.date('Y',strtotime($date)).'/'.date('m',strtotime($date)).'/'.date('d',strtotime($date)).'/images'; 
+
+				$image_width_location='uploads/epaper/'.date('Y',strtotime($date)).'/'.date('m',strtotime($date)).'/'.date('d',strtotime($date)).'/images/';
+				@endphp
+
+				@if(!empty($epaper_articles) && (count($epaper_articles)>0))
+				@foreach($epaper_articles as $key => $article)
+
+				@php 
+				$related_item = \App\Models\Epaper::GetRelatedItem($date, $article->related_image_id);
+				$get_image_width = \App\Models\Epaper::GetImageSize($image_width_location.$article->image);
+				@endphp
+
+				<area shape="rect" coords="{{$article->coords}}" data-image="{{$article->image}}"  class="main-img"  onclick="modalOpen('<?php echo $article->image; ?>','<?php echo $image_location; ?>','<?php echo $related_item; ?>','<?php echo $article->relation; ?>', '<?php echo $get_image_width; ?>')"/>
+				@endforeach
+				@endif
+			</map>
+
+			@endif
+		</div>
+		<!-- end main page -->
+
+		<!-- page trigger -->
+		<table width="100%" class="page-trigger" style="padding: 10px 10px 0px 10px;margin-left: 0px">
+			<tr>
+				<td>
+					@if(($page_last+1)>1)
+					<a style="float: left" href="{{url('/'.$page_edition.'/'.$date.'/'.$page_last)}}"><img src="{{asset('assets/images/front/previous.png')}}" /></a>
+					@else
+					@if(!empty($date))
+					<a style="float: left" href="{{url('/all/pages/'.$page_edition.'/'.$date)}}" style="padding: 8px"><img src="{{asset('assets/images/front/all.png')}}" /></a>
+					@endif
+					@endif
+				</td>
+				<td>
+					@if(count($get_categories)>($page_next-1))
+					<a href="{{url('/'.$page_edition.'/'.$date.'/'.$page_next)}}" class="pull-right"><img src="{{asset('assets/images/front/next.png')}}" /></a>
+					@endif
+				</td>
+			</tr>
+		</table>
+		<br>
+		<!-- end page trigger -->
+
+	</div>
 </div>
+<!-- end content -->
+
 <!-- The Modal -->
 <div id="newsPopup" class="modal">
 	<div class="modal-content customized_content loading_img" id="modal-content" style="width: 1000px;">
@@ -291,6 +303,7 @@ $date_show=\App\Models\Epaper::GetBanglaDate($date);
 
 		<div class="modal-body text-center" style="padding: 20px;">
 			<div id='DivIdToPrint' class="modal-main-img img-responsive" id="newsImg">
+
 				<center>
 					<img src=""  id="singleNewsImg" class="image_view">
 					<img src="" class="related_image">
@@ -319,14 +332,15 @@ $date_show=\App\Models\Epaper::GetBanglaDate($date);
 		
 	</div>
 </div>
+
 <!--modal end-->
 
+
 <input type="hidden" class="get_pagination" value="{{isset($pagination_pages) ? count($pagination_pages) : ''}}">
-<input type="hidden" class="current_date" value="{{isset($date) ? $date : ''}}">
+<input type="hidden" class="current_date" value="{{!empty($date) ? $date : ''}}">
 <input type="hidden" class="page_edition" value="{{$page_edition}}">
 <input type="hidden" class="current_page" value="{{$current_page}}">
 <img src="" class="main_image" style="display: none" >
-
 
 <!-- js for the page -->
 <script type="text/javascript">
