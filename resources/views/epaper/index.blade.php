@@ -199,7 +199,7 @@
 	<div class="col-xs-4 text-center">
 		<a style="margin-left: 0px;" href="#">&laquo;</a>
 		@for($i=1; $i <= count($pagination_pages); $i++)
-		<a class="{{$i == $current_page ? 'active' : ''}}" href="{{url('/nogor-edition/'.$date.'/'.$i)}}">{{$i}}</a>
+		<a class="{{$i == $current_page ? 'active' : ''}}" href="{{url('/nogor-edition/'.$date.'/'.$i)}}">{{\App\Models\Epaper::GetBanglaNum($i)}}</a>
 		@endfor
 		<a href="{{url('/nogor-edition/'.$date.'/1')}}">&raquo;</a>
 	</div>
@@ -790,7 +790,7 @@ if (related_image_link != '') {
  		var gp_link = gp_splited[gp_length-2];
  		var gp_mainImage = gp_splited[gp_length-1];
 
-		var related_image = $(".related_image").attr("src");
+		 var related_image = $(".related_image").attr("src");
 		var related_image_gp_splited = related_image.split("images/");
 		var related_image_gp_length = related_image_gp_splited.length;
 		var related_image_gp_link = related_image_gp_splited[gp_length-2];
@@ -808,17 +808,16 @@ if (related_image_link != '') {
                 responseType: 'blob'
             },
 			success: function(response){
-				console.log(response);
                 var blob = new Blob([response]);
                 var link = document.createElement('a');
                 link.href = window.URL.createObjectURL(blob);
 				
-				if(related_image_gp_mainImage != ''){		
-					link.download = site_url + gp_link + "images/" + gp_mainImage + '/' + related_image_gp_mainImage;
-				}else{
-					link.download = site_url + gp_link + "images/" + gp_mainImage;
+				link.download = site_url + gp_link + "images/" + gp_mainImage;
+				link.click();
+
+				if(related_image_gp_mainImage != ''){
+					next_download();
 				}
-                link.click();
             },
             error: function(blob){
                 console.log(blob);
@@ -826,6 +825,47 @@ if (related_image_link != '') {
 		});		
 
  	});
+
+	function next_download()
+	{
+		var site_url = $(".site_url").val();
+ 		var gp_link = '/'+$(".main_image").attr( "src" );
+ 		var gp_splited = gp_link.split("images/");
+ 		var gp_length = gp_splited.length;
+ 		var gp_link = gp_splited[gp_length-2];
+ 		var gp_mainImage = gp_splited[gp_length-1];
+
+		var related_image = $(".related_image").attr("src");
+		var related_image_gp_splited = related_image.split("images/");
+		var related_image_gp_length = related_image_gp_splited.length;
+		var related_image_gp_link = related_image_gp_splited[gp_length-2];
+		var related_image_gp_mainImage = related_image_gp_splited[gp_length-1];
+
+		$.ajax({
+			method: "GET",
+			url: "{{ Route('next_download') }}",
+			data: {
+				image_gp_link: gp_link,
+				image: gp_mainImage,
+				related_image: related_image_gp_mainImage
+			},
+			xhrFields: {
+                responseType: 'blob'
+            },
+			success: function(response){
+                var blob = new Blob([response]);
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+				
+				link.download = site_url + gp_link + "images/" + gp_mainImage + '/' + related_image_gp_mainImage;
+				link.click();
+
+            },
+            error: function(blob){
+                console.log(blob);
+            }
+		});
+	}
 
  	function printPage(printPage) 
  	{

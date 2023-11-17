@@ -71,50 +71,61 @@ class EpaperController extends Controller
     // }
 
     public function download(Request $request)
-{
-    $savePath = public_path('uploads/temp/');
-    $sourcePath = public_path($request->input('image_gp_link') . 'images/' . $request->input('image'));
+    {
+        $savePath = public_path('uploads/temp/');
+        $sourcePath = public_path($request->input('image_gp_link') . 'images/' . $request->input('image'));
 
-    $logo = Image::make(public_path('logo/' . setting()->logo))->resize(250, 60);
+        $logo = Image::make(public_path('logo/' . setting()->logo))->resize(250, 60);
 
-    if (!empty($request->input('related_image'))) {
-        $related_image_sourcePath = public_path($request->input('image_gp_link') . 'images/' . $request->input('related_image'));
-        $related_image = Image::make($related_image_sourcePath);
-        $new_related_image = Image::canvas($related_image->width(), $related_image->height() + 80, '#ffffff');
-        $new_related_image->insert($related_image, 'bottom');
-        $new_related_image->insert($logo, 'top', 1, 1);
-        $new_related_image->save($savePath . $request->input('related_image'));
-        $new_related_image_savedImagePath = $savePath . $request->input('related_image');
-    }
+        if (!empty($request->input('related_image'))) {
+            $related_image_sourcePath = public_path($request->input('image_gp_link') . 'images/' . $request->input('related_image'));
+            $related_image = Image::make($related_image_sourcePath);
+            $new_related_image = Image::canvas($related_image->width(), $related_image->height() + 80, '#ffffff');
+            $new_related_image->insert($related_image, 'bottom');
+            $new_related_image->insert($logo, 'top', 1, 1);
+            $new_related_image->save($savePath . $request->input('related_image'));
+            $new_related_image_savedImagePath = $savePath . $request->input('related_image');
+        }
 
-    $image = Image::make($sourcePath);
-    $newImage = Image::canvas($image->width(), $image->height() + 80, '#ffffff');
-    $newImage->insert($image, 'bottom');
-    $newImage->insert($logo, 'top', 1, 1);
-    $newImage->save($savePath . $request->input('image'));
-    $savedImagePath = $savePath . $request->input('image');
+        $image = Image::make($sourcePath);
+        $newImage = Image::canvas($image->width(), $image->height() + 80, '#ffffff');
+        $newImage->insert($image, 'bottom');
+        $newImage->insert($logo, 'top', 1, 1);
+        $newImage->save($savePath . $request->input('image'));
+        $savedImagePath = $savePath . $request->input('image');
 
-    $imgArr = [];
-    if (!empty($new_related_image_savedImagePath)) {
-        $imgArr = [$savedImagePath, $new_related_image_savedImagePath];
-    } else {
+        $imgArr = [];
         $imgArr = [$savedImagePath];
-    }
-
-    $existingFiles = [];
-    foreach ($imgArr as $filePath) {
-        if (File::exists($filePath)) {
-            $existingFiles[] = $filePath;
+        if (File::exists($imgArr[0])) {
+            return response()->download($imgArr[0]);
+        }else {
+            abort(404, 'File not found');
         }
     }
 
-    if (!empty($existingFiles)) {
-        return response()->download($existingFiles[0]);
-    } else {
-        abort(404, 'File not found');
-    }
-}
+    public function next_download(Request $request)
+    {
+        $savePath = public_path('uploads/temp/');
+        $sourcePath = public_path($request->input('image_gp_link') . 'images/' . $request->input('image'));
 
+        $logo = Image::make(public_path('logo/' . setting()->logo))->resize(250, 60);
+
+        if (!empty($request->input('related_image'))) {
+            $related_image_sourcePath = public_path($request->input('image_gp_link') . 'images/' . $request->input('related_image'));
+            $related_image = Image::make($related_image_sourcePath);
+            $new_related_image = Image::canvas($related_image->width(), $related_image->height() + 80, '#ffffff');
+            $new_related_image->insert($related_image, 'bottom');
+            $new_related_image->insert($logo, 'top', 1, 1);
+            $new_related_image->save($savePath . $request->input('related_image'));
+            $new_related_image_savedImagePath = $savePath . $request->input('related_image');
+        }
+
+        if (File::exists($new_related_image_savedImagePath)) {
+            return response()->download($new_related_image_savedImagePath);
+        }else {
+            abort(404, 'File not found');
+        }
+    }
 
     public function copyImagePath(Request $request)
     {

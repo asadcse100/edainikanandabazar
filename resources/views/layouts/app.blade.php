@@ -236,14 +236,20 @@
 		</div>
 	</div>
 
-	<!-- epaper_header_bottom_ad -->
-	@php $epaper_header_bottom_ad = \App\Models\Epaper::GetAdvertisement('epaper_header_bottom'); @endphp
-	@if(!empty($epaper_header_bottom_ad) && !empty($epaper_header_bottom_ad->ad_code) && ($epaper_header_bottom_ad->ad_status=='1'))
-	<div class="add text-center" style="background-color: #EEEEEE;margin: 20px;padding: 15px 10px 15px 10px">
-		<?php echo $epaper_header_bottom_ad->ad_code; ?>
+
+	<div class="container">
+		<div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+			<!-- epaper_header_top_ad -->
+			@php $epaper_header_bottom_ad = \App\Models\Epaper::GetAdvertisement('epaper_header_bottom'); @endphp
+			@if(!empty($epaper_header_bottom_ad) && !empty($epaper_header_bottom_ad->ad_code) && ($epaper_header_bottom_ad->ad_status=='1'))
+			<?php echo $epaper_header_bottom_ad->ad_code; ?>
+			@endif
+			<!-- end epaper_header_top_ad -->
+		</div>
+
 	</div>
-	@endif
-	<!-- end epaper_header_bottom_ad -->
+
+
 
 	<div class="footer-contend">
 		@if(!empty($arr))

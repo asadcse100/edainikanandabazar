@@ -129,6 +129,17 @@ class Epaper extends Model
 		return $date_show;
 	}
 
+	public static function GetBanglaNum($num)
+	{
+		$search_array= array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
+
+		$replace_array= array("১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯", "০");
+
+		$change_num = str_replace($search_array, $replace_array,$num);
+
+		return $change_num;
+	}
+
 
 	######################
 	## GetImageSize
