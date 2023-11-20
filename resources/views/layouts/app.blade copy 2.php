@@ -26,6 +26,7 @@
 	<meta property="og:image:type" content="image/jpeg" />
 	<meta name="description" content="{{setting()->meta_description ? setting()->meta_description :''}}" />
 
+
 	<!-- icon -->
 	<!-- <link rel="icon" type="image/png" href="{{asset('assets/images/32x32.png')}}" /> -->
 	<link rel="icon" type="image/png" href="@if(!empty(setting()->favicon)) {{asset('favicon')}}/{{setting()->favicon}}@endif">
@@ -33,7 +34,7 @@
 	<!-- font awesome css -->
 	<link rel="stylesheet" type="text/css" href="{{asset('assets/font-awesome/css/font-awesome.min.css')}}" />
 	<!-- main css -->
-	<link rel="stylesheet" href="{{asset('assets/css/main.css?v=1.3')}}" />
+	<link rel="stylesheet" href="{{asset('assets/css/main.css?v=1.2')}}" />
 	<!-- fonts -->
 	<link rel="stylesheet" href="{{asset('assets/fonts/styles.css')}}" />
 	<!-- jquery js -->
@@ -68,21 +69,22 @@
 </head>
 
 <body id="body">
-<div class="main-container">
+
 	<div style="flex: 1; padding: 3px;">
 		<div class="add text-center" style="text-align: center;">
 			<a href="{{Route('home')}}"><img src="@if(!empty(setting()->logo)) {{asset('logo')}}/{{setting()->logo}}@endif" style="width: 250px"></a>
 		</div>
 	</div>
-	</div>
 
-
+	<div class="container-fluid">
 		<div class="header-div">
 			@if(!empty($arr))
 			<!-- header top -->
 
-			<div class="top-header" style="border-bottom: none;">
-				<div class="main-container" style="height: 33px;padding: 5px 10px;background-color: #EEEEEE;box-shadow: none;border-bottom: none;">
+			<div class="top-header" >
+
+				<div class="main-container" style="height: 40px;">
+
 					<table width="100%" cellspacing="0" cellpadding="0" border="0">
 						<tr>
 							<td>
@@ -117,8 +119,14 @@
 					</table>
 				</div>
 			</div>
-			<div class="main-container">
-				<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top:10px; padding-bottom:10px;">
+			<!-- header top end -->
+
+
+			@endif
+
+			<div class="container">
+				<div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
 					<!-- epaper_header_top_ad -->
 					@php $epaper_header_top_ad = \App\Models\Epaper::GetAdvertisement('epaper_header_top'); @endphp
 					@if(!empty($epaper_header_top_ad) && !empty($epaper_header_top_ad->ad_code) && ($epaper_header_top_ad->ad_status=='1'))
@@ -126,14 +134,12 @@
 					@endif
 					<!-- end epaper_header_top_ad -->
 				</div>
+
 			</div>
-			<!-- header top end -->
-			@endif
-			
 		</div>
+	</div>
 
-
-	<div class="main-container" >
+	<div class="main-container">
 		<div class="row-div" style="overflow: hidden;">
 
 			@if(empty($page_name) && !empty($get_categories) && (count($get_categories)>0))
@@ -231,7 +237,7 @@
 	</div>
 
 
-	<div class="main-container">
+	<div class="container">
 		<div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
 			<!-- epaper_header_top_ad -->
 			@php $epaper_header_bottom_ad = \App\Models\Epaper::GetAdvertisement('epaper_header_bottom'); @endphp
@@ -242,7 +248,6 @@
 		</div>
 
 	</div>
-
 
 	<div class="footer-contend">
 		@if(!empty($arr))
@@ -296,9 +301,59 @@
 		</div>
 		@endif
 	</div>
-	
+
 	@php $publishDates = DB::table('publish_dates')->where('status', 1)->pluck('publish_date'); @endphp
 
+	<!-- datepicker -->
+	<script type="text/javascript">
+		jQuery(function() {
+			var enableDays = <?php echo json_encode($publishDates); ?>;
+
+			function enableAllTheseDays(date) {
+				var sdate = $.datepicker.formatDate('yy-mm-dd', date)
+				if ($.inArray(sdate, enableDays) != -1) {
+					return [true];
+				}
+				return [false];
+			}
+			$('#Datepicker1').datepicker({
+				dateFormat: 'yy-mm-dd',
+				beforeShowDay: enableAllTheseDays
+			});
+		})
+
+
+		$(function() {
+			$("#Datepicker1").datepicker();
+			$("#Datepicker1").on("change", function() {
+				var archive_date = $(this).val();
+				var site_url = $(".site_url").val();
+				if (archive_date == '') {
+					alert('Please Select A Valid Date !');
+					window.reload();
+				}
+				if (archive_date != null) {
+					var request_url = site_url + '/nogor-edition/' + archive_date + '/1';
+					window.location = request_url;
+				}
+			});
+		});
+	</script>
+	<!-- search result not found -->
+	<script type="text/javascript">
+		$(function() {
+			$('<div class="alert-box message_body">আপনি যে বিষয়টি অনুসন্ধান করছেন তা খুজে পাওয়া যায়নি !! আপনাকে ধন্যবাদ খবর অনুসন্ধান করার জন্য ।</div>')
+				.insertBefore('#message_not_found')
+				.delay(3000)
+				.fadeOut(4000, function() {
+					$(this).remove();
+				});
+		});
+	</script>
+
+	<input type="hidden" class="site_url" value="{{Route('home')}}">
+	<input type="hidden" class="site_url_name" value="@if(!empty(Request::route()->getName()))){{\Request::route()->getName()}}@endif">
+	{{-- <input type="hidden" class="current_url" value="{{Route::getCurrentRoute()->getPath()}}"> --}}
 
 </body>
 

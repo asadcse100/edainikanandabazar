@@ -221,7 +221,7 @@
 	<div class="left-content">
 
 		<!-- main page -->
-		<div class="main-img-div" style="padding-left: 10px;padding-right: 10px;padding-bottom: 10px">
+		<div class="main-img-div" style="padding-left: 30px;padding-right: 30px;padding-bottom: 30px">
 			@if(!empty($home_page))
 			<img src="{{asset('uploads/epaper/'.date('Y',strtotime($home_page->publish_date)).'/'.date('m',strtotime($home_page->publish_date)).'/'.date('d',strtotime($home_page->publish_date)).'/pages/'.$home_page->image)}}" usemap="#enewspaper" class="map" />
 

@@ -1,161 +1,5 @@
 @extends('layouts.app')
-<style type="text/css">
-	li.current_edition:hover{
-		background-color: inherit !important
-	}
 
-	#mask {
-		position:absolute;
-		left:0;
-		top:0;
-		z-index:9000;
-		background-color:#000;
-		display:none;
-	}
-	#boxes .window {
-		position:absolute;
-		left:0;
-		top:20px;
-		width:auto;
-		height:auto;
-		display:none;
-		z-index:9999;
-		padding:20px;
-		border-radius: 10px;
-		text-align: center;
-	}
-	#boxes #dialog {
-		width:auto;
-		height:auto;
-		padding:10px;
-	}
-
-	/* Modal Content (image) */
-	.modal-content {
-	margin: auto;
-	display: block;
-	width: 100%;
-	max-width: 1200px !important;
-	}
-
-	.modal {
-		display: none; /* Hidden by default */
-		position: fixed; /* Stay in place */
-		z-index: 1; /* Sit on top */
-		padding-top: 100px; /* Location of the box */
-		left: 0;
-		top: 0;
-		width: 100%; /* Full width */
-		height: 100%; /* Full height */
-		overflow: auto; /* Enable scroll if needed */
-		background-color: rgb(0,0,0); /* Fallback color */
-		background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
-		}
-
-/* Caption of Modal Image */
-#caption {
-  margin: auto;
-  display: block;
-  width: 80%;
-  max-width: 1200px !important;
-  text-align: center;
-  color: #ccc;
-  padding: 10px 0;
-  height: 150px;
-}
-
-/* Add Animation */
-.modal-content, #caption {  
-  -webkit-animation-name: zoom;
-  -webkit-animation-duration: 0.6s;
-  animation-name: zoom;
-  animation-duration: 0.6s;
-}
-
-@-webkit-keyframes zoom {
-  from {-webkit-transform:scale(0)} 
-  to {-webkit-transform:scale(1)}
-}
-
-@keyframes zoom {
-  from {transform:scale(0)} 
-  to {transform:scale(1)}
-}
-
-.close:hover,
-.close:focus {
-  color: #bbb;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-
-	/* 100% Image Width on Smaller Screens */
-	@media only screen and (max-width: 1200px){
-	.modal-content {
-		width: 100% !important;
-	}
-	}
-
-    /* Base styles for the modal content */
-    .modal-content {
-        max-width: 100%;
-        padding: 20px;
-    }
-
-    /* Center the content */
-    .modal-body {
-        text-align: center;
-    }
-
-    /* Make the image responsive */
-    .image_view {
-        max-width: 100%;
-        height: auto;
-    }
-
-    /* Center the share buttons */
-    .share-buttons {
-        text-align: center;
-    }
-
-    /* Adjust button styles for small screens */
-    .btn {
-        padding: 5px 7px;
-    }
-
-    /* Adjust close button styles for small screens */
-    .close {
-        padding: 8px 10px;
-        margin-top: 2px;
-        font-size: 16px;
-        border-radius: 50%;
-    }
-
-    /* Show previous and next buttons on small screens */
-    .trigger-prev,
-    .trigger-next {
-        display: inline-block;
-        padding: 2px 6px;
-    }
-
-    /* Make the image container and share buttons stack on top of each other for small screens */
-    @media (max-width: 768px) {
-        .modal-content {
-            max-height: 70vh; /* Set a maximum height and enable vertical scrolling */
-            overflow-y: auto; /* Enable the scrollbar when content exceeds the height */
-        }
-
-        .modal-main-img {
-            display: block;
-        }
-
-        .share-buttons {
-            margin-top: 10px;
-        }
-    }
-
-</style>
 <!-- pagination -->
 <style type="text/css">
 	.pagination {
@@ -189,31 +33,30 @@
 	@php $date_show=\App\Models\Epaper::GetBanglaDate($date); @endphp
 
 	<div class="pagination" style="width: 100%;background-color: #EEEEEE;margin: 0px 0px 10px 0px;">
-
-<div class="row">
-	<div class="col-xs-4">
-		@if(!empty($date))
-		<a href="{{url('/all/pages/nogor-edition/'.$date)}}">সব পাতা</a>
-		@endif
-	</div>
-	<div class="col-xs-4 text-center">
-		<a style="margin-left: 0px;" href="#">&laquo;</a>
-		@for($i=1; $i <= count($pagination_pages); $i++)
-		<a class="{{$i == $current_page ? 'active' : ''}}" href="{{url('/nogor-edition/'.$date.'/'.$i)}}">{{\App\Models\Epaper::GetBanglaNum($i)}}</a>
-		@endfor
-		<a href="{{url('/nogor-edition/'.$date.'/1')}}">&raquo;</a>
-	</div>
-	<div class="col-xs-4">
-		<div class="text-right">
-			@if(!empty($home_page) && !empty($date))
-			<a href="javascript::void(0)" onclick='printPage("{{asset('uploads/epaper/'.date('Y',strtotime($home_page->publish_date)).'/'.date('m',strtotime($home_page->publish_date)).'/'.date('d',strtotime($home_page->publish_date)).'/pages/'.$home_page->image)}}");'>
-			প্রিন্ট</a>
-			@endif
+		<div class="row">
+			<div class="col-xs-4">
+				@if(!empty($date))
+				<a href="{{url('/all/pages/nogor-edition/'.$date)}}">সব পাতা</a>
+				@endif
+			</div>
+			<div class="col-xs-4 text-center">
+				<a style="margin-left: 0px;" href="#">&laquo;</a>
+				@for($i=1; $i <= count($pagination_pages); $i++)
+				<a class="{{$i == $current_page ? 'active' : ''}}" href="{{url('/nogor-edition/'.$date.'/'.$i)}}">{{\App\Models\Epaper::GetBanglaNum($i)}}</a>
+				@endfor
+				<a href="{{url('/nogor-edition/'.$date.'/1')}}">&raquo;</a>
+			</div>
+			<div class="col-xs-4">
+				<div class="text-right">
+					@if(!empty($home_page) && !empty($date))
+					<a href="javascript::void(0)" onclick='printPage("{{asset('uploads/epaper/'.date('Y',strtotime($home_page->publish_date)).'/'.date('m',strtotime($home_page->publish_date)).'/'.date('d',strtotime($home_page->publish_date)).'/pages/'.$home_page->image)}}");'>
+					প্রিন্ট</a>
+					@endif
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
 
-</div>
 	@else
 	@php $date_show=Null; $data = Null; @endphp
 	@endif
@@ -221,7 +64,7 @@
 	<div class="left-content">
 
 		<!-- main page -->
-		<div class="main-img-div" style="padding-left: 10px;padding-right: 10px;padding-bottom: 10px">
+		<div class="main-img-div" style="padding-left: 30px;padding-right: 30px;padding-bottom: 30px">
 			@if(!empty($home_page))
 			<img src="{{asset('uploads/epaper/'.date('Y',strtotime($home_page->publish_date)).'/'.date('m',strtotime($home_page->publish_date)).'/'.date('d',strtotime($home_page->publish_date)).'/pages/'.$home_page->image)}}" usemap="#enewspaper" class="map" />
 
