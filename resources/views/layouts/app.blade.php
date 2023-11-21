@@ -300,6 +300,56 @@
 	@php $publishDates = DB::table('publish_dates')->where('status', 1)->pluck('publish_date'); @endphp
 
 
+	<!-- datepicker -->
+	<script type="text/javascript">
+		jQuery(function() {
+			var enableDays = <?php echo json_encode($publishDates); ?>;
+
+			function enableAllTheseDays(date) {
+				var sdate = $.datepicker.formatDate('yy-mm-dd', date)
+				if ($.inArray(sdate, enableDays) != -1) {
+					return [true];
+				}
+				return [false];
+			}
+			$('#Datepicker1').datepicker({
+				dateFormat: 'yy-mm-dd',
+				beforeShowDay: enableAllTheseDays
+			});
+		})
+
+
+		$(function() {
+			$("#Datepicker1").datepicker();
+			$("#Datepicker1").on("change", function() {
+				var archive_date = $(this).val();
+				var site_url = $(".site_url").val();
+				if (archive_date == '') {
+					alert('Please Select A Valid Date !');
+					window.reload();
+				}
+				if (archive_date != null) {
+					var request_url = site_url + '/nogor-edition/' + archive_date + '/1';
+					window.location = request_url;
+				}
+			});
+		});
+	</script>
+	<!-- search result not found -->
+	<script type="text/javascript">
+		$(function() {
+			$('<div class="alert-box message_body">আপনি যে বিষয়টি অনুসন্ধান করছেন তা খুজে পাওয়া যায়নি !! আপনাকে ধন্যবাদ খবর অনুসন্ধান করার জন্য ।</div>')
+				.insertBefore('#message_not_found')
+				.delay(3000)
+				.fadeOut(4000, function() {
+					$(this).remove();
+				});
+		});
+	</script>
+
+	<input type="hidden" class="site_url" value="{{Route('home')}}">
+	<input type="hidden" class="site_url_name" value="@if(!empty(Request::route()->getName()))){{\Request::route()->getName()}}@endif">
+	{{-- <input type="hidden" class="current_url" value="{{Route::getCurrentRoute()->getPath()}}"> --}}
 </body>
 
 </html>

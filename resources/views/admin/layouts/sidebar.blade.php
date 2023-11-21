@@ -65,7 +65,7 @@
 				</a>
 			</li>
 			@endif
-
+			@if(Auth::user()->role == 'admin')
 			<li onclick="sidebar_open();">
 				<a>
 					<i class="fa fa-copy"></i> <span>Copy Right Text</span>
@@ -83,6 +83,7 @@
 					<i class="fa fa-cog"></i> <span>Topbar Info</span>
 				</a>
 			</li>
+			@endif
 		</ul>
 	</section>
 	<!-- /.sidebar -->

@@ -57,11 +57,13 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('/profile', 'DashboardController@profile')->name('Profile');
 	##ProfileUpdate
 	Route::post('/profile/update', 'DashboardController@profileUpdate')->name('Profile Update');
-	Route::get('/settings', 'DashboardController@settings')->name('settings');
-	Route::post('/settings', 'DashboardController@store')->name('settings.store');
-	Route::get('/topbar_information', 'DashboardController@topbar_info')->name('topbar_info');
-	Route::post('/topbar_info', 'DashboardController@topbarinfo_store')->name('topbar_info.store');
-	Route::post('/topbar_info/update', 'DashboardController@topbarinfo_update')->name('topbarinfo_update');
+	Route::middleware(['auth', 'checkStatus'])->group(function(){
+		Route::get('/settings', 'DashboardController@settings')->name('settings');
+		Route::post('/settings', 'DashboardController@store')->name('settings.store');
+		Route::get('/topbar_information', 'DashboardController@topbar_info')->name('topbar_info');
+		Route::post('/topbar_info', 'DashboardController@topbarinfo_store')->name('topbar_info.store');
+		Route::post('/topbar_info/update', 'DashboardController@topbarinfo_update')->name('topbarinfo_update');
+	});
 
 	##########################
 	## Category Module
